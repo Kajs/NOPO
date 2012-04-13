@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Version 0.1</string>
+    <string name="app_name">NOPO</string>
+    <string name="alarm">Alarm</string>
+    <string name="log">Log</string>
+    <string name="filter">Filter</string>
+    <string name="menu">Menu</string>
+    <string name="login">Login</string>
+    
+    <string name="alarmtext">This is the alarm view!</string>
+    <string name="logtext">This is the log view!</string>
+    <string name="filtertext">This is the filter view!</string>
+    <string name="menutext">This is the menu view asdasdsa dlsa dlas daskdlkas lks dlksa dlksa dlkas dlasdlask d!</string>
+
+    <string name="sms1">This is an sms alarm: \n And this is the content!</string>
+    <string name="sms2">This is another alarm: \n And it has no content!</string>
+</resources>
