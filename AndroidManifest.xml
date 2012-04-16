@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="nopo.view"
+    package="dmri.nopo"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -11,49 +11,62 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name=".LoginPage"
-            android:label="@string/app_name" >
+            android:name="LoginPage"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-         <activity
-            android:name=".AlarmView"
-            android:label="@string/app_name" >
+        <activity
+            android:name="AlarmView"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.ALARM" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".LogView"
-            android:label="@string/app_name" >
+            android:name="LogView"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.LOG" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-                <activity
-            android:name=".FilterView"
-            android:label="@string/app_name" >
+        <activity
+            android:name="FilterView"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.FILTER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-                <activity
-            android:name=".MenuView"
-            android:label="@string/app_name" >
+        <activity
+            android:name="MenuView"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MENU" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <receiver android:name=".SmsListener" >
-            <intent-filter> 
+        <activity
+            android:name="ViewChangeActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.CHANGER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter> 
+        </activity>
+        <receiver android:name="SmsListener" >
+            <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" /> 
-           </intent-filter> 
+           </intent-filter>  
         </receiver>
     </application>
 </manifest>

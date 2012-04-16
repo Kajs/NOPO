@@ -8,46 +8,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <TableRow
-            android:id="@+id/tableRow1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/alarm"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/alarm" />
-            
-            <Button
-                android:id="@+id/log"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-				android:textColor="#ffffff"
-                android:background="#000000"
-                android:text="@string/log" />
-            
-            <Button
-                android:id="@+id/filter"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/filter" />
-            
-            <Button
-                android:id="@+id/menu"
-                style="?android:attr/buttonStyleSmall"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/menu" />
-            	
-        </TableRow>
+        <fragment 
+        android:name="dmri.nopo.ViewChangeActivity"
+        android:id="@+id/list"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
         
         <TableRow
             android:id="@+id/tableRow2"
