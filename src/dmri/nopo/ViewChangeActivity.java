@@ -6,11 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
-import android.view.Window;
 import android.widget.Button;
-import android.app.Activity;
 import android.app.Fragment;
-import android.util.Log;
 
 public class ViewChangeActivity extends Fragment {
 	private Button logButton;
