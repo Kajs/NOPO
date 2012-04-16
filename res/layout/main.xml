@@ -52,15 +52,9 @@
      </TableLayout>
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/SMSdisplay1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="username" />
-
-    <TextView
-        android:id="@+id/password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="password" />
-    
+        android:text="" />
+     
 </LinearLayout>

@@ -53,10 +53,200 @@
 
      </TableLayout>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/menutext" />
-    
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:stretchColumns="1" >
+
+        <TableRow
+            android:id="@+id/usernameRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            
+            <TextView
+        		android:id="@+id/usertext"
+        		android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:textStyle="bold"
+        		android:text="@string/userText" />
+            
+            <TextView
+        		android:id="@+id/userlogin"
+        		android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:text="" />
+            
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/passwordRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+            
+            <TextView
+        		android:id="@+id/passtext"
+        		android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:textStyle="bold"
+        		android:text="@string/passText" />
+            
+            <TextView
+        		android:id="@+id/passlogin"
+        		android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:text="" />
+            
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/indstillingerRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center" >
+            
+            <TextView
+        		android:id="@+id/passtext"
+        		android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:textStyle="bold"
+        		android:text="@string/indstillinger" />
+            
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/vibrationRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/vibrationtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/vibroText" />
+          
+            <SeekBar
+            	android:id="@+id/vibrobar"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content" />
+            
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/lydRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/lydtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/lydText" />
+          
+            <SeekBar
+            	android:id="@+id/lydbar"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content" />
+            
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/lysRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+            
+            <TextView
+                android:id="@+id/lystext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/lysText" />
+          
+            <SeekBar
+            	android:id="@+id/lysbar"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content" />
+            
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/saveButtonRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/saveButton" />
+        
+        </TableRow>
+      
+        <TableRow
+            android:id="@+id/showVibroRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+        
+        <TextView
+            android:id="@+id/showVibro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/showLydRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+        
+        <TextView
+            android:id="@+id/showLyd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/showLysRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+        
+        <TextView
+            android:id="@+id/showLys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="" />
+
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/logoutRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+        
+        <Button
+            android:id="@+id/sletloginButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sletloginButton" />
+        
+        </TableRow>
+        
+    </TableLayout>
+
 </LinearLayout>

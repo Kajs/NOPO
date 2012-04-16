@@ -3,10 +3,13 @@ package nopo.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
 import android.widget.TextView;
 
 public class AlarmView extends Activity {
@@ -14,10 +17,16 @@ public class AlarmView extends Activity {
 	private Button logButton;
 	private Button filterButton;
 	private Button menuButton;
-	private String user;
-	private String pass;
-	private TextView username;
-	private TextView password;
+	private TextView showSMS1;
+	private IntentFilter intentFilter;
+	
+	private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			showSMS1 = (TextView) findViewById(R.id.SMSdisplay1);
+			showSMS1.setText(intent.getExtras().getString("sms"));
+		}
+	};
 	
 	/** Called when the activity is first created. */
     @Override
@@ -25,6 +34,7 @@ public class AlarmView extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
+        
         this.logButton = (Button) this.findViewById(R.id.log);
         this.logButton.setOnClickListener(new View.OnClickListener() {
         	@Override
@@ -49,22 +59,19 @@ public class AlarmView extends Activity {
                 startActivity(intent);
             }
         });
-        username = (TextView) findViewById(R.id.username);
-        password = (TextView) findViewById(R.id.password);
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-        	user = extras.getString("username");
-        	pass = extras.getString("password");
-        }
-        if (user != null && pass != null) {
-        	username.setText(user);
-        	password.setText(pass);
-        }
-        else {
-        	username.setText("Not working");
-        	password.setText("Not working");
-        }
-        
-        
+        intentFilter = new IntentFilter();
+        intentFilter.addAction("SMS_RECEIVED_ACTION");
+    }
+    
+    @Override
+    protected void onResume() {
+    	registerReceiver(intentReceiver, intentFilter);
+    	super.onResume();
+    }
+    
+    @Override
+    protected void onPause() {
+    	unregisterReceiver(intentReceiver);
+    	super.onPause();
     }
 }

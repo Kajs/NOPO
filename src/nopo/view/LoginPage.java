@@ -2,6 +2,7 @@ package nopo.view;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -13,6 +14,8 @@ public class LoginPage extends Activity {
 	private Button loginButton;
 	private EditText pass;
 	private EditText user;
+	
+	
 	
 	/** Called when the activity is first created. */
     @Override
@@ -27,10 +30,11 @@ public class LoginPage extends Activity {
         	@Override
         	public void onClick(View v) {
             	Intent intent = new Intent("android.intent.action.ALARM");
-            	Bundle extras = new Bundle();
-            	extras.putString("username", user.getText().toString());
-            	extras.putString("password", pass.getText().toString());
-            	intent.putExtras(extras);
+            	SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
+            	SharedPreferences.Editor editor = pref.edit();
+            	editor.putString("user", user.getText().toString());
+            	editor.putString("pass", pass.getText().toString());
+            	editor.commit();
                 startActivity(intent);
             }
         });
