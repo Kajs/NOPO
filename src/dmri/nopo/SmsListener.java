@@ -24,7 +24,7 @@ import android.telephony.SmsMessage;
 	    		
 	    		Calendar c = Calendar.getInstance();
 	    		
-	    		int[] time = new int[2];
+	    		int[] time = new int[3];
 	    		time[0] = c.get(Calendar.HOUR_OF_DAY);
 	    		time[1] = c.get(Calendar.MINUTE);
 	    		time[2] = c.get(Calendar.SECOND);
@@ -32,7 +32,7 @@ import android.telephony.SmsMessage;
 	            Intent broadcastIntent = new Intent();
 	            broadcastIntent.setAction("SMS_RECEIVED_ACTION");
 	            broadcastIntent.putExtra("sms", message);
-	            broadcastIntent.putExtra("time", time);
+	            broadcastIntent.putExtra("dmri.nopo.time", time);
 	            broadcastIntent.putExtra("sender", sender);
 	            context.sendBroadcast(broadcastIntent);
 			}

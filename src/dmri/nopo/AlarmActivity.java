@@ -20,12 +20,10 @@ public class AlarmActivity extends Activity {
 		@Override
 		public void onReceive(Context context, Intent intent) {
             showSMS1 = (TextView) findViewById(R.id.SMSdisplay1);
-            String sms = "" + intent.getExtras().getString("time") + "\n" + 
-            				  intent.getExtras().getString("sender") + "\n" + 
-            				  intent.getExtras().getString("sms");
+            String sms = "" + intent.getExtras().getString("sender") + "\n" + intent.getExtras().getString("sms");
             showSMS1.setText(sms);
         }
-};
+	};
 	
 	/** Called when the activity is first created. */
     @Override
