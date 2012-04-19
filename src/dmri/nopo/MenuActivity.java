@@ -1,3 +1,4 @@
+
 package dmri.nopo;
 
 import dmri.nopo.R;
@@ -14,18 +15,16 @@ import android.widget.SeekBar;
 
 public class MenuActivity extends Activity {
     
-	private Button alarmButton;
-	private Button logButton;
-	private Button filterButton;
 	private Button saveButton;
 	private Button logoutButton;
+	private Button testButton;
 	private TextView username;
+	private TextView testView;
 	private SeekBar vibroBar;
 	private SeekBar lydBar;
 	private SeekBar lysBar;
 	
-    private SharedPreferences pref;
-	private Editor editor;
+    private NotificationManager manager;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -33,49 +32,19 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.menu);
-        this.alarmButton = (Button) this.findViewById(R.id.alarm);
-        this.alarmButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-            	Intent intent = new Intent("android.intent.action.ALARM");
-                startActivity(intent);
-            }
-        });
-        this.logButton = (Button) this.findViewById(R.id.log);
-        this.logButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-            	Intent intent = new Intent("android.intent.action.LOG");
-                startActivity(intent);
-            }
-        });
-        this.filterButton = (Button) this.findViewById(R.id.filter);
-        this.filterButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-            	Intent intent = new Intent("android.intent.action.FILTER");
-                startActivity(intent);
-            }
-        });
-        
-        
-        pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
-        editor = pref.edit();
+        manager = new NotificationManager(this);
         
         username = (TextView) findViewById(R.id.userlogin);
-        username.setText(pref.getString("user", "No username."));
+        username.setText(manager.getUser());
         
         vibroBar = (SeekBar) findViewById(R.id.vibrobar);
-        int vibroValue = pref.getInt("vibroValue", 50);
-        vibroBar.setProgress(vibroValue);
+        vibroBar.setProgress(manager.getUserVibration());
         
         lydBar = (SeekBar) findViewById(R.id.lydbar);
-        int lydValue = pref.getInt("lydValue", 50);
-        lydBar.setProgress(lydValue);
+        lydBar.setProgress(manager.getUserSound());
         
         lysBar = (SeekBar) findViewById(R.id.lysbar);
-        int lysValue = pref.getInt("lysValue", 50);
-        lysBar.setProgress(lysValue);
+        lysBar.setProgress(manager.getUserLight());
    
         this.saveButton = (Button) findViewById(R.id.saveButton);
         this.saveButton.setOnClickListener(new View.OnClickListener() {
@@ -83,12 +52,9 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				int newVib = vibroBar.getProgress();
-				int newLyd = lydBar.getProgress();
-				int newLys = lysBar.getProgress();
-				editor.putInt("vibroValue", newVib);
-				editor.putInt("lydValue", newLyd);
-				editor.putInt("lysValue", newLys);
-				editor.commit();
+				int newSou = lydBar.getProgress();
+				int newLig = lysBar.getProgress();
+				manager.setNotificationAndroid(newVib, newSou, newLig);
 			}
 		});
         
@@ -97,10 +63,24 @@ public class MenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-                editor.remove("user");
-                editor.remove("pass");
-                editor.commit();
+				SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
+            	SharedPreferences.Editor editor = pref.edit();
+            	editor.remove("user");
+            	editor.remove("pass");
+            	editor.commit();
                 startActivity(new Intent("android.intent.action.MENU"));
+			}
+		});
+        
+        this.testView = (TextView) findViewById(R.id.testView);
+        
+        this.testButton = (Button) findViewById(R.id.testButton);
+        this.testButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+                testView.setText(manager.getUserVibration());
+                
 			}
 		});
     }

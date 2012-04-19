@@ -22,30 +22,7 @@ public class LogActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.log);
-        this.alarmButton = (Button) this.findViewById(R.id.alarm);
-        this.alarmButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-            	Intent intent = new Intent("android.intent.action.ALARM");
-                startActivity(intent);
-            }
-        });
-        this.filterButton = (Button) this.findViewById(R.id.filter);
-        this.filterButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-            	Intent intent = new Intent("android.intent.action.FILTER");
-                startActivity(intent);
-            }
-        });
-        this.menuButton = (Button) this.findViewById(R.id.menu);
-        this.menuButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-            	Intent intent = new Intent("android.intent.action.MENU");
-                startActivity(intent);
-            }
-        });
+        
         showInput = (TextView) findViewById(R.id.showInput);
         showInput.setText("testing");
         String input = "";

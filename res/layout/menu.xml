@@ -131,52 +131,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/saveButton" />
         
-        </TableRow>
-      
-        <TableRow
-            android:id="@+id/showVibroRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-        
-        <TextView
-            android:id="@+id/showVibro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="" />
-
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/showLydRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-        
-        <TextView
-            android:id="@+id/showLyd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="" />
-
-        </TableRow>
-        
-        <TableRow
-            android:id="@+id/showLysRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-        
-        <TextView
-            android:id="@+id/showLys"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="" />
-
-        </TableRow>
+       </TableRow>
         
         <TableRow
             android:id="@+id/logoutRow"
@@ -189,6 +144,34 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/sletloginButton" />
+        
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/testRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+        
+        <Button
+            android:id="@+id/testButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test knap" />
+        
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/testingRow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <TextView
+                android:id="@+id/testView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
         
         </TableRow>
         

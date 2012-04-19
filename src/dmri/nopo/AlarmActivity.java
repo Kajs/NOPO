@@ -19,11 +19,13 @@ public class AlarmActivity extends Activity {
 	private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-            //---display the SMS received in the TextView---
             showSMS1 = (TextView) findViewById(R.id.SMSdisplay1);
-            showSMS1.setText(intent.getExtras().getString("sms"));
+            String sms = "" + intent.getExtras().getString("time") + "\n" + 
+            				  intent.getExtras().getString("sender") + "\n" + 
+            				  intent.getExtras().getString("sms");
+            showSMS1.setText(sms);
         }
-    };
+};
 	
 	/** Called when the activity is first created. */
     @Override
@@ -31,11 +33,10 @@ public class AlarmActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.alarm);
-        
-        
+                
         intentFilter = new IntentFilter();
         intentFilter.addAction("SMS_RECEIVED_ACTION");
-    }
+}
     
     @Override
     protected void onResume() {
