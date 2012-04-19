@@ -71,17 +71,5 @@ public class MenuActivity extends Activity {
                 startActivity(new Intent("android.intent.action.MENU"));
 			}
 		});
-        
-        this.testView = (TextView) findViewById(R.id.testView);
-        
-        this.testButton = (Button) findViewById(R.id.testButton);
-        this.testButton.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-                testView.setText(manager.getUserVibration());
-                
-			}
-		});
     }
 }

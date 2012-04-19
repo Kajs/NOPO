@@ -16,11 +16,16 @@
     <string name="filtertext">This is the filter view!</string>
     <string name="menutext">This is the menu view asdasdsa dlsa dlas daskdlkas lks dlksa dlksa dlkas dlasdlask d!</string>
     <string name="userText">Du er logget ind som: </string>
-    <string name="passText">Med koden: </string>
     <string name="indstillinger">Notifikations indstillinger:</string>
     <string name="vibroText">Vibration: </string>
     <string name="lydText">Lyd: </string>
     <string name="lysText">Lys: </string>
+    <string name="highlightText">Highlight:</string>
+    <string-array name="highlightNames">
+        <item>2 min</item>
+        <item>5 min</item>
+        <item>10 min</item>
+    </string-array>
     
     <string name="sms1">This is an sms alarm: \n And this is the content!</string>
     <string name="sms2">This is another alarm: \n And it has no content!</string>
