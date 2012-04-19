@@ -17,43 +17,6 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-<<<<<<< HEAD
-        public static final int SMSdisplay1=0x7f050001;
-        public static final int alarm=0x7f050009;
-        public static final int filter=0x7f05000b;
-        public static final int indstillingerRow=0x7f050010;
-        public static final int list=0x7f050000;
-        public static final int log=0x7f05000a;
-        public static final int login=0x7f050007;
-        public static final int logoutRow=0x7f05001d;
-        public static final int lydRow=0x7f050015;
-        public static final int lydbar=0x7f050017;
-        public static final int lydtext=0x7f050016;
-        public static final int lysRow=0x7f050018;
-        public static final int lysbar=0x7f05001a;
-        public static final int lystext=0x7f050019;
-        public static final int menu=0x7f05000c;
-        public static final int passtext=0x7f050011;
-        public static final int password=0x7f050006;
-        public static final int saveButton=0x7f05001c;
-        public static final int saveButtonRow=0x7f05001b;
-        public static final int showInput=0x7f050004;
-        public static final int sletloginButton=0x7f05001e;
-        public static final int tableRow1=0x7f050008;
-        public static final int tableRow2=0x7f050003;
-        public static final int testButton=0x7f050020;
-        public static final int testRow=0x7f05001f;
-        public static final int testView=0x7f050022;
-        public static final int testingRow=0x7f050021;
-        public static final int textView1=0x7f050002;
-        public static final int userlogin=0x7f05000f;
-        public static final int username=0x7f050005;
-        public static final int usernameRow=0x7f05000d;
-        public static final int usertext=0x7f05000e;
-        public static final int vibrationRow=0x7f050012;
-        public static final int vibrationtext=0x7f050013;
-        public static final int vibrobar=0x7f050014;
-=======
         public static final int SMSdisplay1=0x7f060001;
         public static final int alarm=0x7f06001a;
         public static final int filter=0x7f06001c;
@@ -84,16 +47,14 @@ public final class R {
         public static final int vibrationRow=0x7f06000b;
         public static final int vibrationtext=0x7f06000c;
         public static final int vibrobar=0x7f06000d;
->>>>>>> f1e72281c7fdccce703e785dfe3f1b906ce756d4
     }
     public static final class layout {
         public static final int alarm=0x7f030000;
         public static final int filter=0x7f030001;
         public static final int log=0x7f030002;
         public static final int login=0x7f030003;
-        public static final int main=0x7f030004;
-        public static final int menu=0x7f030005;
-        public static final int viewchange=0x7f030006;
+        public static final int menu=0x7f030004;
+        public static final int viewchange=0x7f030005;
     }
     public static final class string {
         public static final int alarm=0x7f040002;

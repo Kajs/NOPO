@@ -32,4 +32,6 @@ public class LogActivity extends Activity {
         	showInput.setText(input);
         }
     }
+    
+    
 }
