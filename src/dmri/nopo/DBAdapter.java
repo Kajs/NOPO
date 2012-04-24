@@ -12,7 +12,7 @@ import android.util.Log;
 public class DBAdapter {
 	private static final String KEY_TIME = "time";
 	private static final String KEY_TEXT = "text";
-	private static final String DATABASE_NAME = "SMS_Storage";
+	private static final String DATABASE_NAME = "NOPO";
 	private static final int DATABASE_VERSION = 1;
 	
 	private SQLiteDatabase db;
@@ -39,8 +39,8 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				db.execSQL("create table " + getUserName() + " ("+
-				DBAdapter.KEY_TIME +" TEXT primary key, "+ KEY_TEXT +" TEXT not null);");
+				db.execSQL("create table " + getUserName() + ".log ("+
+				DBAdapter.KEY_TIME +" REAL primary key, "+ KEY_TEXT +" TEXT not null);");
 			}
 			catch (SQLException e) {
 				e.printStackTrace();
@@ -71,14 +71,14 @@ public class DBAdapter {
 	public long insertSMS(String text)
 	{
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_TIME, "strftime('%Y-%m-%d %H:%M:%f', 'now'");
+		initialValues.put(KEY_TIME, "strftime('%Y%m%d%H%M%f', 'now')");
 		initialValues.put(KEY_TEXT, text);
-		return db.insert(getUserName(), null, initialValues);
+		return db.insert(getUserName()+".log", null, initialValues);
 	}
 	
 	public boolean deleteSMS(String time)
 	{
-		return db.delete(getUserName(), KEY_TIME + "=" + time, null) > 0;
+		return db.delete(getUserName()+".log", KEY_TIME + "=" + time, null) > 0;
 	}
 	
 	/**
@@ -88,6 +88,11 @@ public class DBAdapter {
 	
 	public Cursor getAllSMS()
 	{
-		return db.query(getUserName(), new String[] {KEY_TIME, KEY_TEXT}, null, null, null, null, null);
+		return db.query(getUserName()+".log", new String[] {KEY_TIME, KEY_TEXT}, null, null, null, null, null);
+	}
+	
+	public boolean removeOldSMS()
+	{
+		return db.delete(getUserName()+".log", "KEY_TIME < strftime('%Y%m%d000000.000', 'now')" , null) > 0;
 	}
 }
