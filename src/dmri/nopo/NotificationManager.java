@@ -36,17 +36,14 @@ public class NotificationManager {
         showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
 	}
 	
-	private void writeUserFile() {
-		indivEditor.putInt("vibrationValue", vibration);
-		indivEditor.putInt("soundValue", sound);
-		indivEditor.putInt("lightValue", light);
-		indivEditor.commit();
-	}
 	public void setNotificationAndroid(int vib, int sou, int lig) {
 		vibration = vib;
 		sound = sou;
 		light = lig;
-		writeUserFile();
+		indivEditor.putInt("vibrationValue", vibration);
+		indivEditor.putInt("soundValue", sound);
+		indivEditor.putInt("lightValue", light);
+		indivEditor.commit();
 	}
 	
 	public void setNumberIncommingSMS(String number) {
@@ -54,10 +51,8 @@ public class NotificationManager {
 		Matcher makeMatch = intsOnly.matcher(number);
 		makeMatch.find();
 		String inputInt = makeMatch.group();
-		int result = 6;
-		result = Integer.parseInt(inputInt);
-		showNumberIncomingSMS = result;
-		indivEditor.putInt("numberIncomingSMS", result);
+		showNumberIncomingSMS = Integer.parseInt(inputInt);
+		indivEditor.putInt("numberIncomingSMS", showNumberIncomingSMS);
 		indivEditor.commit();
 	}
 	
@@ -66,10 +61,8 @@ public class NotificationManager {
 		Matcher makeMatch = intsOnly.matcher(time);
 		makeMatch.find();
 		String inputInt = makeMatch.group();
-		int result = 5;
-		result = Integer.parseInt(inputInt);
-		highlightTime = result;
-		indivEditor.putInt("highlightValue", result);
+		highlightTime = Integer.parseInt(inputInt);
+		indivEditor.putInt("highlightValue", highlightTime);
 		indivEditor.commit();
 	}
 	
