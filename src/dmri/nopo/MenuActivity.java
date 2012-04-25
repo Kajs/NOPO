@@ -94,7 +94,8 @@ public class MenuActivity extends Activity {
             	editor.remove("user");
             	editor.remove("pass");
             	editor.commit();
-                startActivity(new Intent("android.intent.action.MENU"));
+                Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
+                startActivity(loginpage);
 			}
 		});
     }
