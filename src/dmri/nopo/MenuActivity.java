@@ -92,7 +92,6 @@ public class MenuActivity extends Activity {
 				SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
             	SharedPreferences.Editor editor = pref.edit();
             	editor.remove("user");
-            	editor.remove("pass");
             	editor.commit();
                 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(loginpage);

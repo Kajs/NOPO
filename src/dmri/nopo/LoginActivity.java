@@ -31,7 +31,7 @@ public class LoginActivity extends Activity {
         pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
     	editor = pref.edit();
         
-    	if(!pref.getString("user", "nothing").equals("nothing") && !pref.getString("pass", "nothing").equals("nothing")) {
+    	if(!pref.getString("user", "nothing").equals("nothing")) {
     		startActivity(new Intent("android.intent.action.ALARM"));
     	}
     	
@@ -44,7 +44,6 @@ public class LoginActivity extends Activity {
             	SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
             	SharedPreferences.Editor editor = pref.edit();
             	editor.putString("user", user.getText().toString());
-            	editor.putString("pass", pass.getText().toString());
             	editor.commit();
                 startActivity(intent);
             	}
