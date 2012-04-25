@@ -10,6 +10,7 @@ package dmri.nopo;
 public final class R {
     public static final class array {
         public static final int highlightNames=0x7f050000;
+        public static final int numberSMSNames=0x7f050001;
     }
     public static final class attr {
     }
@@ -18,27 +19,29 @@ public final class R {
     }
     public static final class id {
         public static final int SMSdisplay1=0x7f060001;
-        public static final int alarm=0x7f06001a;
-        public static final int filter=0x7f06001c;
+        public static final int alarm=0x7f06001c;
+        public static final int filter=0x7f06001e;
         public static final int highlightSpinner=0x7f060015;
         public static final int highlighttext=0x7f060014;
         public static final int list=0x7f060000;
-        public static final int log=0x7f06001b;
+        public static final int log=0x7f06001d;
         public static final int login=0x7f060007;
-        public static final int logoutRow=0x7f060018;
+        public static final int logoutRow=0x7f06001a;
         public static final int lydRow=0x7f06000e;
         public static final int lydbar=0x7f060010;
         public static final int lydtext=0x7f06000f;
         public static final int lysRow=0x7f060011;
         public static final int lysbar=0x7f060013;
         public static final int lystext=0x7f060012;
-        public static final int menu=0x7f06001d;
+        public static final int menu=0x7f06001f;
+        public static final int numberSMSSpinner=0x7f060017;
         public static final int passtext=0x7f06000a;
         public static final int password=0x7f060006;
-        public static final int saveButton=0x7f060017;
-        public static final int saveButtonRow=0x7f060016;
+        public static final int saveButton=0x7f060019;
+        public static final int saveButtonRow=0x7f060018;
         public static final int showInput=0x7f060004;
-        public static final int sletloginButton=0x7f060019;
+        public static final int showSMStext=0x7f060016;
+        public static final int sletloginButton=0x7f06001b;
         public static final int tableRow2=0x7f060003;
         public static final int textView1=0x7f060002;
         public static final int userlogin=0x7f060009;
@@ -72,10 +75,9 @@ public final class R {
         public static final int lysText=0x7f040011;
         public static final int menu=0x7f040005;
         public static final int menutext=0x7f04000c;
+        public static final int numberSMSText=0x7f040013;
         public static final int saveButton=0x7f040007;
         public static final int sletloginButton=0x7f040008;
-        public static final int sms1=0x7f040013;
-        public static final int sms2=0x7f040014;
         public static final int userText=0x7f04000d;
         public static final int vibroText=0x7f04000f;
     }
