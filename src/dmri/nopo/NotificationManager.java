@@ -2,6 +2,7 @@ package dmri.nopo;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import java.util.regex.*;
 import android.content.Context;
 import android.os.Vibrator;
 
@@ -12,6 +13,8 @@ public class NotificationManager {
 	private int vibration;
 	private int sound;
 	private int light;
+	private int showNumberIncomingSMS;
+	private int highlightTime;
 	private SharedPreferences appPref;
 	private SharedPreferences indivPref;
 	private Editor indivEditor;
@@ -29,6 +32,8 @@ public class NotificationManager {
 		vibration = indivPref.getInt("vibrationValue", 50);
         sound = indivPref.getInt("soundValue", 50);
         light = indivPref.getInt("lightValue", 50);
+        highlightTime = indivPref.getInt("highlightValue", 5);
+        showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
 	}
 	
 	private void writeUserFile() {
@@ -42,6 +47,30 @@ public class NotificationManager {
 		sound = sou;
 		light = lig;
 		writeUserFile();
+	}
+	
+	public void setNumberIncommingSMS(String number) {
+		Pattern intsOnly = Pattern.compile("\\d+");
+		Matcher makeMatch = intsOnly.matcher(number);
+		makeMatch.find();
+		String inputInt = makeMatch.group();
+		int result = 6;
+		result = Integer.parseInt(inputInt);
+		showNumberIncomingSMS = result;
+		indivEditor.putInt("numberIncomingSMS", result);
+		indivEditor.commit();
+	}
+	
+	public void setHighlightTime(String time) {
+		Pattern intsOnly = Pattern.compile("\\d+");
+		Matcher makeMatch = intsOnly.matcher(time);
+		makeMatch.find();
+		String inputInt = makeMatch.group();
+		int result = 5;
+		result = Integer.parseInt(inputInt);
+		highlightTime = result;
+		indivEditor.putInt("highlightValue", result);
+		indivEditor.commit();
 	}
 	
 	public void alarmNotify(Context c) {
@@ -63,5 +92,23 @@ public class NotificationManager {
 	
 	public String getUser() {
 		return user;
+	}
+	
+	public int getHighlightTimeInt() {
+		return highlightTime;
+	}
+	
+	public String getHighlightTimeString() {
+		String result = highlightTime + " min";
+		return result;
+	}
+	
+	public int getNumberIncomingSMSInt() {
+		return showNumberIncomingSMS;
+	}
+	
+	public String getNumberIncomingSMSString() {
+		String result = showNumberIncomingSMS + " sms";
+		return result;
 	}
 }
