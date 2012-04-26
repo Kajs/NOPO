@@ -1,5 +1,9 @@
 package dmri.nopo;
 
+import java.text.SimpleDateFormat;
+import java.text.DateFormat;
+import java.util.Calendar;
+
 import android.database.Cursor;
 import android.content.ContentValues;
 import android.content.Context;
@@ -40,7 +44,7 @@ public class DBAdapter {
 		{
 			try{
 				db.execSQL("create table " + getUserName() + ".log ("+
-				DBAdapter.KEY_TIME +" REAL primary key, "+ KEY_TEXT +" TEXT not null);");
+				DBAdapter.KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
 			}
 			catch (SQLException e) {
 				e.printStackTrace();
@@ -71,7 +75,7 @@ public class DBAdapter {
 	public long insertSMS(String text)
 	{
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_TIME, "strftime('%Y%m%d%H%M%f', 'now')");
+		initialValues.put(KEY_TIME, DBAdapter.getTimeStamp());
 		initialValues.put(KEY_TEXT, text);
 		return db.insert(getUserName()+".log", null, initialValues);
 	}
@@ -93,6 +97,27 @@ public class DBAdapter {
 	
 	public boolean removeOldSMS()
 	{
-		return db.delete(getUserName()+".log", "KEY_TIME < strftime('%Y%m%d000000.000', 'now')" , null) > 0;
+		StringBuffer sb = new StringBuffer(DBAdapter.getTimeStamp().substring(0,8));
+	    for (int i = 0; i < 19; i++)
+	      {
+	        sb.append("0");
+	      }
+	    String value = sb.toString();
+	    long compareTimeValue = Integer.parseInt(value);
+		return db.delete(getUserName()+".log", "KEY_TIME < "+compareTimeValue, null) > 0;
 	}
+	
+	/**
+	 * Use this timeStamp-method to get BOTH date and currentTimeMillis
+	 * as a String (for storing sms)
+	 * @return yyyyMMddHHmmss+timeMillis
+	 */
+	
+	public static String getTimeStamp()
+	  {
+	      DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+	      Calendar cal = Calendar.getInstance();
+	      long timeMillis = System.currentTimeMillis();
+	      return dateFormat.format(cal.getTime())+""+timeMillis;
+	  }
 }
