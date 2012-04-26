@@ -87,6 +87,12 @@ public class NotificationManager {
 		return user;
 	}
 	
+	public static String getUserStatic(Context context) {
+		SharedPreferences pref = context.getSharedPreferences("NOPOPref", context.MODE_PRIVATE);
+		String result = pref.getString("user", "default");
+		return result;
+	}
+	
 	public int getHighlightTimeInt() {
 		return highlightTime;
 	}
