@@ -16,8 +16,8 @@ public class LoginActivity extends Activity {
 	private Button loginButton;
 	private EditText pass;
 	private EditText user;
-	private SharedPreferences pref;
-	private SharedPreferences.Editor editor;
+	
+	
 	
 	/** Called when the activity is first created. */
     @Override
@@ -27,14 +27,6 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
         pass = (EditText) findViewById(R.id.password);
         user = (EditText) findViewById(R.id.username);
-        
-        pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
-    	editor = pref.edit();
-        
-    	if(!pref.getString("user", "nothing").equals("nothing")) {
-    		startActivity(new Intent("android.intent.action.ALARM"));
-    	}
-    	
         this.loginButton = (Button) this.findViewById(R.id.login);
         this.loginButton.setOnClickListener(new View.OnClickListener() {
         	@Override
@@ -44,6 +36,7 @@ public class LoginActivity extends Activity {
             	SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
             	SharedPreferences.Editor editor = pref.edit();
             	editor.putString("user", user.getText().toString());
+            	editor.putString("pass", pass.getText().toString());
             	editor.commit();
                 startActivity(intent);
             	}
