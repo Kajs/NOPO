@@ -17,12 +17,11 @@
         android:layout_height="match_parent" />
 
      </TableLayout>
-    
-         <TextView
-        		android:id="@+id/textView1"
-        		android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:text="@string/filtertext" />
+         
+        <ListView 
+        android:id="@+id/filterListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
        
     
     
