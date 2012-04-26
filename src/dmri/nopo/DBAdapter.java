@@ -21,13 +21,14 @@ public class DBAdapter {
 	
 	private SQLiteDatabase db;
 	private DatabaseHelper DBHelper;
-	private final Context context;
+	private static Context context;
 	
 	public DBAdapter(Context ctx)
 	{
 		this.context = ctx;
 		this.DBHelper = new DatabaseHelper(context);
 	}
+	
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
@@ -43,7 +44,7 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				db.execSQL("create table " + getUserName() + ".log ("+
+				db.execSQL("create table " + NotificationManager.getUserStatic(context) + ".log ("+
 				DBAdapter.KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
 			}
 			catch (SQLException e) {
@@ -77,12 +78,12 @@ public class DBAdapter {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TIME, DBAdapter.getTimeStamp());
 		initialValues.put(KEY_TEXT, text);
-		return db.insert(getUserName()+".log", null, initialValues);
+		return db.insert(NotificationManager.getUserStatic(context)+".log", null, initialValues);
 	}
 	
 	public boolean deleteSMS(String time)
 	{
-		return db.delete(getUserName()+".log", KEY_TIME + "=" + time, null) > 0;
+		return db.delete(NotificationManager.getUserStatic(context)+".log", KEY_TIME + "=" + time, null) > 0;
 	}
 	
 	/**
@@ -92,7 +93,7 @@ public class DBAdapter {
 	
 	public Cursor getAllSMS()
 	{
-		return db.query(getUserName()+".log", new String[] {KEY_TIME, KEY_TEXT}, null, null, null, null, null);
+		return db.query(NotificationManager.getUserStatic(context)+".log", new String[] {KEY_TIME, KEY_TEXT}, null, null, null, null, null);
 	}
 	
 	public boolean removeOldSMS()
@@ -104,7 +105,7 @@ public class DBAdapter {
 	      }
 	    String value = sb.toString();
 	    long compareTimeValue = Integer.parseInt(value);
-		return db.delete(getUserName()+".log", "KEY_TIME < "+compareTimeValue, null) > 0;
+		return db.delete(NotificationManager.getUserStatic(context)+".log", "KEY_TIME < "+compareTimeValue, null) > 0;
 	}
 	
 	/**
