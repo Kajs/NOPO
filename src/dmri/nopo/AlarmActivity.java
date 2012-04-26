@@ -15,6 +15,7 @@ public class AlarmActivity extends Activity {
     
 	private TextView showSMS1;
 	private IntentFilter intentFilter;
+	private Context context = this;
 	
 	private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
 		@Override
@@ -22,6 +23,8 @@ public class AlarmActivity extends Activity {
             showSMS1 = (TextView) findViewById(R.id.SMSdisplay1);
             String sms = "" + intent.getExtras().getString("sender") + "\n" + intent.getExtras().getString("sms");
             showSMS1.setText(sms);
+            LogManager log = LogManager.getInstance(context);
+            log.writeLogFile(sms);
         }
 	};
 	

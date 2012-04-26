@@ -4,6 +4,7 @@ import dmri.nopo.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.database.Cursor;
 import android.widget.Button;
 import android.view.View;
 import android.view.Window;
@@ -24,13 +25,15 @@ public class LogActivity extends Activity {
         setContentView(R.layout.log);
         
         showInput = (TextView) findViewById(R.id.showInput);
-        showInput.setText("testing");
-        String input = "";
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-        	input = extras.getString("data");
-        	showInput.setText(input);
+        
+        LogManager log = LogManager.getInstance(this);
+        Cursor c = log.readLogFile();
+        c.moveToFirst();
+        while(c.getPosition() < c.getCount()) {
+        	showInput.setText(c.getString(1));
+        	c.moveToNext();
         }
+        
     }
     
     
