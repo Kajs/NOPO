@@ -3,12 +3,23 @@ package dmri.nopo;
 import android.content.Context;
 import android.database.Cursor;
 
-public abstract class LogManager extends Context {
+public class LogManager{
 
 	private DBAdapter db;
+	private static LogManager instance;
 	
-	public LogManager(){
-		db = new DBAdapter(this);
+	
+	private LogManager(Context context){
+		db = new DBAdapter(context);
+	}
+	
+	public static LogManager getInstance(Context context)
+	{
+		if (LogManager.instance == null)
+	    {
+			LogManager.instance = new LogManager(context);
+	    }
+	    return LogManager.instance;
 	}
 	/**
 	 * Reads all sms from database
