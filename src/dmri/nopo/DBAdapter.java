@@ -7,7 +7,6 @@ import java.util.Calendar;
 import android.database.Cursor;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences; //for the user-name
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -25,7 +24,7 @@ public class DBAdapter {
 	
 	public DBAdapter(Context ctx)
 	{
-		this.context = ctx;
+		DBAdapter.context = ctx;
 		this.DBHelper = new DatabaseHelper(context);
 	}
 	
