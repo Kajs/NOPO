@@ -23,8 +23,7 @@ public class AlarmActivity extends Activity {
             showSMS1 = (TextView) findViewById(R.id.SMSdisplay1);
             String sms = "" + intent.getExtras().getString("sender") + "\n" + intent.getExtras().getString("sms");
             showSMS1.setText(sms);
-            LogManager log = LogManager.getInstance(context);
-            log.writeLogFile(sms);
+            
         }
 	};
 	
@@ -34,7 +33,8 @@ public class AlarmActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.alarm);
-                
+        LogManager log = LogManager.getInstance(context);
+        log.writeLogFile("dette er en test");        
         intentFilter = new IntentFilter();
         intentFilter.addAction("SMS_RECEIVED_ACTION");
 }

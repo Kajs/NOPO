@@ -2,6 +2,7 @@ package dmri.nopo;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.widget.Toast;
 
 public class LogManager{
 
@@ -27,9 +28,9 @@ public class LogManager{
 	 */
 	public Cursor readLogFile()
 	{
+		
 		db.open();
 		Cursor c = db.getAllSMS();
-		db.close();
 		return c;
 	}
 	
@@ -37,7 +38,6 @@ public class LogManager{
 	{
 		db.open();
 		db.insertSMS(sms);
-		db.close();
 	}
 	
 	public boolean removeOldSMS()

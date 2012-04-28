@@ -3,18 +3,13 @@ package dmri.nopo;
 import dmri.nopo.R;
 import android.app.Activity;
 import android.os.Bundle;
-import android.content.Intent;
 import android.database.Cursor;
-import android.widget.Button;
-import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 
 public class LogActivity extends Activity {
     
-	private Button alarmButton;
-	private Button filterButton;
-	private Button menuButton;
+
 	private TextView showInput;
 	
 	/** Called when the activity is first created. */

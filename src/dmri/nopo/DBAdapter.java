@@ -1,5 +1,6 @@
 package dmri.nopo;
 
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -10,7 +11,9 @@ import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.InputFilter.LengthFilter;
 import android.util.Log;
+import android.widget.Toast;
 
 public class DBAdapter {
 	private static final String KEY_TIME = "time";
@@ -38,15 +41,37 @@ public class DBAdapter {
 		
 		/**
 		 * A tablename for incoming sms is based on the user's login-id.
+		 * onCreate called when the db does not exist
 		 */
 		@Override
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				db.execSQL("create table " + NotificationManager.getUserStatic(context) + ".log ("+
-				DBAdapter.KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
+				String table_name = NotificationManager.getUserStatic(context)+"log";
+				db.execSQL("create table "+table_name+ "("+
+				KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
+				
 			}
 			catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		/**
+		 * onOpen method called when app is opening.
+		 */
+		
+		@Override
+		public void onOpen(SQLiteDatabase db)
+		{
+			try{
+				
+				String table_name = NotificationManager.getUserStatic(context)+"log";
+				db.execSQL("create table if not exists "+table_name+ "("+
+				KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
+				
+			}
+			catch (SQLException e){
 				e.printStackTrace();
 			}
 		}
@@ -56,14 +81,13 @@ public class DBAdapter {
 		{
 			Log.w("DatabaseAdapter", "Upgrading database from version " + oldVersion + " to "
 					+ newVersion + ", which will destroy all old data");
-		}
-		
-		
+		}	
 	}
 	
 	public DBAdapter open() throws SQLException
 	{
 		this.db = DBHelper.getWritableDatabase();
+		
 		return this;
 	}
 	
@@ -77,12 +101,14 @@ public class DBAdapter {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TIME, DBAdapter.getTimeStamp());
 		initialValues.put(KEY_TEXT, text);
-		return db.insert(NotificationManager.getUserStatic(context)+".log", null, initialValues);
+		String table_name = NotificationManager.getUserStatic(context)+"log";
+		return db.insert(table_name, null, initialValues);
 	}
 	
 	public boolean deleteSMS(String time)
 	{
-		return db.delete(NotificationManager.getUserStatic(context)+".log", KEY_TIME + "=" + time, null) > 0;
+		String table_name = NotificationManager.getUserStatic(context)+"log";
+		return db.delete(table_name, KEY_TIME + "=" + time, null) > 0;
 	}
 	
 	/**
@@ -92,32 +118,38 @@ public class DBAdapter {
 	
 	public Cursor getAllSMS()
 	{
-		return db.query(NotificationManager.getUserStatic(context)+".log", new String[] {KEY_TIME, KEY_TEXT}, null, null, null, null, null);
+		String table_name = NotificationManager.getUserStatic(context)+"log";
+		return db.rawQuery("select * from "+table_name, null);
+	
 	}
 	
 	public boolean removeOldSMS()
 	{
-		StringBuffer sb = new StringBuffer(DBAdapter.getTimeStamp().substring(0,8));
+		String time = Long.toString(DBAdapter.getTimeStamp());
+		StringBuffer sb = new StringBuffer(time.substring(0,8));
 	    for (int i = 0; i < 19; i++)
 	      {
 	        sb.append("0");
 	      }
 	    String value = sb.toString();
 	    long compareTimeValue = Integer.parseInt(value);
-		return db.delete(NotificationManager.getUserStatic(context)+".log", "KEY_TIME < "+compareTimeValue, null) > 0;
+	    String table_name = NotificationManager.getUserStatic(context)+"log";
+		return db.delete(table_name, "KEY_TIME < "+compareTimeValue, null) > 0;
 	}
 	
 	/**
 	 * Use this timeStamp-method to get BOTH date and currentTimeMillis
-	 * as a String (for storing sms)
+	 * as a long (for storing sms)
 	 * @return yyyyMMddHHmmss+timeMillis
 	 */
 	
-	public static String getTimeStamp()
+	public static long getTimeStamp()
 	  {
 	      DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 	      Calendar cal = Calendar.getInstance();
 	      long timeMillis = System.currentTimeMillis();
-	      return dateFormat.format(cal.getTime())+""+timeMillis;
+	      String time = dateFormat.format(cal.getTime())+""+timeMillis;
+	      BigInteger bi = new BigInteger(time);
+	      return bi.longValue();
 	  }
 }
