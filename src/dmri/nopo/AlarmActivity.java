@@ -48,7 +48,7 @@ public class AlarmActivity extends Activity {
     @Override
     protected void onPause() {
         //---unregister the receiver---
-        unregisterReceiver(intentReceiver);
+        // unregisterReceiver(intentReceiver);
         super.onPause();
     }
 
