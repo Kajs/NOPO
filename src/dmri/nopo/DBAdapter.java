@@ -123,6 +123,13 @@ public class DBAdapter {
 	
 	}
 	
+	public Cursor getXSMS(int x) 
+	{
+		String table_name = NotificationManager.getUserStatic(context) +"log";
+		String query = "select * from " + table_name + " order by time desc limit " + x;
+		return db.rawQuery(query, null);
+	}
+	
 	public boolean removeOldSMS()
 	{
 		String time = Long.toString(DBAdapter.getTimeStamp());
