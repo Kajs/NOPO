@@ -1,23 +1,24 @@
 package dmri.nopo;
 
-import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.text.DateFormat;
 import java.util.Calendar;
-
 import android.database.Cursor;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.text.InputFilter.LengthFilter;
 import android.util.Log;
-import android.widget.Toast;
+
 
 public class DBAdapter {
+	private static final String KEY_ID = "id";
 	private static final String KEY_TIME = "time";
 	private static final String KEY_TEXT = "text";
+	private static final String KEY_RECEIVE = "receive";
+	private static String log_table;
+	private static String filter_table;
 	private static final String DATABASE_NAME = "NOPO";
 	private static final int DATABASE_VERSION = 1;
 	
@@ -29,6 +30,7 @@ public class DBAdapter {
 	{
 		DBAdapter.context = ctx;
 		this.DBHelper = new DatabaseHelper(context);
+
 	}
 	
 	
@@ -37,6 +39,8 @@ public class DBAdapter {
 		DatabaseHelper(Context context)
 		{
 			super(context, DBAdapter.DATABASE_NAME, null, DBAdapter.DATABASE_VERSION);
+			log_table = NotificationManager.getUserStatic(context)+"log";
+			filter_table =  NotificationManager.getUserStatic(context)+"filter";
 		}
 		
 		/**
@@ -47,10 +51,11 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				String table_name = NotificationManager.getUserStatic(context)+"log";
-				db.execSQL("create table "+table_name+ "("+
-				KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
-				
+				db.execSQL("create table "+log_table+ "("+KEY_ID+" INTEGER primary key, "+
+						KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
+				db.execSQL(
+						"create table "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
+						KEY_RECEIVE+" INTEGER not null);");	
 			}
 			catch (SQLException e) {
 				e.printStackTrace();
@@ -65,11 +70,10 @@ public class DBAdapter {
 		public void onOpen(SQLiteDatabase db)
 		{
 			try{
-				
-				String table_name = NotificationManager.getUserStatic(context)+"log";
-				db.execSQL("create table if not exists "+table_name+ "("+
-				KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
-				
+				db.execSQL("create table if not exists "+log_table+ "(id INTEGER primary key, "+
+						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
+				db.execSQL("create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
+						KEY_RECEIVE+" INTEGER not null);");		
 			}
 			catch (SQLException e){
 				e.printStackTrace();
@@ -96,19 +100,17 @@ public class DBAdapter {
 		DBHelper.close();
 	}
 	
-	public long insertSMS(String text)
+	public void insertSMS(String text)
 	{
 		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_TIME, DBAdapter.getTimeStamp());
+		initialValues.put(KEY_TIME, DBAdapter.getDateStamp());
 		initialValues.put(KEY_TEXT, text);
-		String table_name = NotificationManager.getUserStatic(context)+"log";
-		return db.insert(table_name, null, initialValues);
+		db.execSQL("INSERT INTO "+log_table+" ("+KEY_ID+", "+KEY_TIME+", "+KEY_TEXT+") VALUES(null, "+DBAdapter.getDateStamp()+", '"+text+"');"); 
 	}
 	
 	public boolean deleteSMS(String time)
 	{
-		String table_name = NotificationManager.getUserStatic(context)+"log";
-		return db.delete(table_name, KEY_TIME + "=" + time, null) > 0;
+		return db.delete(log_table, KEY_TIME + "=" + time, null) > 0;
 	}
 	
 	/**
@@ -118,30 +120,21 @@ public class DBAdapter {
 	
 	public Cursor getAllSMS()
 	{
-		String table_name = NotificationManager.getUserStatic(context)+"log";
-		return db.rawQuery("select * from "+table_name, null);
+		return db.rawQuery("select * from "+log_table, null);
 	
 	}
 	
 	public Cursor getXSMS(int x) 
 	{
-		String table_name = NotificationManager.getUserStatic(context) +"log";
-		String query = "select * from " + table_name + " order by time desc limit " + x;
+		String query = "select * from " + log_table + " order by time desc limit " + x;
 		return db.rawQuery(query, null);
 	}
 	
 	public boolean removeOldSMS()
 	{
-		String time = Long.toString(DBAdapter.getTimeStamp());
-		StringBuffer sb = new StringBuffer(time.substring(0,8));
-	    for (int i = 0; i < 19; i++)
-	      {
-	        sb.append("0");
-	      }
-	    String value = sb.toString();
-	    long compareTimeValue = Integer.parseInt(value);
-	    String table_name = NotificationManager.getUserStatic(context)+"log";
-		return db.delete(table_name, "KEY_TIME < "+compareTimeValue, null) > 0;
+		String time = Long.toString(DBAdapter.getDateStamp()).substring(5,13);
+	    int compareTimeValue = Integer.parseInt(time);
+		return db.delete(log_table, "KEY_TIME < "+compareTimeValue, null) > 0;
 	}
 	
 	/**
@@ -150,13 +143,12 @@ public class DBAdapter {
 	 * @return yyyyMMddHHmmss+timeMillis
 	 */
 	
-	public static long getTimeStamp()
+	public static long getDateStamp()
 	  {
-	      DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+	      DateFormat dateFormat = new SimpleDateFormat("ssmmHHddMMyyyy");
 	      Calendar cal = Calendar.getInstance();
-	      long timeMillis = System.currentTimeMillis();
-	      String time = dateFormat.format(cal.getTime())+""+timeMillis;
-	      BigInteger bi = new BigInteger(time);
-	      return bi.longValue();
+	      String time = dateFormat.format(cal.getTime());
+	      long longvalue = new Long(time);
+	      return longvalue;
 	  }
 }
