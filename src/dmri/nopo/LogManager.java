@@ -34,6 +34,13 @@ public class LogManager{
 		return c;
 	}
 	
+	public Cursor readXLogFile(int x) 
+	{
+		db.open();
+		Cursor c = db.getXSMS(x);
+		return c;
+	}
+	
 	public void writeLogFile(String sms)
 	{
 		db.open();

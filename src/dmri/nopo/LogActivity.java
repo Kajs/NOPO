@@ -20,9 +20,9 @@ public class LogActivity extends Activity {
         setContentView(R.layout.log);
         
         showInput = (TextView) findViewById(R.id.showInput);
-        
+        NotificationManager manager = new NotificationManager(this);
         LogManager log = LogManager.getInstance(this);
-        Cursor c = log.readLogFile();
+        Cursor c = log.readXLogFile(manager.getNumberIncomingSMSInt());
         c.moveToFirst();
         while(c.getPosition() < c.getCount()) {
         	showInput.setText(c.getString(1));

@@ -34,7 +34,15 @@ public class AlarmActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.alarm);
         LogManager log = LogManager.getInstance(context);
-        log.writeLogFile("dette er en test");        
+        log.writeLogFile("dette er en test 1");        
+        log.writeLogFile("dette er en test 2");
+        log.writeLogFile("dette er en test 3");
+        log.writeLogFile("dette er en test 4");
+        log.writeLogFile("dette er en test 5");
+        log.writeLogFile("dette er en test 6");
+        log.writeLogFile("dette er en test 7");
+        log.writeLogFile("dette er en test 8");
+        
         intentFilter = new IntentFilter();
         intentFilter.addAction("SMS_RECEIVED_ACTION");
 }
