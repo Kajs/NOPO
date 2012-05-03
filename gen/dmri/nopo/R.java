@@ -15,19 +15,11 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int alarmtab_notselect=0x7f020000;
-        public static final int alarmtab_select=0x7f020001;
-        public static final int filtertab_notselect=0x7f020002;
-        public static final int filtertab_select=0x7f020003;
-        public static final int ic_launcher=0x7f020004;
-        public static final int logtab_notselect=0x7f020005;
-        public static final int logtab_select=0x7f020006;
-        public static final int menutab_notselect=0x7f020007;
-        public static final int menutab_select=0x7f020008;
+        public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int SMSdisplay1=0x7f060001;
         public static final int alarm=0x7f06001d;
+        public static final int alarmListView=0x7f060001;
         public static final int filter=0x7f06001f;
         public static final int filterListView=0x7f060002;
         public static final int highlightSpinner=0x7f060016;

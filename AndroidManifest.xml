@@ -58,7 +58,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="ViewChangeActivity"
+            android:name=".ViewChangeActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.CHANGER" />
