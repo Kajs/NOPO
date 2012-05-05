@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+    android:orientation="vertical" >
 
     <TableLayout
         android:layout_width="match_parent"
@@ -15,17 +15,13 @@
         android:layout_width="0dp"
         android:layout_height="match_parent" />
         
-        <TableRow
-            android:id="@+id/tableRow2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-        		android:id="@+id/showInput"
-        		android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:text="" />
-        </TableRow>
+         
 
      </TableLayout>
+
+        <ListView
+        android:id="@+id/logListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
     
 </LinearLayout>
