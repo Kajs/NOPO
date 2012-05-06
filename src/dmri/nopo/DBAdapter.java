@@ -105,7 +105,7 @@ public class DBAdapter {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TIME, DBAdapter.getDateStamp());
 		initialValues.put(KEY_TEXT, text);
-		db.execSQL("INSERT INTO "+log_table+" ("+KEY_ID+", "+KEY_TIME+", "+KEY_TEXT+") VALUES(null, "+DBAdapter.getDateStamp()+", '"+text+"');"); 
+		db.execSQL("INSERT INTO "+log_table+" ("+KEY_TIME+", "+KEY_TEXT+") VALUES("+DBAdapter.getDateStamp()+", '"+text+"');"); 
 	}
 	
 	public boolean deleteSMS(String time)
