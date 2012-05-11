@@ -18,10 +18,9 @@
         
      </TableLayout>
 
-    <TextView
-        android:id="@+id/SMSdisplay1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="" />
+    <ListView 
+        android:id="@+id/alarmListView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"/>
      
 </LinearLayout>

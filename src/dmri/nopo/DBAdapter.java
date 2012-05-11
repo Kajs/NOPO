@@ -51,8 +51,8 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				db.execSQL("create table "+log_table+ "("+KEY_ID+" INTEGER primary key, "+
-						KEY_TIME +" INTEGER primary key, "+ KEY_TEXT +" TEXT not null);");
+				db.execSQL("create table "+log_table+ "("+KEY_ID+" INTEGER primary key auto increment, "+
+						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL(
 						"create table "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
 						KEY_RECEIVE+" INTEGER not null);");	
@@ -105,7 +105,7 @@ public class DBAdapter {
 		ContentValues initialValues = new ContentValues();
 		initialValues.put(KEY_TIME, DBAdapter.getDateStamp());
 		initialValues.put(KEY_TEXT, text);
-		db.execSQL("INSERT INTO "+log_table+" ("+KEY_ID+", "+KEY_TIME+", "+KEY_TEXT+") VALUES(null, "+DBAdapter.getDateStamp()+", '"+text+"');"); 
+		db.execSQL("INSERT INTO "+log_table+" ("+KEY_TIME+", "+KEY_TEXT+") VALUES("+DBAdapter.getDateStamp()+", '"+text+"');"); 
 	}
 	
 	public boolean deleteSMS(String time)
@@ -120,13 +120,13 @@ public class DBAdapter {
 	
 	public Cursor getAllSMS()
 	{
-		return db.rawQuery("select * from "+log_table, null);
+		return db.rawQuery("select * from "+log_table + " order by id desc", null);
 	
 	}
 	
 	public Cursor getXSMS(int x) 
 	{
-		String query = "select * from " + log_table + " order by time desc limit " + x;
+		String query = "select * from " + log_table + " order by id desc limit " + x;
 		return db.rawQuery(query, null);
 	}
 	
@@ -145,7 +145,7 @@ public class DBAdapter {
 	
 	public static long getDateStamp()
 	  {
-	      DateFormat dateFormat = new SimpleDateFormat("ssmmHHddMMyyyy");
+	      DateFormat dateFormat = new SimpleDateFormat("HHmmssddMMyyyy");
 	      Calendar cal = Calendar.getInstance();
 	      String time = dateFormat.format(cal.getTime());
 	      long longvalue = new Long(time);
