@@ -25,8 +25,17 @@ public class AlarmActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
             String sms = intent.getExtras().getString("sms");
             LogManager log = LogManager.getInstance(context);
-            log.writeLogFile(sms);
-            showSMS();
+            FilterManager filter = FilterManager.getInstance(context);
+            if (filter.isInLocalFiter(sms))
+            {
+            	log.writeLogFile(sms);
+            	showSMS();
+            }
+            else{
+            	filter.writeLocalFilter(sms, true);
+            	log.writeLogFile(sms);
+            	showSMS();
+            }
         }
 	};
 	

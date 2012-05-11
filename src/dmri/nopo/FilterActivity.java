@@ -27,14 +27,18 @@ public class FilterActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.filter);
-		
+		smsColumn = new ArrayList<String>();
+		blockedColumn = new ArrayList<Boolean>();
 		Toast.makeText(this, "FilterActivity Created", Toast.LENGTH_LONG).show();
 		listView = (ListView) findViewById(R.id.filterListView);
-		smsColumn = getAlarms();
+		getAlarms();
 		listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, smsColumn));
 		listView.setTextFilterEnabled(true);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		listView.setItemChecked(1, true);
+		for (int i = 0; i < blockedColumn.size(); i ++)
+		{
+			listView.setItemChecked(i, blockedColumn.get(i));
+		}
  
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -46,31 +50,52 @@ public class FilterActivity extends Activity {
 			});
 		}
 	
-	public ArrayList<String> getAlarms() {
-		ArrayList<String> output = new ArrayList<String>();
-		input = LogManager.getInstance(this).readLogFile();
+	public void getAlarms() {
+		input = FilterManager.getInstance(this).readLocalFilter();
 		input.moveToFirst();
 		
 		while(!input.isAfterLast()) {
-			output.add(input.getString(1));
+			smsColumn.add(input.getString(0));
+			if (input.getInt(1) == 1)
+			{
+				blockedColumn.add(new Boolean(true));
+			}
+			else {
+				blockedColumn.add(new Boolean(false));
+			}
 			input.moveToNext();
 		}
-
-		output.add("Apple");
-		output.add("Avocado");
-/**
-		output.add("Banana");
-		output.add("Blueberry");
-		output.add("Coconut");
-		output.add("Durian");
-		output.add("Guava");
-		output.add("Kiwifruit");
-		output.add("Jackfruit");
-		output.add("Mango");
-		output.add("Olive");
-		output.add("Pear");
-		output.add("Sugar-apple");
-*/
-		return output;
+		
+		/*
+		
+		smsColumn.add("Apple");
+		smsColumn.add("Avocado");       
+		smsColumn.add("Banana");
+		smsColumn.add("Blueberry");
+		smsColumn.add("Coconut");
+		smsColumn.add("Durian");
+		smsColumn.add("Guava");
+		smsColumn.add("Kiwifruit");
+		smsColumn.add("Jackfruit");
+		smsColumn.add("Mango");
+		smsColumn.add("Olive");
+		smsColumn.add("Pear");
+		smsColumn.add("Sugar-apple");
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(false));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(false));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		blockedColumn.add(new Boolean(true));
+		
+		*/
+		
 	}
 }

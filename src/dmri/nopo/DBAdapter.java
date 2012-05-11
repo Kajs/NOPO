@@ -100,6 +100,69 @@ public class DBAdapter {
 		DBHelper.close();
 	}
 	
+	/**
+	 * 
+	 * @return null SQLException has occured
+	 */
+	
+	public Cursor readLocalFilter()
+	{
+		try{
+			Cursor cr = db.rawQuery("Select * from "+filter_table+";", null);
+			return cr;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * The last return true happens only, if an sqlexception has occured.
+	 * @param text The filter-type
+	 */
+	
+	public boolean isInLocalFilter(String text)
+	{
+		try {
+			Cursor cr = db.rawQuery("SELECT * from"+filter_table+"where text = "+text+
+					" and receive = 1;", null);
+			if (cr == null)
+			{
+				return false;
+			}
+			else 
+			{
+				return true;
+			}
+		}
+		catch (SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
+	/**
+	 * insert a filter item
+	 * @param the text you see on filteractivity
+	 */
+	public void writeLocalFilter(String text, boolean receive){
+		try{
+			if (receive == true) {
+			db.execSQL("INSERT INTO "+filter_table+" ("+text+", 1);");
+			}
+			else {
+			db.execSQL("INSERT INTO "+filter_table+" ("+text+", 0);");
+			}
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void insertSMS(String text)
 	{
 		ContentValues initialValues = new ContentValues();
