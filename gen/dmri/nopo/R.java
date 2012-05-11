@@ -26,6 +26,7 @@ public final class R {
         public static final int menutab_select=0x7f020008;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int alarm=0x7f060020;
         public static final int alarmListView=0x7f060001;
         public static final int alarmtab=0x7f06001c;
@@ -40,15 +41,34 @@ public final class R {
         public static final int login=0x7f060007;
         public static final int logoutRow=0x7f06001a;
         public static final int logtab=0x7f06001d;
+=======
+        public static final int SMSdisplay1=0x7f060001;
+        public static final int alarm=0x7f06001e;
+        public static final int alarmtab=0x7f06001a;
+        public static final int filter=0x7f060020;
+        public static final int filtertab=0x7f06001c;
+        public static final int highlightSpinner=0x7f060015;
+        public static final int highlighttext=0x7f060014;
+        public static final int list=0x7f060000;
+        public static final int log=0x7f06001f;
+        public static final int login=0x7f060007;
+        public static final int logoutRow=0x7f060018;
+        public static final int logtab=0x7f06001b;
+>>>>>>> master
         public static final int lydRow=0x7f06000e;
         public static final int lydbar=0x7f060010;
         public static final int lydtext=0x7f06000f;
         public static final int lysRow=0x7f060011;
         public static final int lysbar=0x7f060013;
         public static final int lystext=0x7f060012;
+<<<<<<< HEAD
         public static final int menu=0x7f060023;
         public static final int menutab=0x7f06001f;
         public static final int numberSMSSpinner=0x7f060017;
+=======
+        public static final int menu=0x7f060021;
+        public static final int menutab=0x7f06001d;
+>>>>>>> master
         public static final int passtext=0x7f06000a;
         public static final int password=0x7f060006;
         public static final int saveButton=0x7f060019;
@@ -70,8 +90,12 @@ public final class R {
         public static final int login=0x7f030003;
         public static final int menu=0x7f030004;
         public static final int menutabs=0x7f030005;
+<<<<<<< HEAD
         public static final int simple_list=0x7f030006;
         public static final int viewchange=0x7f030007;
+=======
+        public static final int viewchange=0x7f030006;
+>>>>>>> master
     }
     public static final class string {
         public static final int alarm=0x7f040002;
