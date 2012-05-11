@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import java.util.Calendar;
 import android.telephony.SmsMessage;
 
 	public class SmsListener extends BroadcastReceiver {
@@ -21,13 +20,7 @@ import android.telephony.SmsMessage;
 	    		msg = SmsMessage.createFromPdu((byte[])pdus[0]);
 	    		message += msg.getMessageBody().toString();
 	    		sender += msg.getOriginatingAddress(); 
-	    		
-	    		Calendar c = Calendar.getInstance();
-	    		
-	    		int[] time = new int[3];
-	    		time[0] = c.get(Calendar.HOUR_OF_DAY);
-	    		time[1] = c.get(Calendar.MINUTE);
-	    		time[2] = c.get(Calendar.SECOND);
+	    		long time = System.currentTimeMillis();
 	    		
 	            Intent broadcastIntent = new Intent();
 	            broadcastIntent.setAction("SMS_RECEIVED_ACTION");

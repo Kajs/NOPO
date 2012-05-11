@@ -104,20 +104,33 @@
 
         
         <TextView
-                android:id="@+id/highlighttext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/highlightText"
-                android:textStyle="bold"
-                android:gravity="center" />
+            android:id="@+id/highlighttext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/highlightText"
+            android:textStyle="bold"
+            android:gravity="center" />
                    
         <Spinner
             android:id="@+id/highlightSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawSelectorOnTop="true" />
-        
 
+        <TextView
+            android:id="@+id/showSMStext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/numberSMSText"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <Spinner
+            android:id="@+id/numberSMSSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawSelectorOnTop="true" />
+		
         <TableRow
             android:id="@+id/saveButtonRow"
             android:layout_width="wrap_content"

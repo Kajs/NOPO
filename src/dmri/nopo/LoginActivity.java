@@ -1,5 +1,6 @@
 package dmri.nopo;
 
+
 import dmri.nopo.R;
 import android.util.Log;
 import android.app.Activity;
@@ -32,20 +33,21 @@ public class LoginActivity extends Activity {
         	@Override
         	public void onClick(View v) {
             	try {
-        		Intent intent = new Intent("android.intent.action.ALARM");
-            	SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
-            	SharedPreferences.Editor editor = pref.edit();
-            	editor.putString("user", user.getText().toString());
-            	editor.putString("pass", pass.getText().toString());
-            	editor.commit();
-                startActivity(intent);
-            	}
+	        		Intent intent = new Intent("android.intent.action.ALARM");
+	            	SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
+	            	SharedPreferences.Editor editor = pref.edit();
+	            	editor.putString("user", user.getText().toString());
+	            	editor.putString("pass", pass.getText().toString());
+	            	editor.commit();
+	                startActivity(intent);
+	            	}      	
             	catch (Exception e) {
             		String fail = e.getMessage();
             		Log.e("fail", fail);
             	}
-            }
-        });
+            
+        	}});
         
-        }
+        
+    }	
 }

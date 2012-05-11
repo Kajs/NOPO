@@ -20,13 +20,21 @@
     <string name="vibroText">Vibration: </string>
     <string name="lydText">Lyd: </string>
     <string name="lysText">Lys: </string>
-    <string name="highlightText">Highlight:</string>
+    <string name="highlightText">Antal minutter nye smser skal fremhæves:</string>
     <string-array name="highlightNames">
         <item>2 min</item>
         <item>5 min</item>
         <item>10 min</item>
+        <item>20 min</item>
     </string-array>
-    
-    <string name="sms1">This is an sms alarm: \n And this is the content!</string>
-    <string name="sms2">This is another alarm: \n And it has no content!</string>
+    <string name="numberSMSText">Antal nye smser der skal vises på alarmsiden:</string>
+    <string-array name="numberSMSNames">
+        <item>3 sms</item>
+        <item>4 sms</item>
+        <item>5 sms</item>
+        <item>6 sms</item>
+        <item>7 sms</item>
+        <item>8 sms</item>
+        <item>9 sms</item>
+    </string-array>
 </resources>
