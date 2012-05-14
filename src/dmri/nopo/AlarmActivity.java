@@ -31,11 +31,6 @@ public class AlarmActivity extends Activity {
             	log.writeLogFile(sms);
             	showSMS();
             }
-            else{
-            	filter.writeLocalFilter(sms, true);
-            	log.writeLogFile(sms);
-            	showSMS();
-            }
         }
 	};
 	

@@ -31,7 +31,7 @@ public class FilterActivity extends Activity {
 		blockedColumn = new ArrayList<Boolean>();
 		Toast.makeText(this, "FilterActivity Created", Toast.LENGTH_LONG).show();
 		listView = (ListView) findViewById(R.id.filterListView);
-		getAlarms();
+		createAlarmList();
 		listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, smsColumn));
 		listView.setTextFilterEnabled(true);
 		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -50,8 +50,8 @@ public class FilterActivity extends Activity {
 			});
 		}
 	
-	public void getAlarms() {
-		input = FilterManager.getInstance(this).readLocalFilter();
+	public void createAlarmList() {
+		input = FilterManager.getInstance(this).getLocalFilter();
 		input.moveToFirst();
 		
 		while(!input.isAfterLast()) {

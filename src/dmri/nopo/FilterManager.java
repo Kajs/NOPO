@@ -23,7 +23,7 @@ public class FilterManager {
 	}
 	
 	
-	public Cursor readLocalFilter()
+	public Cursor getLocalFilter()
 	{
 		db.open();
 		return db.readLocalFilter();

@@ -130,7 +130,8 @@ public class DBAdapter {
 					" and receive = 1;", null);
 			if (cr == null)
 			{
-				return false;
+				writeLocalFilter(text, true);
+				return true;
 			}
 			else 
 			{
@@ -150,10 +151,12 @@ public class DBAdapter {
 	 */
 	public void writeLocalFilter(String text, boolean receive){
 		try{
-			if (receive == true) {
+			Cursor cr = db.rawQuery("Select * from "+filter_table+
+					" where text = "+text+";", null);
+			if (receive == true && cr == null) {
 			db.execSQL("INSERT INTO "+filter_table+" ("+text+", 1);");
 			}
-			else {
+			else if (receive == false && cr == null) {
 			db.execSQL("INSERT INTO "+filter_table+" ("+text+", 0);");
 			}
 		}
