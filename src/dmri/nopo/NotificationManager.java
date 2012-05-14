@@ -78,7 +78,7 @@ public class NotificationManager {
 	
 	public void alarmNotify() {
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		v.vibrate(Long.valueOf(vibration*100));
+		v.vibrate(Long.valueOf(vibration*1000));
 	}
 	
 	public int getUserVibration() {
