@@ -51,8 +51,10 @@ public class FilterActivity extends Activity {
 		}
 	
 	public void createAlarmList() {
+		System.out.println("before");
 		input = FilterManager.getInstance(this).getLocalFilter();
 		input.moveToFirst();
+		System.out.println("after");
 		
 		while(!input.isAfterLast()) {
 			smsColumn.add(input.getString(0));

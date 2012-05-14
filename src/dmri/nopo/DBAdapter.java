@@ -108,7 +108,7 @@ public class DBAdapter {
 	public Cursor readLocalFilter()
 	{
 		try{
-			Cursor cr = db.rawQuery("Select * from "+filter_table+";", null);
+			Cursor cr = db.rawQuery("Select * from "+filter_table, null);
 			return cr;
 		}
 		catch(SQLException e)
@@ -126,17 +126,17 @@ public class DBAdapter {
 	public boolean isInLocalFilter(String text)
 	{
 		try {
-			Cursor cr = db.rawQuery("SELECT * from"+filter_table+"where text = "+text+
-					" and receive = 1;", null);
-			if (cr == null)
+			Cursor cr = db.rawQuery("SELECT * FROM "+filter_table+" WHERE text = '"+text+"'", null);
+			if (cr.getCount() == 0)
 			{
-				writeLocalFilter(text, true);
+				writeLocalFilter(text);
 				return true;
 			}
-			else 
-			{
+			cr.moveToFirst();
+			if(cr.getInt(1) == 1) {
 				return true;
 			}
+			else return false;
 		}
 		catch (SQLException e)
 		{
@@ -146,23 +146,25 @@ public class DBAdapter {
 	}
 	
 	/**
-	 * insert a filter item
+	 * insert a filter item	
 	 * @param the text you see on filteractivity
 	 */
-	public void writeLocalFilter(String text, boolean receive){
+	public void writeLocalFilter(String text){
 		try{
-			Cursor cr = db.rawQuery("Select * from "+filter_table+
-					" where text = "+text+";", null);
-			if (receive == true && cr == null) {
-			db.execSQL("INSERT INTO "+filter_table+" ("+text+", 1);");
-			}
-			else if (receive == false && cr == null) {
-			db.execSQL("INSERT INTO "+filter_table+" ("+text+", 0);");
-			}
+			db.execSQL("INSERT INTO "+filter_table+" ("+KEY_TEXT+", "+KEY_RECEIVE+") VALUES('"+text+"', 1);");
 		}
 		catch(SQLException e)
 		{
 			e.printStackTrace();
+		}
+	}
+	
+	public void updateLocalFilter(String sms, boolean receive) {
+		if(receive == true) {
+			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=1 WHERE " + KEY_TEXT +"=" + sms);
+		}
+		else {
+			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=0 WHERE " + KEY_TEXT +"=" + sms);
 		}
 	}
 	
