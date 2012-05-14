@@ -38,7 +38,7 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.menu);
-        manager = new NotificationManager(this);
+        manager = NotificationManager.getInstance(this);
         
         ArrayAdapter<CharSequence> highlightAdapter = ArrayAdapter.createFromResource(this, R.array.highlightNames, 
         		android.R.layout.simple_spinner_item);

@@ -29,6 +29,8 @@ public class AlarmActivity extends Activity {
             if (filter.isInLocalFiter(sms))
             {
             	log.writeLogFile(sms);
+            	NotificationManager c = NotificationManager.getInstance(context);
+            	c.alarmNotify();
             	showSMS();
             }
         }
@@ -52,7 +54,7 @@ public class AlarmActivity extends Activity {
     
     public void showSMS() {
     	LogManager log = LogManager.getInstance(context);
-    	NotificationManager manager = new NotificationManager(context);
+    	NotificationManager manager = NotificationManager.getInstance(context);
     	Cursor rows = log.readXLogFile(manager.getNumberIncomingSMSInt());
     	rows.moveToFirst();
     	ArrayList<String> result = new ArrayList<String>();

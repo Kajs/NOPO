@@ -18,14 +18,24 @@ public class NotificationManager {
 	private SharedPreferences appPref;
 	private SharedPreferences indivPref;
 	private Editor indivEditor;
+	private Context c;
+	private static NotificationManager instance;
 	
-	public NotificationManager(Context context) {
+	private NotificationManager(Context context) {
+		c = context;
 		appPref = context.getSharedPreferences("NOPOPref", context.MODE_PRIVATE);
 		user = appPref.getString("user", "default");
         fileName = user + "Notify";
         indivPref = context.getSharedPreferences(fileName, context.MODE_PRIVATE);
         indivEditor = indivPref.edit();
         readUserFile();
+	}
+	
+	public static NotificationManager getInstance(Context context){
+		if (NotificationManager.instance == null){
+			NotificationManager.instance = new NotificationManager(context);
+		}
+		return NotificationManager.instance;
 	}
 	
 	private void readUserFile() {
@@ -66,7 +76,7 @@ public class NotificationManager {
 		indivEditor.commit();
 	}
 	
-	public void alarmNotify(Context c) {
+	public void alarmNotify() {
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
 		v.vibrate(Long.valueOf(vibration));
 	}
