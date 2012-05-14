@@ -39,4 +39,9 @@ public class FilterManager {
 		db.open();
 		db.updateLocalFilter(sms, bool);
 	}
+	
+	public Cursor getXFilter(String text) {
+		db.open();
+		return db.getXFilter(text);
+	}
 }

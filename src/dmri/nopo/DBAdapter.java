@@ -168,6 +168,10 @@ public class DBAdapter {
 		}
 	}
 	
+	public Cursor getXFilter(String text) {
+		return db.rawQuery("SELECT * FROM " + filter_table + " WHERE " + KEY_TEXT + " LIKE '%" + text + "%'", null);
+	}
+	
 	public void insertSMS(String text)
 	{
 		ContentValues initialValues = new ContentValues();
