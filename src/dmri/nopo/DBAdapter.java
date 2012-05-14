@@ -161,10 +161,10 @@ public class DBAdapter {
 	
 	public void updateLocalFilter(String sms, boolean receive) {
 		if(receive == true) {
-			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=1 WHERE " + KEY_TEXT +"=" + sms);
+			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=1 WHERE " + KEY_TEXT +"='" + sms+"'");
 		}
 		else {
-			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=0 WHERE " + KEY_TEXT +"=" + sms);
+			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=0 WHERE " + KEY_TEXT +"='" + sms+"'");
 		}
 	}
 	

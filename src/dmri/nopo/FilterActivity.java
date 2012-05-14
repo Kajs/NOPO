@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import dmri.nopo.R;
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -21,12 +23,14 @@ public class FilterActivity extends Activity {
 	private ArrayList<String> smsColumn;
 	private ArrayList<Boolean> blockedColumn;
 	private Cursor input;
+	private Context context;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.filter);
+		context = this;
 		smsColumn = new ArrayList<String>();
 		blockedColumn = new ArrayList<Boolean>();
 		Toast.makeText(this, "FilterActivity Created", Toast.LENGTH_LONG).show();
@@ -43,9 +47,12 @@ public class FilterActivity extends Activity {
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-			    // When clicked, show a toast with the TextView text
-			    Toast.makeText(getApplicationContext(),
-				((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+			    String sms = (String)((TextView) view).getText();
+			    SparseBooleanArray checked = listView.getCheckedItemPositions();
+			    boolean bool = checked.get(position);
+			    
+			    FilterManager f = FilterManager.getInstance(context);
+			    f.updateLocalFilter(sms, bool);
 				}
 			});
 		}

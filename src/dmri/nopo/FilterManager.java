@@ -35,8 +35,8 @@ public class FilterManager {
 		return db.isInLocalFilter(sms);
 	}
 	
-	public void serverFilterWriter()
-	{
-		
+	public void updateLocalFilter(String sms, Boolean bool) {
+		db.open();
+		db.updateLocalFilter(sms, bool);
 	}
 }
