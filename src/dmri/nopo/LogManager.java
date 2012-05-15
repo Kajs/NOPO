@@ -11,7 +11,7 @@ public class LogManager{
 	
 	
 	private LogManager(Context context){
-		db = new DBAdapter(context);
+		db = DBAdapter.getInstance(context);
 	}
 	
 	public static LogManager getInstance(Context context)

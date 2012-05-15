@@ -17,11 +17,19 @@
         android:layout_height="match_parent" />
 
      </TableLayout>
-     
+    
+     <EditText
+        android:id="@+id/searchField"
+        android:hint="@string/searchHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10" >
+     </EditText>
+    
     <ListView 
         android:id="@+id/filterListView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
     
     
 </LinearLayout>

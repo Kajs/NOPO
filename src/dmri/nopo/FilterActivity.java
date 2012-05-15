@@ -4,13 +4,18 @@ import java.util.ArrayList;
 
 import dmri.nopo.R;
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TextView;
@@ -18,84 +23,85 @@ import android.widget.TextView;
  
 public class FilterActivity extends Activity {
 	private ListView listView;
-	private ArrayList<String> smsColumn;
-	private ArrayList<Boolean> blockedColumn;
-	private Cursor input;
+	private Context context;
+	private EditText search;
+	private FilterManager f;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.filter);
-		smsColumn = new ArrayList<String>();
-		blockedColumn = new ArrayList<Boolean>();
-		Toast.makeText(this, "FilterActivity Created", Toast.LENGTH_LONG).show();
-		listView = (ListView) findViewById(R.id.filterListView);
-		createAlarmList();
-		listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, smsColumn));
-		listView.setTextFilterEnabled(true);
-		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		for (int i = 0; i < blockedColumn.size(); i ++)
-		{
-			listView.setItemChecked(i, blockedColumn.get(i));
-		}
- 
+		context = this;
+		
+		f = FilterManager.getInstance(context);
+		Cursor c = f.getLocalFilter();
+		createAlarmList(c);
+		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-			    // When clicked, show a toast with the TextView text
-			    Toast.makeText(getApplicationContext(),
-				((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+			    String sms = (String)((TextView) view).getText();
+			    SparseBooleanArray checked = listView.getCheckedItemPositions();
+			    boolean bool = checked.get(position);
+			    
+			    FilterManager f = FilterManager.getInstance(context);
+			    f.updateLocalFilter(sms, bool);
 				}
 			});
+		
+		search = (EditText) findViewById(R.id.searchField);
+		search.addTextChangedListener(new TextWatcher() {
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+				Cursor c = f.getXFilter(arg0.toString());
+				createAlarmList(c);
+			}
+
+			@Override
+			public void afterTextChanged(Editable arg0) {
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1,
+					int arg2, int arg3) {
+			}
+		});
+		
 		}
 	
-	public void createAlarmList() {
-		input = FilterManager.getInstance(this).getLocalFilter();
-		input.moveToFirst();
+	public void createAlarmList(Cursor c) {
+		ArrayList<String> smsColumn = new ArrayList<String>();
+		ArrayList<Boolean> blockedColumn = new ArrayList<Boolean>();
 		
-		while(!input.isAfterLast()) {
-			smsColumn.add(input.getString(0));
-			if (input.getInt(1) == 1)
+		c.moveToFirst();
+		
+		while(!c.isAfterLast()) {
+			smsColumn.add(c.getString(0));
+			if (c.getInt(1) == 1)
 			{
 				blockedColumn.add(new Boolean(true));
 			}
 			else {
 				blockedColumn.add(new Boolean(false));
 			}
-			input.moveToNext();
+			c.moveToNext();
 		}
+		prepareListview(smsColumn);
+		setMarked(blockedColumn);
 		
-		/*
-		
-		smsColumn.add("Apple");
-		smsColumn.add("Avocado");       
-		smsColumn.add("Banana");
-		smsColumn.add("Blueberry");
-		smsColumn.add("Coconut");
-		smsColumn.add("Durian");
-		smsColumn.add("Guava");
-		smsColumn.add("Kiwifruit");
-		smsColumn.add("Jackfruit");
-		smsColumn.add("Mango");
-		smsColumn.add("Olive");
-		smsColumn.add("Pear");
-		smsColumn.add("Sugar-apple");
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(false));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(false));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		blockedColumn.add(new Boolean(true));
-		
-		*/
-		
+	}
+	
+	public void prepareListview(ArrayList<String> rows) {
+		listView = (ListView) findViewById(R.id.filterListView);
+		listView.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, rows));
+		listView.setTextFilterEnabled(true);
+		listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+	}
+	
+	public void setMarked(ArrayList<Boolean> array) {
+		for (int i = 0; i < array.size(); i ++)
+		{
+			listView.setItemChecked(i, array.get(i));
+		}
 	}
 }

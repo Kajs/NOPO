@@ -10,7 +10,7 @@ public class FilterManager {
 	
 	
 	private FilterManager(Context context){
-		db = new DBAdapter(context);
+		db = DBAdapter.getInstance(context);	
 	}
 	
 	public static FilterManager getInstance(Context context)
@@ -34,14 +34,14 @@ public class FilterManager {
 		db.open();
 		return db.isInLocalFilter(sms);
 	}
-	public void writeLocalFilter(String sms, boolean receive)
-	{
+	
+	public void updateLocalFilter(String sms, Boolean bool) {
 		db.open();
-		db.writeLocalFilter(sms, receive);
-		
+		db.updateLocalFilter(sms, bool);
 	}
-	public void serverFilterWriter()
-	{
-		
+	
+	public Cursor getXFilter(String text) {
+		db.open();
+		return db.getXFilter(text);
 	}
 }

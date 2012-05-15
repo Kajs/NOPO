@@ -4,6 +4,7 @@ package dmri.nopo;
 import dmri.nopo.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -21,14 +22,13 @@ public class MenuActivity extends Activity {
     
 	private Button saveButton;
 	private Button logoutButton;
-	private Button testButton;
 	private TextView username;
-	private TextView testView;
 	private SeekBar vibroBar;
 	private SeekBar lydBar;
 	private SeekBar lysBar;
 	private Spinner highlightChooser;
 	private Spinner numberIncChooser;
+	private Context context;
 	
     private NotificationManager manager;
 	
@@ -38,7 +38,8 @@ public class MenuActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.menu);
-        manager = new NotificationManager(this);
+        this.context = this;
+        manager = NotificationManager.getInstance(this);
         
         ArrayAdapter<CharSequence> highlightAdapter = ArrayAdapter.createFromResource(this, R.array.highlightNames, 
         		android.R.layout.simple_spinner_item);
@@ -93,8 +94,9 @@ public class MenuActivity extends Activity {
             	SharedPreferences.Editor editor = pref.edit();
             	editor.remove("user");
             	editor.commit();
-                Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
-                startActivity(loginpage);
+                DBAdapter.getInstance(context).close();                
+            	Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
+                startActivity(loginpage);   
 			}
 		});
     }

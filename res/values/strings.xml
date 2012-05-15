@@ -37,4 +37,5 @@
         <item>8 sms</item>
         <item>9 sms</item>
     </string-array>
+    <string name="searchHint">Søg</string>
 </resources>
