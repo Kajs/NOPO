@@ -44,13 +44,11 @@ public class AlarmActivity extends ListActivity {
           String sms = intent.getExtras().getString("sms");
           LogManager log = LogManager.getInstance(context);
           FilterManager filter = FilterManager.getInstance(context);
-          //Toast.makeText(getApplicationContext(), "Received sms", Toast.LENGTH_LONG).show();
           if (filter.isInLocalFiter(sms))
           {
-        	  //Toast.makeText(getApplicationContext(), "Sms in local filter", Toast.LENGTH_LONG).show();
         	  log.writeLogFile(sms);
-        	  //NotificationManager c = NotificationManager.getInstance(context);
-        	  //c.alarmNotify();
+        	  NotificationManager c = NotificationManager.getInstance(context);
+        	  c.alarmNotify();
         	  showSMS();
         	  adap.notifyDataSetChanged();
           }
