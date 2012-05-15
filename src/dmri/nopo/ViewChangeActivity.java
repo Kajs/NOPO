@@ -14,7 +14,6 @@ public class ViewChangeActivity extends Fragment {
 	private Button filterButton;
 	private Button menuButton;
 	private Button alarmButton;
-	private Boolean isCreated = false;
 	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -23,7 +22,6 @@ public class ViewChangeActivity extends Fragment {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		if (!isCreated) {
 			super.onCreate(savedInstanceState);
 	        this.alarmButton = (Button) getView().findViewById(R.id.alarm);
 	        this.alarmButton.setOnClickListener(new View.OnClickListener() {
@@ -57,9 +55,7 @@ public class ViewChangeActivity extends Fragment {
 	            	Intent intent = new Intent("android.intent.action.MENU");
 	                startActivity(intent);
 	            }
-	        });
-	        isCreated = true;
-		}        
+	        });      
 	}
 }
 

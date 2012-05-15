@@ -20,21 +20,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import dmri.nopo.R;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.Context;
-import android.os.Bundle;
-import android.view.Window;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class AlarmActivity extends ListActivity {
   private static EfficientAdapter adap;
   static ArrayList<String> timeArray = new ArrayList<String>();
   static ArrayList<String> smsArray = new ArrayList<String>();
+  static boolean isReceiving = false;
   private IntentFilter intentFilter;
   private Context context = this;
   
@@ -180,7 +175,7 @@ public class AlarmActivity extends ListActivity {
 
           @Override
           public void onClick(View v) {
-            Toast.makeText(context, "Click-" + String.valueOf(pos), Toast.LENGTH_SHORT).show();    
+            Toast.makeText(context, getItem(position), Toast.LENGTH_LONG).show();    
           }
         });
         
@@ -262,15 +257,16 @@ public class AlarmActivity extends ListActivity {
   @Override
   protected void onResume() {
       //---register the receiver---
-      registerReceiver(intentReceiver, intentFilter);
-      //Toast.makeText(getApplicationContext(), "Registering receiver", Toast.LENGTH_LONG).show();
+	  if(!isReceiving){
+		  registerReceiver(intentReceiver, intentFilter);
+		  isReceiving = true;
+	  }
       super.onResume();
   }
   @Override
   protected void onPause() {
       //---unregister the receiver---
-      unregisterReceiver(intentReceiver);
-      //Toast.makeText(getApplicationContext(), "Unregistering receiver", Toast.LENGTH_LONG).show();
+      //unregisterReceiver(intentReceiver);
       super.onPause();
   }
 
