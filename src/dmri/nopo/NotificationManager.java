@@ -79,25 +79,17 @@ public class NotificationManager {
 	
 	public void alarmNotify() {
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		long[] level = {0, 200, 500};
+		long[] level = {0, vibration, 500};
 		try{
-			v.vibrate(level, 0);
+			v.vibrate(level, 5);
 		}
 		catch(Exception e){
-			System.out.println("Vibrationsfejl med {0, 200, 500}");
+			System.out.println("Vibrationsfejl");
 			e.printStackTrace();
-			Toast.makeText(c, "Proevede at vibrere med {0, 200, 500}", Toast.LENGTH_LONG).show();
-			try{
-				v.vibrate(300);
-			}
-			catch(Exception e2){
-				System.out.println("Vibrationsfejl med {0, 200, 500}");
-				e.printStackTrace();
-				Toast.makeText(c, "Proeve at vibrere 300 ms", Toast.LENGTH_LONG).show();
+			Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
 			}
 			
 		}
-	}
 	
 	public int getUserVibration() {
 		return vibration;
