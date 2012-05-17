@@ -78,10 +78,10 @@ public class NotificationManager {
 	}
 	
 	public void alarmNotify() {
-		int index = 4;
+		int index = 2;
 		Toast.makeText(c, "Vibrerer med index " + Integer.toString(index), Toast.LENGTH_LONG).show();
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		long[] level = {0, 300, 100, 300, 100, 300, 100, 300, 100, 300, 100};
+		long[] level = {0, 100, 250, 1000, 250, 500};
 		try{
 			v.vibrate(level, index);
 		}
