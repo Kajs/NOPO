@@ -79,9 +79,9 @@ public class NotificationManager {
 	
 	public void alarmNotify() {
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		long[] level = new long[] {vibration, vibration, vibration};
+		long[] level = new long[] {0, 200, 500};
 		try{
-			v.vibrate(10000);
+			v.vibrate(level, 0);
 		}
 		catch(Exception e){
 			Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
