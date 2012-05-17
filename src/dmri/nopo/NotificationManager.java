@@ -81,7 +81,7 @@ public class NotificationManager {
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
 		long[] level = {0, 5000, 500};
 		try{
-			v.vibrate(level, -5);
+			v.vibrate(level, -6);
 		}
 		catch(Exception e){
 			System.out.println("Vibrationsfejl");
