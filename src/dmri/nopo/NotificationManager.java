@@ -77,13 +77,27 @@ public class NotificationManager {
 		indivEditor.commit();
 	}
 	
+	public long[] vibrationPattern(int delay, int duration, int sleep, int repeat){
+		int counter = repeat;
+		int pointer = 0;
+		long[] pattern = new long[1 + repeat * 2];
+		pattern[0] = delay;
+		while(counter > 0){
+			pattern[pointer + 1] = duration;
+			pattern[pointer + 2] = sleep;
+			counter = counter - 1;
+			pointer = pointer + 2;
+		}
+		return pattern;
+	}
+	
 	public void alarmNotify() {
 		int index = -1;
 		Toast.makeText(c, "Vibrerer med index " + Integer.toString(index), Toast.LENGTH_LONG).show();
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		long[] level = {0, 100, 250, 1000, 250, 500};
+		long[] pattern = vibrationPattern(0, 500, 100, 5);
 		try{
-			v.vibrate(level, index);
+			v.vibrate(pattern, index);
 		}
 		catch(Exception e){
 			System.out.println("Vibrationsfejl");
