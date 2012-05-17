@@ -5,6 +5,7 @@ import android.content.SharedPreferences.Editor;
 import java.util.regex.*;
 import android.content.Context;
 import android.os.Vibrator;
+import android.widget.Toast;
 
 public class NotificationManager {
 	
@@ -83,6 +84,8 @@ public class NotificationManager {
 			v.vibrate(level, 10);
 		}
 		catch(Exception e){
+			Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
+			
 		}
 	}
 	
