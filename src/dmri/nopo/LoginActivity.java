@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class LoginActivity extends Activity {
     
 	private Button loginButton;
-	private EditText pass;
+	//private EditText pass;
 	private EditText user;
+	private ImageView logo;
 	
 	
 	
@@ -26,8 +28,9 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
-        pass = (EditText) findViewById(R.id.password);
+        //pass = (EditText) findViewById(R.id.password);
         user = (EditText) findViewById(R.id.username);
+        logo = (ImageView) findViewById(R.id.loginlogo);
         this.loginButton = (Button) this.findViewById(R.id.login);
         this.loginButton.setOnClickListener(new View.OnClickListener() {
         	@Override
@@ -37,7 +40,7 @@ public class LoginActivity extends Activity {
 	            	SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
 	            	SharedPreferences.Editor editor = pref.edit();
 	            	editor.putString("user", user.getText().toString());
-	            	editor.putString("pass", pass.getText().toString());
+//	            	editor.putString("pass", pass.getText().toString());
 	            	editor.commit();
 	                startActivity(intent);
 	            	}      	

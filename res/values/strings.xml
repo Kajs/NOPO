@@ -7,9 +7,10 @@
     <string name="log">Log</string>
     <string name="filter">Filter</string>
     <string name="menu">Menu</string>
-    <string name="login">Login</string>
+    <string name="login">Log ind</string>
     <string name="saveButton">gem</string>
     <string name="sletloginButton">Slet Login</string>
+    <color name="white">#FFFFFF</color>
     
     <string name="alarmtext">This is the alarm view!</string>
     <string name="logtext">This is the log view!</string>
