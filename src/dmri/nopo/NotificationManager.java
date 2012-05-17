@@ -81,7 +81,7 @@ public class NotificationManager {
 		int index = 4;
 		Toast.makeText(c, "Vibrerer med index " + Integer.toString(index), Toast.LENGTH_LONG).show();
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		long[] level = {0, 5000, 500, 5000, 500, 5000, 500, 5000, 500, 5000, 500, 5000, 500};
+		long[] level = {0, 1000, 500};
 		try{
 			v.vibrate(level, index);
 		}
