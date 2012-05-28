@@ -40,7 +40,7 @@ public class NotificationManager {
 	}
 	
 	private void readUserFile() {
-		vibration = indivPref.getInt("vibrationValue", 50);
+		vibration = indivPref.getInt("vibrationValue", 5);
         sound = indivPref.getInt("soundValue", 50);
         light = indivPref.getInt("lightValue", 50);
         highlightTime = indivPref.getInt("highlightValue", 5);
@@ -92,18 +92,19 @@ public class NotificationManager {
 	}
 	
 	public void alarmNotify() {
-		Toast.makeText(c, "tester", Toast.LENGTH_SHORT).show();
-		int index = -1;
-		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		long[] pattern = vibrationPattern(0, 500, 100, 10);
-		try{
-			v.vibrate(pattern, index);
-		}
-		catch(Exception e){
-			System.out.println("Vibrationsfejl");
-			e.printStackTrace();
-			Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
+		if(vibration > 0){
+			int index = -1;
+			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
+			long[] pattern = vibrationPattern(0, 400, 100, vibration);
+			try{
+				v.vibrate(pattern, index);
 			}
+			catch(Exception e){
+				System.out.println("Vibrationsfejl");
+				e.printStackTrace();
+				Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
+				}
+		}		
 		}
 	
 	public int getUserVibration() {
