@@ -92,14 +92,9 @@ public class NotificationManager {
 	}
 	
 	public void alarmNotify() {
-		
-		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		 long[] level = new long[] {vibration*2, vibration*2, vibration};
-		 v.vibrate(level, 10);
-		/**
 		int index = -1;
 		Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-		long[] pattern = vibrationPattern(0, 500, 100, 5);
+		long[] pattern = vibrationPattern(0, 500, 100, 10);
 		try{
 			v.vibrate(pattern, index);
 		}
@@ -108,7 +103,6 @@ public class NotificationManager {
 			e.printStackTrace();
 			Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
 			}
-			*/
 		}
 	
 	public int getUserVibration() {
