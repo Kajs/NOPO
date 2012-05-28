@@ -95,6 +95,7 @@ public class NotificationManager {
 		if(vibration > 0){
 			int index = -1;
 			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
+			Toast.makeText(c, "Vibrationslængde: " + Integer.toString(vibration), Toast.LENGTH_SHORT).show();
 			long[] pattern = vibrationPattern(0, 400, 100, vibration);
 			try{
 				v.vibrate(pattern, index);
