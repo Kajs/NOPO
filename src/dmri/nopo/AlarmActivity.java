@@ -24,6 +24,7 @@ import android.content.Intent;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.util.Log;
 
 public class AlarmActivity extends ListActivity {
   private static EfficientAdapter adap;
@@ -79,7 +80,6 @@ public class AlarmActivity extends ListActivity {
   		String sms = rows.getString(2);
   		timeArray.add(time);
   		smsArray.add(sms);
-  		//String temp = "" + rows.getString(1).substring(0, 2) + ":" + rows.getString(1).substring(2, 4) + ":" + rows.getString(1).substring(4, 6) + ":\n" + rows.getString(2);
   		rows.moveToNext();
   	}
   }
@@ -187,7 +187,6 @@ public class AlarmActivity extends ListActivity {
         	  Toast.makeText(context, "Blokerer " + sms, Toast.LENGTH_SHORT).show();
             FilterManager f = FilterManager.getInstance(context);
             f.updateLocalFilter(sms, false);
-
           }
         });
 
@@ -266,6 +265,12 @@ public class AlarmActivity extends ListActivity {
       //---unregister the receiver---
       //unregisterReceiver(intentReceiver);
       super.onPause();
+  }
+  
+  //Test methods
+  
+  public void testReceiveBlockedSms() {
+	  Log.w("NOPO", "Blokeret sms modtaget");
   }
 
 
