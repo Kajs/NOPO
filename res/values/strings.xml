@@ -38,5 +38,7 @@
         <item>8 sms</item>
         <item>9 sms</item>
     </string-array>
+    <string name="receiveFrom">Modtag alarmer fra:</string>
+    <string name="defaultNumber">44556677</string>
     <string name="searchHint">Søg</string>
 </resources>
