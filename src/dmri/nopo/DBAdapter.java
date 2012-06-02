@@ -212,6 +212,13 @@ public class DBAdapter {
 		return db.rawQuery(query, null);
 	}
 	
+	public Cursor getXUnblockedSMS(int x)
+	{
+		String query = "select * from " + log_table + " where "+ KEY_TEXT + " in (select "+KEY_TEXT+
+				" from "+ filter_table + " where "+KEY_RECEIVE+"=1) limit "+x;
+		return db.rawQuery(query, null);
+	}
+	
 	public boolean removeOldSMS()
 	{
 		String time = Long.toString(DBAdapter.getDateStamp()).substring(5,13);

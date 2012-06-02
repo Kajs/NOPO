@@ -4,7 +4,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import java.util.regex.*;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Vibrator;
+import android.provider.Settings;
+import android.util.Log;
 import android.widget.Toast;
 
 public class NotificationManager {
@@ -95,7 +98,6 @@ public class NotificationManager {
 		if(vibration > 0){
 			int index = -1;
 			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-			Toast.makeText(c, "Vibrationslængde: " + Integer.toString(vibration), Toast.LENGTH_SHORT).show();
 			long[] pattern = vibrationPattern(0, 400, 100, vibration);
 			try{
 				v.vibrate(pattern, index);
@@ -105,8 +107,18 @@ public class NotificationManager {
 				e.printStackTrace();
 				Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
 				}
-		}		
 		}
+		
+		if(true){
+			MediaPlayer player = MediaPlayer.create(c, R.raw.beep);
+			try{
+				player.start();
+			}
+			catch(Exception e) {
+				Log.w("MediaPlayer", e.getMessage());
+			}
+		}
+	}
 	
 	public int getUserVibration() {
 		return vibration;

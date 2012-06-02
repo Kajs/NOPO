@@ -41,6 +41,13 @@ public class LogManager{
 		return c;
 	}
 	
+	public Cursor readXUnblockedSMS(int x)
+	{
+		db.open();
+		Cursor c = db.getXUnblockedSMS(x);
+		return c;
+	}
+	
 	public void writeLogFile(String sms)
 	{
 		db.open();

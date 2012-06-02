@@ -45,7 +45,7 @@ public class AlarmActivity extends ListActivity {
         	  log.writeLogFile(sms);
         	  NotificationManager c = NotificationManager.getInstance(context);
         	  c.alarmNotify();
-        	  showSMS();
+        	  adap.showSMS();
         	  adap.notifyDataSetChanged();
           }
       }
@@ -56,32 +56,14 @@ public class AlarmActivity extends ListActivity {
     super.onCreate(savedInstanceState);
     requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.alarm);
-    showSMS();
     EfficientAdapter newAdap = new EfficientAdapter(this);
     adap = newAdap;
+    adap.showSMS();
     setListAdapter(adap);
 
     
     intentFilter = new IntentFilter();
     intentFilter.addAction("SMS_RECEIVED_ACTION");
-  }
-  
-  public void showSMS() {
-	  timeArray.clear();
-	  smsArray.clear();
-	  
-  	LogManager log = LogManager.getInstance(context);
-  	NotificationManager manager = NotificationManager.getInstance(context);
-  	Cursor rows = log.readXLogFile(manager.getNumberIncomingSMSInt());
-  	rows.moveToFirst();
-  	while(rows.getPosition() < rows.getCount()) {
-  		String rawtime = rows.getString(1);
-  		String time = rawtime.substring(0, 2) + ":" + rawtime.substring(2, 4) + ":" + rawtime.substring(4, 6);
-  		String sms = rows.getString(2);
-  		timeArray.add(time);
-  		smsArray.add(sms);
-  		rows.moveToNext();
-  	}
   }
   
 
@@ -101,6 +83,24 @@ public class AlarmActivity extends ListActivity {
       // Cache the LayoutInflate to avoid asking for a new one each time.
       mInflater = LayoutInflater.from(context);
       this.context = context;
+    }
+    
+    public void showSMS() {
+  	  timeArray.clear();
+  	  smsArray.clear();
+  	  
+    	LogManager log = LogManager.getInstance(context);
+    	NotificationManager manager = NotificationManager.getInstance(context);
+    	Cursor rows = log.readXUnblockedSMS(manager.getNumberIncomingSMSInt());
+    	rows.moveToFirst();
+    	while(rows.getPosition() < rows.getCount()) {
+    		String rawtime = rows.getString(1);
+    		String time = rawtime.substring(0, 2) + ":" + rawtime.substring(2, 4) + ":" + rawtime.substring(4, 6);
+    		String sms = rows.getString(2);
+    		timeArray.add(time);
+    		smsArray.add(sms);
+    		rows.moveToNext();
+    	}
     }
     
     public String concatStringArrayList(ArrayList<String> stringArrayList){
@@ -187,6 +187,9 @@ public class AlarmActivity extends ListActivity {
         	  Toast.makeText(context, "Blokerer " + sms, Toast.LENGTH_SHORT).show();
             FilterManager f = FilterManager.getInstance(context);
             f.updateLocalFilter(sms, false);
+            
+            showSMS();
+      	    notifyDataSetChanged();
           }
         });
 
