@@ -11,6 +11,7 @@ import android.content.SharedPreferences.Editor;
 import android.widget.Button;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -29,6 +30,7 @@ public class MenuActivity extends Activity {
 	private Spinner highlightChooser;
 	private Spinner numberIncChooser;
 	private Context context;
+	private EditText number;
 	
     private NotificationManager manager;
 	
@@ -66,7 +68,10 @@ public class MenuActivity extends Activity {
         
         lysBar = (SeekBar) findViewById(R.id.lysbar);
         lysBar.setProgress(manager.getUserLight());
-   
+        
+        number = (EditText) findViewById(R.id.receiveFrom);
+        number.setText(manager.getReceiveNumberString());
+        
         this.saveButton = (Button) findViewById(R.id.saveButton);
         this.saveButton.setOnClickListener(new View.OnClickListener() {
 			
@@ -79,8 +84,11 @@ public class MenuActivity extends Activity {
 				
 				String newHigh = highlightChooser.getSelectedItem().toString();
 				String newSMS = numberIncChooser.getSelectedItem().toString();
+				String newNumber = number.getText().toString();
+				
 				manager.setHighlightTime(newHigh);
 				manager.setNumberIncommingSMS(newSMS);
+				manager.setReceivenumber(newNumber);
 				Toast.makeText(getApplicationContext(), "Indstillinger gemt", Toast.LENGTH_SHORT).show();
 			}
 		});

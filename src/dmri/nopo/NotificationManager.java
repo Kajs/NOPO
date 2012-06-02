@@ -16,6 +16,7 @@ public class NotificationManager {
 	private int light;
 	private int showNumberIncomingSMS;
 	private int highlightTime;
+	private String number;
 	private SharedPreferences appPref;
 	private SharedPreferences indivPref;
 	private Editor indivEditor;
@@ -45,6 +46,7 @@ public class NotificationManager {
         light = indivPref.getInt("lightValue", 50);
         highlightTime = indivPref.getInt("highlightValue", 5);
         showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
+        number = indivPref.getString("receiveNumber", "4455667788");
 	}
 	
 	public void setNotificationAndroid(int vib, int sou, int lig) {
@@ -77,6 +79,19 @@ public class NotificationManager {
 		indivEditor.commit();
 	}
 	
+	public void setReceivenumber(String number) {
+		this.number = number;
+		indivEditor.putString("receiveNumber", number);
+		indivEditor.commit();
+	}
+	
+	public boolean shouldReceive(String sender) {
+		if(number.equals(sender)) {
+			return true;
+		}
+		else return false;
+	}
+	
 	public long[] vibrationPattern(int delay, int duration, int sleep, int repeat){
 		int counter = repeat;
 		int pointer = 0;
@@ -95,7 +110,7 @@ public class NotificationManager {
 		if(vibration > 0){
 			int index = -1;
 			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-			Toast.makeText(c, "Vibrationslængde: " + Integer.toString(vibration), Toast.LENGTH_SHORT).show();
+			Toast.makeText(c, "Vibrationslï¿½ngde: " + Integer.toString(vibration), Toast.LENGTH_SHORT).show();
 			long[] pattern = vibrationPattern(0, 400, 100, vibration);
 			try{
 				v.vibrate(pattern, index);
@@ -146,5 +161,18 @@ public class NotificationManager {
 	public String getNumberIncomingSMSString() {
 		String result = showNumberIncomingSMS + " sms";
 		return result;
+	}
+	
+	public int getReceiveNumberInt() {
+		Pattern intsOnly = Pattern.compile("\\d+");
+		Matcher makeMatch = intsOnly.matcher(number);
+		makeMatch.find();
+		String inputInt = makeMatch.group();
+		int phoneNumber = Integer.parseInt(inputInt);
+		return phoneNumber;
+	}
+	
+	public String getReceiveNumberString() {
+		return number;
 	}
 }
