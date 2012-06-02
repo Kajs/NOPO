@@ -48,7 +48,7 @@ public class NotificationManager {
 	
 	private void readUserFile() {
 		vibration = indivPref.getInt("vibrationValue", 5);
-        sound = indivPref.getInt("soundValue", 2);
+        sound = indivPref.getInt("soundValue", 5);
         light = indivPref.getInt("lightValue", 50);
         highlightTime = indivPref.getInt("highlightValue", 5);
         showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
