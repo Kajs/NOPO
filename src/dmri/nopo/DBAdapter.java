@@ -215,7 +215,7 @@ public class DBAdapter {
 	public Cursor getXUnblockedSMS(int x)
 	{
 		String query = "select * from " + log_table + " where "+ KEY_TEXT + " in (select "+KEY_TEXT+
-				" from "+ filter_table + " where "+KEY_RECEIVE+"=1) limit "+x;
+				" from "+ filter_table + " where "+KEY_RECEIVE+"=1) order by id desc limit "+x;
 		return db.rawQuery(query, null);
 	}
 	
