@@ -29,7 +29,7 @@ public class FilterManager {
 		return db.readLocalFilter();
 		
 	}
-	public boolean isInLocalFiter(String sms)
+	public boolean isInLocalFilter(String sms)
 	{
 		db.open();
 		return db.isInLocalFilter(sms);

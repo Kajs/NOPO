@@ -41,7 +41,7 @@ public class AlarmActivity extends ListActivity {
           LogManager log = LogManager.getInstance(context);
           FilterManager filter = FilterManager.getInstance(context);
           NotificationManager manager = NotificationManager.getInstance(context);
-          if (filter.isInLocalFiter(sms) && manager.shouldReceive(intent.getExtras().getString("sender")))
+          if (filter.isInLocalFilter(sms) && manager.shouldReceive(intent.getExtras().getString("sender")))
           {
         	  log.writeLogFile(sms);
         	  NotificationManager c = NotificationManager.getInstance(context);

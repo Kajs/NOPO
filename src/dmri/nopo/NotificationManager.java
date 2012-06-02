@@ -5,6 +5,8 @@ import android.content.SharedPreferences.Editor;
 import java.util.regex.*;
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
+import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.util.Log;
@@ -25,6 +27,7 @@ public class NotificationManager {
 	private Editor indivEditor;
 	private Context c;
 	private static NotificationManager instance;
+	private MediaPlayer player;
 	
 	private NotificationManager(Context context) {
 		c = context;
@@ -45,11 +48,11 @@ public class NotificationManager {
 	
 	private void readUserFile() {
 		vibration = indivPref.getInt("vibrationValue", 5);
-        sound = indivPref.getInt("soundValue", 50);
+        sound = indivPref.getInt("soundValue", 2);
         light = indivPref.getInt("lightValue", 50);
         highlightTime = indivPref.getInt("highlightValue", 5);
         showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
-        number = indivPref.getString("receiveNumber", "4455667788");
+        number = indivPref.getString("receiveNumber", "15555215556");
 	}
 	
 	public void setNotificationAndroid(int vib, int sou, int lig) {
@@ -123,16 +126,32 @@ public class NotificationManager {
 				Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
 				}
 		}
-		
-		if(true){
-			MediaPlayer player = MediaPlayer.create(c, R.raw.beep);
-			try{
-				player.start();
-			}
-			catch(Exception e) {
-				Log.w("MediaPlayer", e.getMessage());
-			}
+		if(sound > 0) {
+			player = MediaPlayer.create(c, R.raw.beep);
+			CountDownTimer timer = new CountDownTimer(sound * 1000, 1000) {
+				@Override
+				public void onFinish() {
+					player.setLooping(false);
+					player.stop();
+				}
+
+				@Override
+				public void onTick(long millisUntilFinished) {
+					// TODO Auto-generated method stub
+					
+				}
+			};
+				try{
+					player.setLooping(true);
+					player.start();
+					timer.start();
+					
+				}
+				catch(Exception e) {
+					Log.w("MediaPlayer", e.getMessage());
+				}
 		}
+			
 	}
 	
 	public int getUserVibration() {
@@ -187,4 +206,39 @@ public class NotificationManager {
 	public String getReceiveNumberString() {
 		return number;
 	}
+	/**
+	public class SoundManager {
+		 
+		private  SoundPool mSoundPool;
+		private  HashMap mSoundPoolMap;
+		private  AudioManager  mAudioManager;
+		private  Context mContext;
+		
+		public void initSounds(Context theContext) {
+		    mContext = theContext;
+		    mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
+		    mSoundPoolMap = new HashMap();
+		    mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+		}
+		
+		public void addSound(int index, int SoundID)
+		{
+		    mSoundPoolMap.put(index, mSoundPool.load(mContext, SoundID, 1));
+		}
+		
+		public void playSound(int index)
+		{
+		float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+		streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		    mSoundPool.play(mSoundPoolMap.get(index), streamVolume, streamVolume, 1, 0, 1f);
+		}
+		 
+		public void playLoopedSound(int index)
+		{
+		    float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+		    streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+		    mSoundPool.play(mSoundPoolMap.get(index), streamVolume, streamVolume, 1, -1, 1f);
+		}
+	}
+	*/
 }
