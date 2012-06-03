@@ -1,9 +1,11 @@
 package dmri.nopo;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import dmri.nopo.R;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
@@ -184,13 +187,25 @@ public class AlarmActivity extends ListActivity {
 
           @Override
           public void onClick(View v) {
-        	  String sms = smsArray.get(pos);
-        	  Toast.makeText(context, "Blokerer " + sms, Toast.LENGTH_SHORT).show();
-            FilterManager f = FilterManager.getInstance(context);
-            f.updateLocalFilter(sms, false);
-            
-            showSMS();
-      	    notifyDataSetChanged();
+        	  AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        	  alertDialog.setTitle("Blokering af alarm");
+        	  alertDialog.setMessage("Vil du blokere alarmen " +smsArray.get(pos) + "?");
+        	  alertDialog.setButton(-1, "Ja", new DialogInterface.OnClickListener() {
+        	     public void onClick(DialogInterface dialog, int which) {
+        	    	 String sms = smsArray.get(pos);
+        	    	 Toast.makeText(context, "Blokerer " + sms, Toast.LENGTH_LONG).show();
+                     FilterManager f = FilterManager.getInstance(context);
+                     f.updateLocalFilter(sms, false);
+                   
+                     showSMS();
+             	     notifyDataSetChanged();
+        	     }
+        	  });
+        	  alertDialog.setButton(-2, "Nej", new DialogInterface.OnClickListener() {
+            	 public void onClick(DialogInterface dialog, int which) {
+            	 }
+        	  });
+        	  alertDialog.show();
           }
         });
 
@@ -214,9 +229,23 @@ public class AlarmActivity extends ListActivity {
 
       // Bind the data efficiently with the holder.
 //      holder.iconLine.setImageBitmap(mIcon1);
-
-
-    	  holder.textLine.setText(timeArray.get(position) + "\n" + smsArray.get(position));
+      String currentTime = Long.toString((DBAdapter.getDateStamp()));
+      String alarmTime = timeArray.get(position);
+      
+      int hourDifference = new Integer(currentTime.substring(0, 2)) - new Integer(alarmTime.substring(0, 2));
+      int minuteDifference = new Integer(currentTime.substring(2, 4)) - new Integer(alarmTime.substring(3, 5));
+      int secondDifference = new Integer(currentTime.substring(4, 6)) - new Integer(alarmTime.substring(6, 8));
+      
+      NotificationManager manager = NotificationManager.getInstance(context);
+      if(hourDifference * 60 * 60 + minuteDifference * 60 + secondDifference > manager.getHighlightTimeInt() * 60) {
+    	  holder.textLine.setTextColor(-1);
+      }
+      else {
+    	  Typeface tf = Typeface.DEFAULT_BOLD;
+    	  holder.textLine.setTypeface(tf);
+    	  holder.textLine.setTextColor(-16711936);
+      }
+      holder.textLine.setText(timeArray.get(position) + "\n" + smsArray.get(position));
 
       return convertView;
     }
