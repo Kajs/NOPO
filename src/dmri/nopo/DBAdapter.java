@@ -118,7 +118,7 @@ public class DBAdapter {
 	public Cursor readLocalFilter()
 	{
 		try{
-			Cursor cr = db.rawQuery("Select * from "+filter_table, null);
+			Cursor cr = db.rawQuery("Select * from "+filter_table+" order by "+KEY_TEXT+" ASC", null);
 			return cr;
 		}
 		catch(SQLException e)
