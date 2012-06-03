@@ -2,6 +2,8 @@ package dmri.nopo;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+
+import java.io.IOException;
 import java.util.regex.*;
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -18,6 +20,7 @@ public class NotificationManager {
 	private String user;
 	private int vibration;
 	private int sound;
+	private int soundRepeats;
 	private int light;
 	private int showNumberIncomingSMS;
 	private int highlightTime;
@@ -113,6 +116,11 @@ public class NotificationManager {
 	}
 	
 	public void alarmNotify() {
+		vibrate();
+		playSound();
+	}
+	
+	public void vibrate() {
 		if(vibration > 0){
 			int index = -1;
 			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
@@ -125,33 +133,35 @@ public class NotificationManager {
 				e.printStackTrace();
 				Toast.makeText(c, "Proevede at vibrere", Toast.LENGTH_LONG).show();
 				}
-		}
+		}		
+	}
+	
+	public void playSound() {
 		if(sound > 0) {
-			player = MediaPlayer.create(c, R.raw.beep);
-			CountDownTimer timer = new CountDownTimer(sound * 1000, 1000) {
-				@Override
-				public void onFinish() {
-					player.setLooping(false);
-					player.stop();
-				}
-
-				@Override
-				public void onTick(long millisUntilFinished) {
-					// TODO Auto-generated method stub
-					
-				}
-			};
-				try{
-					player.setLooping(true);
-					player.start();
-					timer.start();
-					
-				}
-				catch(Exception e) {
-					Log.w("MediaPlayer", e.getMessage());
-				}
-		}
-			
+			soundRepeats = sound - 1;
+			if(player == null) {
+				player = MediaPlayer.create(c, R.raw.beep);
+				try {
+					player.prepare();
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+			    }
+				
+				MediaPlayer.OnCompletionListener listener = new MediaPlayer.OnCompletionListener() {
+					public void onCompletion(MediaPlayer mp) {
+						if(soundRepeats > 0) {
+							soundRepeats--;
+							mp.start();
+						}
+					}
+				};
+				
+				player.setOnCompletionListener(listener);
+			}
+			player.start();
+		}		
 	}
 	
 	public int getUserVibration() {
@@ -206,39 +216,4 @@ public class NotificationManager {
 	public String getReceiveNumberString() {
 		return number;
 	}
-	/**
-	public class SoundManager {
-		 
-		private  SoundPool mSoundPool;
-		private  HashMap mSoundPoolMap;
-		private  AudioManager  mAudioManager;
-		private  Context mContext;
-		
-		public void initSounds(Context theContext) {
-		    mContext = theContext;
-		    mSoundPool = new SoundPool(4, AudioManager.STREAM_MUSIC, 0);
-		    mSoundPoolMap = new HashMap();
-		    mAudioManager = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
-		}
-		
-		public void addSound(int index, int SoundID)
-		{
-		    mSoundPoolMap.put(index, mSoundPool.load(mContext, SoundID, 1));
-		}
-		
-		public void playSound(int index)
-		{
-		float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-		    mSoundPool.play(mSoundPoolMap.get(index), streamVolume, streamVolume, 1, 0, 1f);
-		}
-		 
-		public void playLoopedSound(int index)
-		{
-		    float streamVolume = mAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-		    streamVolume = streamVolume / mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-		    mSoundPool.play(mSoundPoolMap.get(index), streamVolume, streamVolume, 1, -1, 1f);
-		}
-	}
-	*/
 }
