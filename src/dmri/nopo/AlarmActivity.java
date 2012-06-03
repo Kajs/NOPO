@@ -1,5 +1,6 @@
 package dmri.nopo;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
 import dmri.nopo.R;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.BroadcastReceiver;
 import android.content.IntentFilter;
@@ -184,13 +186,25 @@ public class AlarmActivity extends ListActivity {
 
           @Override
           public void onClick(View v) {
-        	  String sms = smsArray.get(pos);
-        	  Toast.makeText(context, "Blokerer " + sms, Toast.LENGTH_SHORT).show();
-            FilterManager f = FilterManager.getInstance(context);
-            f.updateLocalFilter(sms, false);
-            
-            showSMS();
-      	    notifyDataSetChanged();
+        	  AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+        	  alertDialog.setTitle("Blokering af alarm");
+        	  alertDialog.setMessage("Vil du blokere alarmen " +smsArray.get(pos) + "?");
+        	  alertDialog.setButton(-1, "Ja", new DialogInterface.OnClickListener() {
+        	     public void onClick(DialogInterface dialog, int which) {
+        	    	 String sms = smsArray.get(pos);
+        	    	 Toast.makeText(context, "Blokerer " + sms, Toast.LENGTH_LONG).show();
+                     FilterManager f = FilterManager.getInstance(context);
+                     f.updateLocalFilter(sms, false);
+                   
+                     showSMS();
+             	     notifyDataSetChanged();
+        	     }
+        	  });
+        	  alertDialog.setButton(-2, "Nej", new DialogInterface.OnClickListener() {
+            	 public void onClick(DialogInterface dialog, int which) {
+            	 }
+        	  });
+        	  alertDialog.show();
           }
         });
 
