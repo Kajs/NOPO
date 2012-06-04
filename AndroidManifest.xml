@@ -14,6 +14,7 @@
         android:label="@string/app_name" >
         <activity
             android:name=".LoginActivity"
+            android:launchMode="singleInstance"         
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -23,6 +24,7 @@
         </activity>
         <activity
             android:name=".AlarmActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -32,6 +34,7 @@
         </activity>
         <activity
             android:name=".LogActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -41,6 +44,7 @@
         </activity>
         <activity
             android:name=".FilterActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -50,6 +54,7 @@
         </activity>
         <activity
             android:name=".MenuActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -59,6 +64,7 @@
         </activity>
         <activity
             android:name=".ViewChangeActivity"
+            android:launchMode="singleInstance"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.CHANGER" />
