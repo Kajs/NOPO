@@ -99,7 +99,7 @@ public class AlarmActivity extends ListActivity {
     	rows.moveToFirst();
     	while(rows.getPosition() < rows.getCount()) {
     		String rawtime = rows.getString(1);
-    		String time = rawtime.substring(0, 2) + ":" + rawtime.substring(2, 4) + ":" + rawtime.substring(4, 6);
+    		String time = rawtime.substring(8, 10) + ":" + rawtime.substring(10, 12) + ":" + rawtime.substring(12, 14);
     		String sms = rows.getString(2);
     		timeArray.add(time);
     		smsArray.add(sms);
@@ -232,9 +232,9 @@ public class AlarmActivity extends ListActivity {
       String currentTime = Long.toString((DBAdapter.getDateStamp()));
       String alarmTime = timeArray.get(position);
       
-      int hourDifference = new Integer(currentTime.substring(0, 2)) - new Integer(alarmTime.substring(0, 2));
-      int minuteDifference = new Integer(currentTime.substring(2, 4)) - new Integer(alarmTime.substring(3, 5));
-      int secondDifference = new Integer(currentTime.substring(4, 6)) - new Integer(alarmTime.substring(6, 8));
+      int hourDifference = new Integer(currentTime.substring(8, 10)) - new Integer(alarmTime.substring(0, 2));
+      int minuteDifference = new Integer(currentTime.substring(10, 12)) - new Integer(alarmTime.substring(3, 5));
+      int secondDifference = new Integer(currentTime.substring(12, 14)) - new Integer(alarmTime.substring(6, 8));
       
       NotificationManager manager = NotificationManager.getInstance(context);
       if(hourDifference * 60 * 60 + minuteDifference * 60 + secondDifference > manager.getHighlightTimeInt() * 60) {

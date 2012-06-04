@@ -31,12 +31,12 @@ public class LogActivity extends Activity {
         log = new ArrayList<String>();
         c.moveToFirst();
         while(c.getPosition() < c.getCount()) {
-        	String row = "" + c.getString(1).substring(0, 2) + ":" + 
-        					  c.getString(1).substring(2, 4) + ":" + 
-        					  c.getString(1).substring(4, 6) + "-" + 
+        	String row = "" + c.getString(1).substring(8, 10) + ":" + 
+        					  c.getString(1).substring(10, 12) + ":" + 
+        					  c.getString(1).substring(12, 14) + "-" + 
         					  c.getString(1).substring(6, 8) + "/" + 
-        					  c.getString(1).substring(8, 10) + "/" + 
-        					  c.getString(1).substring(10, 14) + ":\n" + 
+        					  c.getString(1).substring(4, 6) + "/" + 
+        					  c.getString(1).substring(0, 4) + "\n" + 
         					  c.getString(2);
         	log.add(row);
         	c.moveToNext();

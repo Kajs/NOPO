@@ -234,7 +234,7 @@ public class DBAdapter {
 	
 	public static long getDateStamp()
 	  {
-	      DateFormat dateFormat = new SimpleDateFormat("HHmmssddMMyyyy");
+	      DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 	      Calendar cal = Calendar.getInstance();
 	      String time = dateFormat.format(cal.getTime());
 	      long longvalue = new Long(time);
