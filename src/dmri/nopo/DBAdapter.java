@@ -17,10 +17,10 @@ public class DBAdapter {
 	private static final String KEY_TIME = "time";
 	private static final String KEY_TEXT = "text";
 	private static final String KEY_RECEIVE = "receive";
-	private static String log_table;
-	private static String filter_table;
 	private static final String DATABASE_NAME = "NOPO";
 	private static final int DATABASE_VERSION = 1;
+	private static String log_table;
+	private static String filter_table;
 	
 	private SQLiteDatabase db;
 	private DatabaseHelper DBHelper;
@@ -31,6 +31,8 @@ public class DBAdapter {
 	private DBAdapter(Context ctx)
 	{
 		DBAdapter.context = ctx;
+		log_table = LoginActivity.userName+"log";
+		filter_table =  LoginActivity.userName+"filter";
 		this.DBHelper = new DatabaseHelper(context);
 
 	}
@@ -43,14 +45,19 @@ public class DBAdapter {
 		return DBAdapter.instance;
 	}
 	
+	public static void updateTableNames(String logTable, String filterTable) {
+		log_table = logTable;
+		filter_table = filterTable;		
+	}
+	
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
 		DatabaseHelper(Context context)
 		{
 			super(context, DBAdapter.DATABASE_NAME, null, DBAdapter.DATABASE_VERSION);
-			log_table = NotificationManager.getUserStatic(context)+"log";
-			filter_table =  NotificationManager.getUserStatic(context)+"filter";
+			log_table = LoginActivity.userName+"log";
+			filter_table =  LoginActivity.userName+"filter";
 		}
 		
 		/**

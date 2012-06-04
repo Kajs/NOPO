@@ -15,32 +15,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 public class NotificationManager {
-	
-	private String fileName;
-	private String user;
-	private int vibration;
-	private int sound;
-	private int soundRepeats;
-	private int light;
-	private int showNumberIncomingSMS;
-	private int highlightTime;
-	private String number;
-	private SharedPreferences appPref;
-	private SharedPreferences indivPref;
-	private Editor indivEditor;
 	private Context c;
 	private static NotificationManager instance;
 	private MediaPlayer player;
+	private int soundRepeats;
 	
 	private NotificationManager(Context context) {
 		c = context;
-		appPref = context.getSharedPreferences("NOPOPref", context.MODE_PRIVATE);
-		user = appPref.getString("user", "default");
-		Toast.makeText(c, user, Toast.LENGTH_LONG).show();
-        fileName = user + "Notify";
-        indivPref = context.getSharedPreferences(fileName, context.MODE_PRIVATE);
-        indivEditor = indivPref.edit();
-        readUserFile();
 	}
 	
 	public static NotificationManager getInstance(Context context){
@@ -48,58 +29,6 @@ public class NotificationManager {
 			NotificationManager.instance = new NotificationManager(context);
 		}
 		return NotificationManager.instance;
-	}
-	
-	private void readUserFile() {
-		vibration = indivPref.getInt("vibrationValue", 5);
-        sound = indivPref.getInt("soundValue", 5);
-        light = indivPref.getInt("lightValue", 50);
-        highlightTime = indivPref.getInt("highlightValue", 5);
-        showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
-        number = indivPref.getString("receiveNumber", "15555215556");
-	}
-	
-	public void setNotificationAndroid(int vib, int sou, int lig) {
-		vibration = vib;
-		sound = sou;
-		light = lig;
-		indivEditor.putInt("vibrationValue", vibration);
-		indivEditor.putInt("soundValue", sound);
-		indivEditor.putInt("lightValue", light);
-		indivEditor.commit();
-	}
-	
-	public void setNumberIncommingSMS(String number) {
-		Pattern intsOnly = Pattern.compile("\\d+");
-		Matcher makeMatch = intsOnly.matcher(number);
-		makeMatch.find();
-		String inputInt = makeMatch.group();
-		showNumberIncomingSMS = Integer.parseInt(inputInt);
-		indivEditor.putInt("numberIncomingSMS", showNumberIncomingSMS);
-		indivEditor.commit();
-	}
-	
-	public void setHighlightTime(String time) {
-		Pattern intsOnly = Pattern.compile("\\d+");
-		Matcher makeMatch = intsOnly.matcher(time);
-		makeMatch.find();
-		String inputInt = makeMatch.group();
-		highlightTime = Integer.parseInt(inputInt);
-		indivEditor.putInt("highlightValue", highlightTime);
-		indivEditor.commit();
-	}
-	
-	public void setReceivenumber(String number) {
-		this.number = number;
-		indivEditor.putString("receiveNumber", number);
-		indivEditor.commit();
-	}
-	
-	public boolean shouldReceive(String sender) {
-		if(number.equals(sender)) {
-			return true;
-		}
-		else return false;
 	}
 	
 	public long[] vibrationPattern(int delay, int duration, int sleep, int repeat){
@@ -122,10 +51,10 @@ public class NotificationManager {
 	}
 	
 	public void vibrate() {
-		if(vibration > 0){
+		if(LoginActivity.vibration > 0){
 			int index = -1;
 			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-			long[] pattern = vibrationPattern(0, 400, 100, vibration);
+			long[] pattern = vibrationPattern(0, 400, 100, LoginActivity.vibration);
 			try{
 				v.vibrate(pattern, index);
 			}
@@ -138,18 +67,10 @@ public class NotificationManager {
 	}
 	
 	public void playSound() {
-		if(sound > 0) {
-			soundRepeats = sound - 1;
+		if(LoginActivity.sound > 0) {
+			soundRepeats = LoginActivity.sound - 1;
 			if(player == null) {
 				player = MediaPlayer.create(c, R.raw.beep);
-				try {
-					player.prepare();
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-			    }
-				
 				MediaPlayer.OnCompletionListener listener = new MediaPlayer.OnCompletionListener() {
 					public void onCompletion(MediaPlayer mp) {
 						if(soundRepeats > 0) {
@@ -163,58 +84,5 @@ public class NotificationManager {
 			}
 			player.start();
 		}		
-	}
-	
-	public int getUserVibration() {
-		return vibration;
-	}
-	
-	public int getUserSound() {
-		return sound;
-	}
-	
-	public int getUserLight() {
-		return light;
-	}
-	
-	public String getUser() {
-		return user;
-	}
-	
-	public static String getUserStatic(Context context) {
-		SharedPreferences pref = context.getSharedPreferences("NOPOPref", context.MODE_PRIVATE);
-		String result = pref.getString("user", "default");
-		return result;
-	}
-	
-	public int getHighlightTimeInt() {
-		return highlightTime;
-	}
-	
-	public String getHighlightTimeString() {
-		String result = highlightTime + " min";
-		return result;
-	}
-	
-	public int getNumberIncomingSMSInt() {
-		return showNumberIncomingSMS;
-	}
-	
-	public String getNumberIncomingSMSString() {
-		String result = showNumberIncomingSMS + " sms";
-		return result;
-	}
-	
-	public int getReceiveNumberInt() {
-		Pattern intsOnly = Pattern.compile("\\d+");
-		Matcher makeMatch = intsOnly.matcher(number);
-		makeMatch.find();
-		String inputInt = makeMatch.group();
-		int phoneNumber = Integer.parseInt(inputInt);
-		return phoneNumber;
-	}
-	
-	public String getReceiveNumberString() {
-		return number;
 	}
 }

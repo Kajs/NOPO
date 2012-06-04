@@ -47,30 +47,30 @@ public class MenuActivity extends Activity {
         		android.R.layout.simple_spinner_item);
         highlightChooser = (Spinner) findViewById(R.id.highlightSpinner);
         highlightChooser.setAdapter(highlightAdapter);
-        int highlightPosition = highlightAdapter.getPosition(manager.getHighlightTimeString());
+        int highlightPosition = highlightAdapter.getPosition(LoginActivity.highlightTime + " min");
         highlightChooser.setSelection(highlightPosition);
         
         ArrayAdapter<CharSequence> SMSAdapter = ArrayAdapter.createFromResource(this, R.array.numberSMSNames, 
         		android.R.layout.simple_spinner_item);
         numberIncChooser = (Spinner) findViewById(R.id.numberSMSSpinner);
         numberIncChooser.setAdapter(SMSAdapter);
-        int smsPosition = SMSAdapter.getPosition(manager.getNumberIncomingSMSString());
+        int smsPosition = SMSAdapter.getPosition(LoginActivity.showNumberIncomingSMS + " sms");
         numberIncChooser.setSelection(smsPosition);
         
         username = (TextView) findViewById(R.id.userlogin);
-        username.setText(manager.getUser());
+        username.setText(LoginActivity.userName);
         
         vibroBar = (SeekBar) findViewById(R.id.vibrobar);
-        vibroBar.setProgress(manager.getUserVibration());
+        vibroBar.setProgress(LoginActivity.vibration);
         
         lydBar = (SeekBar) findViewById(R.id.lydbar);
-        lydBar.setProgress(manager.getUserSound());
+        lydBar.setProgress(LoginActivity.sound);
         
         lysBar = (SeekBar) findViewById(R.id.lysbar);
-        lysBar.setProgress(manager.getUserLight());
+        lysBar.setProgress(LoginActivity.sound);
         
         number = (EditText) findViewById(R.id.receiveFrom);
-        number.setText(manager.getReceiveNumberString());
+        number.setText(LoginActivity.number);
         
         this.saveButton = (Button) findViewById(R.id.saveButton);
         this.saveButton.setOnClickListener(new View.OnClickListener() {
@@ -80,15 +80,15 @@ public class MenuActivity extends Activity {
 				int newVib = vibroBar.getProgress();
 				int newSou = lydBar.getProgress();
 				int newLig = lysBar.getProgress();
-				manager.setNotificationAndroid(newVib, newSou, newLig);
+				LoginActivity.setNotificationAndroid(newVib, newSou, newLig);
 				
 				String newHigh = highlightChooser.getSelectedItem().toString();
 				String newSMS = numberIncChooser.getSelectedItem().toString();
 				String newNumber = number.getText().toString();
 				
-				manager.setHighlightTime(newHigh);
-				manager.setNumberIncommingSMS(newSMS);
-				manager.setReceivenumber(newNumber);
+				LoginActivity.setHighlightTime(newHigh);
+				LoginActivity.setNumberIncommingSMS(newSMS);
+				LoginActivity.setReceivenumber(newNumber);
 				Toast.makeText(getApplicationContext(), "Indstillinger gemt", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -98,13 +98,14 @@ public class MenuActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				SharedPreferences pref = getSharedPreferences("NOPOPref", MODE_PRIVATE);
-            	SharedPreferences.Editor editor = pref.edit();
-            	editor.remove("user");
-            	editor.commit();
+				LoginActivity.appEditor.remove("user");
+				LoginActivity.appEditor.commit();
+				LoginActivity.indivEditor.clear();
+				LoginActivity.indivEditor.commit();
                 DBAdapter.getInstance(context).close();                
             	Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
-                startActivity(loginpage);   
+                startActivity(loginpage);
+                finish();
 			}
 		});
     }

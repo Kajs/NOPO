@@ -3,8 +3,6 @@ package dmri.nopo;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +32,6 @@ public class AlarmActivity extends ListActivity {
   static ArrayList<String> smsArray = new ArrayList<String>();
   private boolean isReceiving = false;
   private IntentFilter intentFilter;
-  private Context context = this;
   
   private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
 		@Override
@@ -44,7 +40,7 @@ public class AlarmActivity extends ListActivity {
           LogManager log = LogManager.getInstance(context);
           FilterManager filter = FilterManager.getInstance(context);
           NotificationManager manager = NotificationManager.getInstance(context);
-          if (filter.isInLocalFilter(sms) && manager.shouldReceive(intent.getExtras().getString("sender")))
+          if (filter.isInLocalFilter(sms) && LoginActivity.shouldReceive(intent.getExtras().getString("sender")))
           {
         	  log.writeLogFile(sms);
         	  NotificationManager c = NotificationManager.getInstance(context);
@@ -95,7 +91,7 @@ public class AlarmActivity extends ListActivity {
   	  
     	LogManager log = LogManager.getInstance(context);
     	NotificationManager manager = NotificationManager.getInstance(context);
-    	Cursor rows = log.readXUnblockedSMS(manager.getNumberIncomingSMSInt());
+    	Cursor rows = log.readXUnblockedSMS(LoginActivity.showNumberIncomingSMS);
     	rows.moveToFirst();
     	while(rows.getPosition() < rows.getCount()) {
     		String rawtime = rows.getString(1);
@@ -201,7 +197,7 @@ public class AlarmActivity extends ListActivity {
       int secondDifference = new Integer(currentTime.substring(12, 14)) - new Integer(alarmTime.substring(6, 8));
       
       NotificationManager manager = NotificationManager.getInstance(context);
-      if(hourDifference * 60 * 60 + minuteDifference * 60 + secondDifference > manager.getHighlightTimeInt() * 60) {
+      if(hourDifference * 60 * 60 + minuteDifference * 60 + secondDifference > LoginActivity.highlightTime * 60) {
     	  holder.textLine.setTextColor(-1);
       }
       else {
@@ -255,6 +251,8 @@ public class AlarmActivity extends ListActivity {
 		  registerReceiver(intentReceiver, intentFilter);
 		  isReceiving = true;
 	  }
+	  adap.showSMS();
+	  adap.notifyDataSetChanged();
       super.onResume();
   }
   @Override
