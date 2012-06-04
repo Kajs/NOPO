@@ -58,4 +58,3 @@ public class ViewChangeActivity extends Fragment {
 	        });      
 	}
 }
-

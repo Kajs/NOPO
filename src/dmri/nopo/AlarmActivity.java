@@ -33,7 +33,7 @@ public class AlarmActivity extends ListActivity {
   private static EfficientAdapter adap;
   static ArrayList<String> timeArray = new ArrayList<String>();
   static ArrayList<String> smsArray = new ArrayList<String>();
-  static boolean isReceiving = false;
+  private boolean isReceiving = false;
   private IntentFilter intentFilter;
   private Context context = this;
   
@@ -106,42 +106,6 @@ public class AlarmActivity extends ListActivity {
     		rows.moveToNext();
     	}
     }
-    
-    public String concatStringArrayList(ArrayList<String> stringArrayList){
-      	int start = 0;
-      	int size = stringArrayList.size();
-      	String resultString = "";
-      	while(start < size){
-      		resultString = resultString + stringArrayList.get(start);
-      		start = start + 1;
-      	}
-      	return resultString;
-      }
-      
-      public ArrayList<String> arrayToArrayList(String[] stringArray){
-    	  int start = 0;
-    	  int size = stringArray.length;
-    	  ArrayList <String> resultArray = new ArrayList<String>();
-    	  while(start < size){
-    		  resultArray.add(stringArray[start]);
-    		  start = start + 1;
-    	  }
-    	  	return resultArray;
-    	  
-      }
-      
-      public String arrayToString(int start, String[] array){
-    	  int pointer = start;
-    	  int length = array.length;
-    	  String string = "";
-    	  
-    	  while(pointer < length - 1){
-    		  Toast.makeText(context, "arr: " + array[pointer], Toast.LENGTH_SHORT).show();
-    		  string = string + array[pointer];
-    		  pointer = pointer + 1;
-    	  }
-    	  return string;
-      }
 
     /**
      * Make a view to hold each row.
@@ -298,6 +262,15 @@ public class AlarmActivity extends ListActivity {
       //---unregister the receiver---
       //unregisterReceiver(intentReceiver);
       super.onPause();
+  }
+  
+  @Override
+  protected void onDestroy() {
+      //---unregister the receiver---
+      unregisterReceiver(intentReceiver);
+      isReceiving = false;
+      super.onDestroy();
+      finish();
   }
   
   //Test methods

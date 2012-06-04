@@ -36,6 +36,7 @@ public class NotificationManager {
 		c = context;
 		appPref = context.getSharedPreferences("NOPOPref", context.MODE_PRIVATE);
 		user = appPref.getString("user", "default");
+		Toast.makeText(c, user, Toast.LENGTH_LONG).show();
         fileName = user + "Notify";
         indivPref = context.getSharedPreferences(fileName, context.MODE_PRIVATE);
         indivEditor = indivPref.edit();

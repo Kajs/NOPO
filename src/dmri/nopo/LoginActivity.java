@@ -42,11 +42,14 @@ public class LoginActivity extends Activity {
 	            	editor.putString("user", user.getText().toString());
 //	            	editor.putString("pass", pass.getText().toString());
 	            	editor.commit();
-	                startActivity(intent);
+	            	editor = null;
+	            	pref = null;
+	                startActivity(intent);	                
+	                finish();
 	            	}      	
             	catch (Exception e) {
             		String fail = e.getMessage();
-            		Log.e("fail", fail);
+            		Log.e("Fejl ved login", fail);
             	}
             
         	}});
