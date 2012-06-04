@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class DBAdapter {
@@ -226,11 +227,17 @@ public class DBAdapter {
 		return db.rawQuery(query, null);
 	}
 	
-	public boolean removeOldSMS()
+	public void removeOldSMS()
 	{
-		String time = Long.toString(DBAdapter.getDateStamp()).substring(5,13);
-	    int compareTimeValue = Integer.parseInt(time);
-		return db.delete(log_table, "KEY_TIME < "+compareTimeValue, null) > 0;
+		long rawTime = DBAdapter.getDateStamp();
+		String croppedTime = Long.toString(rawTime).substring(0,8);
+		String finalCroppedTime = croppedTime + "000000";
+		db.delete(log_table, KEY_TIME + " < " + finalCroppedTime, null);
+	}
+	
+	public void deleteUser() {
+		db.delete(log_table, null, null);
+		db.delete(filter_table, null, null);
 	}
 	
 	/**

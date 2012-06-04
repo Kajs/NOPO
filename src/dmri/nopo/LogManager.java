@@ -53,10 +53,10 @@ public class LogManager{
 		db.insertSMS(sms);
 	}
 	
-	public boolean removeOldSMS()
+	public void removeOldSMS()
 	{
 		db.open();
-		return db.removeOldSMS();
+		db.removeOldSMS();
 	}
 
 }

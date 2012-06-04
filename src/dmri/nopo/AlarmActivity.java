@@ -32,13 +32,14 @@ public class AlarmActivity extends ListActivity {
   static ArrayList<String> smsArray = new ArrayList<String>();
   private boolean isReceiving = false;
   private IntentFilter intentFilter;
+  private LogManager log = LogManager.getInstance(this);
+  private FilterManager filter = FilterManager.getInstance(this);
   
   private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
+	  
 		@Override
 		public void onReceive(Context context, Intent intent) {
           String sms = intent.getExtras().getString("sms");
-          LogManager log = LogManager.getInstance(context);
-          FilterManager filter = FilterManager.getInstance(context);
           if (filter.isInLocalFilter(sms) && LoginActivity.shouldReceive(intent.getExtras().getString("sender")))
           {
         	  log.writeLogFile(sms);
@@ -247,6 +248,7 @@ public class AlarmActivity extends ListActivity {
 		  registerReceiver(intentReceiver, intentFilter);
 		  isReceiving = true;
 	  }
+	  log.removeOldSMS();
 	  adap.showSMS();
 	  adap.notifyDataSetChanged();
       super.onResume();

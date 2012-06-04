@@ -105,7 +105,9 @@ public class MenuActivity extends Activity {
 	        	    	 LoginActivity.appEditor.commit();
 	        	    	 LoginActivity.indivEditor.clear();
 	        	    	 LoginActivity.indivEditor.commit();
-	        	    	 DBAdapter.getInstance(context).close();
+	        	    	 DBAdapter db = DBAdapter.getInstance(context);
+	        	    	 db.deleteUser();
+	        	    	 db.close();
 	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
 	        	    	 LoginActivity.tryAutoLogin = false;
 	                     startActivity(loginpage);
