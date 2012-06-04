@@ -16,13 +16,14 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
     
 	private Button loginButton;
+	static boolean tryAutoLogin = true;
 	//private EditText pass;
 	private EditText user;
-	private ImageView logo;
 	static SharedPreferences appPref;
 	static SharedPreferences indivPref;
 	static SharedPreferences.Editor appEditor;
@@ -34,7 +35,9 @@ public class LoginActivity extends Activity {
 	static int light;
 	static int showNumberIncomingSMS;
 	static int highlightTime;
-	static String number;
+	static String receiveNumber;
+	@SuppressWarnings("unused")
+	private ImageView logo;
 	
 	
 	
@@ -48,17 +51,22 @@ public class LoginActivity extends Activity {
         user = (EditText) findViewById(R.id.username);
         logo = (ImageView) findViewById(R.id.loginlogo);
         
+        if(tryAutoLogin) {
+        	tryAutoLogin();
+        }
+        
         this.loginButton = (Button) this.findViewById(R.id.login);
         this.loginButton.setOnClickListener(new View.OnClickListener() {
         	@Override
         	public void onClick(View v) {
             	try {
 	        		Intent intent = new Intent("android.intent.action.ALARM");
-	        		
+
 	        		userName = user.getText().toString();
 	        		DBAdapter.updateTableNames(userName+"log", userName+"filter");
 	        		
 	        		appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
+	        		receiveNumber = appPref.getString("receiveNumber", "15555215556");
 	                appEditor = appPref.edit();
 	                appEditor.putString("user", userName);
 	            	appEditor.commit();
@@ -69,6 +77,7 @@ public class LoginActivity extends Activity {
 	                indivEditor = indivPref.edit();
 	            	
 	                startActivity(intent);
+	                finish();
 	            	}      	
             	catch (Exception e) {
             		String fail = e.getMessage();
@@ -76,70 +85,41 @@ public class LoginActivity extends Activity {
             	}
             
         	}});
-        
-        
     }
+
+    public void tryAutoLogin() {
+    	appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
+    	String lastUser = appPref.getString("user", "default");
+    	
+    	if(lastUser != "default") {
+    		Toast.makeText(this, "Logger ind som sidste bruger: " + lastUser, Toast.LENGTH_LONG).show();
+    		Intent intent = new Intent("android.intent.action.ALARM");
+    			
+    		userName = lastUser;
+    		DBAdapter.updateTableNames(userName+"log", userName+"filter");
+    			
+    		appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
+        	receiveNumber = appPref.getString("receiveNumber", "15555215556");
+            appEditor = appPref.edit();
+            	
+            fileName = userName + "Notify";
+            indivPref = getSharedPreferences(fileName, Context.MODE_PRIVATE);
+            readUserFile();
+            indivEditor = indivPref.edit();
+            	
+            startActivity(intent);
+            finish();
+    		}
+    		else{    			
+    		}
+    	}
+    
     private void readUserFile() {
 		vibration = indivPref.getInt("vibrationValue", 5);
         sound = indivPref.getInt("soundValue", 5);
         light = indivPref.getInt("lightValue", 50);
         highlightTime = indivPref.getInt("highlightValue", 5);
         showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
-        number = indivPref.getString("receiveNumber", "15555215556");
-	}
-    
-    public int getUserVibration() {
-		return vibration;
-	}
-	
-	public int getUserSound() {
-		return sound;
-	}
-	
-	public int getUserLight() {
-		return light;
-	}
-	
-	public String getUser() {
-		return userName;
-	}
-	
-	public static String getUserStatic(Context context) {
-		SharedPreferences pref = context.getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
-		String result = pref.getString("user", "default");
-		pref = null;
-		return result;
-	}
-	
-	public int getHighlightTimeInt() {
-		return highlightTime;
-	}
-	
-	public String getHighlightTimeString() {
-		String result = highlightTime + " min";
-		return result;
-	}
-	
-	public int getNumberIncomingSMSInt() {
-		return showNumberIncomingSMS;
-	}
-	
-	public String getNumberIncomingSMSString() {
-		String result = showNumberIncomingSMS + " sms";
-		return result;
-	}
-	
-	public int getReceiveNumberInt() {
-		Pattern intsOnly = Pattern.compile("\\d+");
-		Matcher makeMatch = intsOnly.matcher(number);
-		makeMatch.find();
-		String inputInt = makeMatch.group();
-		int phoneNumber = Integer.parseInt(inputInt);
-		return phoneNumber;
-	}
-	
-	public String getReceiveNumberString() {
-		return number;
 	}
 	
     static void setNotificationAndroid(int vib, int sou, int lig) {
@@ -173,15 +153,24 @@ public class LoginActivity extends Activity {
 	}
 	
     static void setReceivenumber(String newNumber) {
-		number = newNumber;
-		indivEditor.putString("receiveNumber", number);
-		indivEditor.commit();
+		receiveNumber = newNumber;
+		appEditor.putString("receiveNumber", receiveNumber);
+		appEditor.commit();
 	}
 	
 	static boolean shouldReceive(String sender) {
-		if(number.equals(sender)) {
+		if(receiveNumber.equals("")) {
+			return true;
+		}
+		if(receiveNumber.equals(sender)) {
 			return true;
 		}
 		else return false;
+	}
+	
+	@Override 
+	public void onDestroy() {
+		tryAutoLogin = true;
+		super.onDestroy();
 	}
 }

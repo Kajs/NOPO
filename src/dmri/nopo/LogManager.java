@@ -2,7 +2,6 @@ package dmri.nopo;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.widget.Toast;
 
 public class LogManager{
 

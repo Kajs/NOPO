@@ -22,34 +22,33 @@ public final class R {
         public static final int logo=0x7f020001;
     }
     public static final class id {
-        public static final int alarm=0x7f080020;
+        public static final int alarm=0x7f08001f;
         public static final int buttonLine=0x7f080002;
-        public static final int filter=0x7f080022;
+        public static final int deleteUserButton=0x7f08001d;
+        public static final int filter=0x7f080021;
         public static final int filterListView=0x7f080005;
         public static final int highlightSpinner=0x7f080017;
         public static final int highlighttext=0x7f080016;
         public static final int lineItem=0x7f080000;
         public static final int list=0x7f080003;
-        public static final int log=0x7f080021;
+        public static final int log=0x7f080020;
         public static final int logListView=0x7f080006;
         public static final int login=0x7f080009;
         public static final int loginlogo=0x7f080007;
-        public static final int logoutRow=0x7f08001e;
+        public static final int logoutButton=0x7f08001c;
         public static final int lydRow=0x7f080010;
         public static final int lydbar=0x7f080012;
         public static final int lydtext=0x7f080011;
         public static final int lysRow=0x7f080013;
         public static final int lysbar=0x7f080015;
         public static final int lystext=0x7f080014;
-        public static final int menu=0x7f080023;
+        public static final int menu=0x7f080022;
         public static final int numberSMSSpinner=0x7f080019;
         public static final int passtext=0x7f08000c;
         public static final int receiveFrom=0x7f08001b;
-        public static final int saveButton=0x7f08001d;
-        public static final int saveButtonRow=0x7f08001c;
+        public static final int saveButton=0x7f08001e;
         public static final int searchField=0x7f080004;
         public static final int showSMStext=0x7f080018;
-        public static final int sletloginButton=0x7f08001f;
         public static final int textLine=0x7f080001;
         public static final int textViewReceiveFrom=0x7f08001a;
         public static final int userlogin=0x7f08000b;
@@ -74,27 +73,24 @@ public final class R {
     }
     public static final class string {
         public static final int alarm=0x7f050002;
-        public static final int alarmtext=0x7f050009;
         public static final int app_name=0x7f050001;
-        public static final int defaultNumber=0x7f050015;
+        public static final int defaultNumber=0x7f050011;
+        public static final int deleteUserButton=0x7f050008;
         public static final int filter=0x7f050004;
-        public static final int filtertext=0x7f05000b;
         public static final int hello=0x7f050000;
-        public static final int highlightText=0x7f050012;
-        public static final int indstillinger=0x7f05000e;
+        public static final int highlightText=0x7f05000e;
+        public static final int indstillinger=0x7f05000a;
         public static final int log=0x7f050003;
         public static final int login=0x7f050006;
-        public static final int logtext=0x7f05000a;
-        public static final int lydText=0x7f050010;
-        public static final int lysText=0x7f050011;
+        public static final int logoutButton=0x7f050013;
+        public static final int lydText=0x7f05000c;
+        public static final int lysText=0x7f05000d;
         public static final int menu=0x7f050005;
-        public static final int menutext=0x7f05000c;
-        public static final int numberSMSText=0x7f050013;
-        public static final int receiveFrom=0x7f050014;
+        public static final int numberSMSText=0x7f05000f;
+        public static final int receiveFrom=0x7f050010;
         public static final int saveButton=0x7f050007;
-        public static final int searchHint=0x7f050016;
-        public static final int sletloginButton=0x7f050008;
-        public static final int userText=0x7f05000d;
-        public static final int vibroText=0x7f05000f;
+        public static final int searchHint=0x7f050012;
+        public static final int userText=0x7f050009;
+        public static final int vibroText=0x7f05000b;
     }
 }

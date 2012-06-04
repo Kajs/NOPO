@@ -1,17 +1,8 @@
 package dmri.nopo;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-
-import java.io.IOException;
-import java.util.regex.*;
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnCompletionListener;
-import android.os.CountDownTimer;
 import android.os.Vibrator;
-import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 public class NotificationManager {

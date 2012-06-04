@@ -148,34 +148,32 @@
 
             <requestFocus />
         </EditText>
-		
-        <TableRow
-            android:id="@+id/saveButtonRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
+
+        <RelativeLayout>
+            
+            <Button
+                android:id="@+id/logoutButton"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/logoutButton" />
+
+            <Button
+                android:id="@+id/deleteUserButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="@string/deleteUserButton" />
 
             <Button
                 android:id="@+id/saveButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
                 android:text="@string/saveButton" />
-        </TableRow>
 
-        <TableRow
-            android:id="@+id/logoutRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
-
-            <Button
-                android:id="@+id/sletloginButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sletloginButton" />
-        </TableRow>
-
-        
+        </RelativeLayout>
 
     </TableLayout>
 

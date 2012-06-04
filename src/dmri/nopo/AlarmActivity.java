@@ -39,7 +39,6 @@ public class AlarmActivity extends ListActivity {
           String sms = intent.getExtras().getString("sms");
           LogManager log = LogManager.getInstance(context);
           FilterManager filter = FilterManager.getInstance(context);
-          NotificationManager manager = NotificationManager.getInstance(context);
           if (filter.isInLocalFilter(sms) && LoginActivity.shouldReceive(intent.getExtras().getString("sender")))
           {
         	  log.writeLogFile(sms);
@@ -90,7 +89,6 @@ public class AlarmActivity extends ListActivity {
   	  smsArray.clear();
   	  
     	LogManager log = LogManager.getInstance(context);
-    	NotificationManager manager = NotificationManager.getInstance(context);
     	Cursor rows = log.readXUnblockedSMS(LoginActivity.showNumberIncomingSMS);
     	rows.moveToFirst();
     	while(rows.getPosition() < rows.getCount()) {
@@ -133,7 +131,6 @@ public class AlarmActivity extends ListActivity {
         
         
         convertView.setOnClickListener(new OnClickListener() {
-          private int pos = position;
 
           @Override
           public void onClick(View v) {
@@ -196,7 +193,6 @@ public class AlarmActivity extends ListActivity {
       int minuteDifference = new Integer(currentTime.substring(10, 12)) - new Integer(alarmTime.substring(3, 5));
       int secondDifference = new Integer(currentTime.substring(12, 14)) - new Integer(alarmTime.substring(6, 8));
       
-      NotificationManager manager = NotificationManager.getInstance(context);
       if(hourDifference * 60 * 60 + minuteDifference * 60 + secondDifference > LoginActivity.highlightTime * 60) {
     	  holder.textLine.setTextColor(-1);
       }

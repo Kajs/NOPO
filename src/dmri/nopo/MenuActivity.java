@@ -3,11 +3,11 @@ package dmri.nopo;
 
 import dmri.nopo.R;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.widget.Button;
 import android.view.View;
 import android.view.Window;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 public class MenuActivity extends Activity {
     
 	private Button saveButton;
+	private Button deleteUserButton;
 	private Button logoutButton;
 	private TextView username;
 	private SeekBar vibroBar;
@@ -30,9 +31,7 @@ public class MenuActivity extends Activity {
 	private Spinner highlightChooser;
 	private Spinner numberIncChooser;
 	private Context context;
-	private EditText number;
-	
-    private NotificationManager manager;
+	private EditText receiveNumber;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -41,7 +40,6 @@ public class MenuActivity extends Activity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.menu);
         this.context = this;
-        manager = NotificationManager.getInstance(this);
         
         ArrayAdapter<CharSequence> highlightAdapter = ArrayAdapter.createFromResource(this, R.array.highlightNames, 
         		android.R.layout.simple_spinner_item);
@@ -54,7 +52,7 @@ public class MenuActivity extends Activity {
         		android.R.layout.simple_spinner_item);
         numberIncChooser = (Spinner) findViewById(R.id.numberSMSSpinner);
         numberIncChooser.setAdapter(SMSAdapter);
-        int smsPosition = SMSAdapter.getPosition(LoginActivity.showNumberIncomingSMS + " sms");
+        int smsPosition = SMSAdapter.getPosition(LoginActivity.showNumberIncomingSMS + " alarmer");
         numberIncChooser.setSelection(smsPosition);
         
         username = (TextView) findViewById(R.id.userlogin);
@@ -69,8 +67,8 @@ public class MenuActivity extends Activity {
         lysBar = (SeekBar) findViewById(R.id.lysbar);
         lysBar.setProgress(LoginActivity.sound);
         
-        number = (EditText) findViewById(R.id.receiveFrom);
-        number.setText(LoginActivity.number);
+        receiveNumber = (EditText) findViewById(R.id.receiveFrom);
+        receiveNumber.setText(LoginActivity.receiveNumber);
         
         this.saveButton = (Button) findViewById(R.id.saveButton);
         this.saveButton.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +82,7 @@ public class MenuActivity extends Activity {
 				
 				String newHigh = highlightChooser.getSelectedItem().toString();
 				String newSMS = numberIncChooser.getSelectedItem().toString();
-				String newNumber = number.getText().toString();
+				String newNumber = receiveNumber.getText().toString();
 				
 				LoginActivity.setHighlightTime(newHigh);
 				LoginActivity.setNumberIncommingSMS(newSMS);
@@ -93,19 +91,57 @@ public class MenuActivity extends Activity {
 			}
 		});
         
-        this.logoutButton = (Button) findViewById(R.id.sletloginButton);
+        this.deleteUserButton = (Button) findViewById(R.id.deleteUserButton);
+        this.deleteUserButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+	        	  alertDialog.setTitle("Slet Bruger");
+	        	  alertDialog.setMessage("Advarsel! Dette vil slette brugeren " + LoginActivity.userName + ", brugerens alarmfilter samt brugerens indstillinger fra systemet. Vil du fortsaette?");
+	        	  alertDialog.setButton(-1, "Godkend", new DialogInterface.OnClickListener() {
+	        	     public void onClick(DialogInterface dialog, int which) {
+	        	    	 LoginActivity.appEditor.remove("user");
+	        	    	 LoginActivity.appEditor.commit();
+	        	    	 LoginActivity.indivEditor.clear();
+	        	    	 LoginActivity.indivEditor.commit();
+	        	    	 DBAdapter.getInstance(context).close();
+	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
+	        	    	 LoginActivity.tryAutoLogin = false;
+	                     startActivity(loginpage);
+	                     finish();
+	        	     }
+	        	  });
+	        	  alertDialog.setButton(-2, "Annuller", new DialogInterface.OnClickListener() {
+	            	 public void onClick(DialogInterface dialog, int which) {
+	            	 }
+	        	  });
+	        	  alertDialog.show();
+			}
+		});
+        
+        this.logoutButton = (Button) findViewById(R.id.logoutButton);
         this.logoutButton.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				LoginActivity.appEditor.remove("user");
-				LoginActivity.appEditor.commit();
-				LoginActivity.indivEditor.clear();
-				LoginActivity.indivEditor.commit();
-                DBAdapter.getInstance(context).close();                
-            	Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
-                startActivity(loginpage);
-                finish();
+				AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+	        	  alertDialog.setTitle("Log ud");
+	        	  alertDialog.setMessage("Skal der logges af systemet?");
+	        	  alertDialog.setButton(-1, "Ja", new DialogInterface.OnClickListener() {
+	        	     public void onClick(DialogInterface dialog, int which) {
+	        	    	 DBAdapter.getInstance(context).close();    
+	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
+	        	    	 LoginActivity.tryAutoLogin = false;
+	                     startActivity(loginpage);
+	                     finish();
+	        	     }
+	        	  });
+	        	  alertDialog.setButton(-2, "Nej", new DialogInterface.OnClickListener() {
+	            	 public void onClick(DialogInterface dialog, int which) {
+	            	 }
+	        	  });
+	        	  alertDialog.show();
 			}
 		});
     }

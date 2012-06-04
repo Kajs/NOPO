@@ -8,27 +8,22 @@
     <string name="filter">Filter</string>
     <string name="menu">Menu</string>
     <string name="login">Log ind</string>
-    <string name="saveButton">gem</string>
-    <string name="sletloginButton">Slet Login</string>
+    <string name="saveButton">Gem indstillinger</string>
+    <string name="deleteUserButton">Slet bruger</string>
     <color name="white">#FFFFFF</color>
-    
-    <string name="alarmtext">This is the alarm view!</string>
-    <string name="logtext">This is the log view!</string>
-    <string name="filtertext">This is the filter view!</string>
-    <string name="menutext">This is the menu view asdasdsa dlsa dlas daskdlkas lks dlksa dlksa dlkas dlasdlask d!</string>
     <string name="userText">Du er logget ind som: </string>
     <string name="indstillinger">Notifikations indstillinger:</string>
     <string name="vibroText">Vibration: </string>
     <string name="lydText">Lyd: </string>
     <string name="lysText">Lys: </string>
-    <string name="highlightText">Antal minutter nye smser skal fremhæves:</string>
+    <string name="highlightText">Antal minutter nye alarmer skal fremhæves:</string>
     <string-array name="highlightNames">
         <item>2 min</item>
         <item>5 min</item>
         <item>10 min</item>
         <item>20 min</item>
     </string-array>
-    <string name="numberSMSText">Antal nye smser der skal vises på alarmsiden:</string>
+    <string name="numberSMSText">Antal nye alarmer der skal vises på alarmsiden:</string>
     <string-array name="numberSMSNames">
         <item>3 sms</item>
         <item>4 sms</item>
@@ -38,7 +33,8 @@
         <item>8 sms</item>
         <item>9 sms</item>
     </string-array>
-    <string name="receiveFrom">Modtag alarmer fra:</string>
+    <string name="receiveFrom">Modtag alarmer fra telefonnummer:</string>
     <string name="defaultNumber">44556677</string>
     <string name="searchHint">Søg</string>
+    <string name="logoutButton">Log ud</string>
 </resources>
