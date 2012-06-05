@@ -94,4 +94,36 @@ public class SettingManager {
 		db.open();		
 		db.updateUserSetting(setting, value);
 	}
+	
+	static void setReceiveNumber(Context context, String newReceiveNumber) {
+		receiveNumber = newReceiveNumber;
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();		
+		db.setReceiveNumber(newReceiveNumber);
+	}
+	
+	static void setLastUser(Context context, String newLastUser) {
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();		
+		db.setReceiveNumber(newLastUser);
+	}
+	
+	static String getReceiveNumber(Context context) {
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
+		Cursor cursor = db.getReceiveNumber();
+		return cursor.getString(0);
+	}
+	
+	static String getLastUser(Context context) {
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
+		Cursor cursor = db.getLastUser();
+		if(cursor.getCount() == 0){
+			return "default";
+		}
+		else {
+			return cursor.getString(0);
+		}
+	}
 }

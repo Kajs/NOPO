@@ -24,11 +24,14 @@ public class DBAdapter {
 	private static final String KEY_NUMBERALARMS = "numberAlarms";
 	private static final String KEY_SETTING = "setting";
 	private static final String KEY_SETTINGVALUE = "settingValue";
+	private static final String KEY_LASTUSER = "lastUser";
+	private static final String KEY_RECEIVENUMBER = "receiveNumber";
 	private static final String DATABASE_NAME = "NOPO";
 	private static final int DATABASE_VERSION = 1;
 	private static String log_table;
 	private static String filter_table;
 	private static String user_table;
+	private static final String application_table = "applicationSettings";
 	
 	private SQLiteDatabase db;
 	private DatabaseHelper DBHelper;
@@ -85,9 +88,12 @@ public class DBAdapter {
 						KEY_RECEIVE+" INTEGER not null);");
 				db.execSQL("CREATE TABLE "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" INTEGER not null);");
+				db.execSQL("CREATE TABLE "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+						KEY_SETTINGVALUE+" TEXT not null);");
 				
 			}
 			catch (SQLException e) {
+				Log.w("Database", "onCreate: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -106,8 +112,11 @@ public class DBAdapter {
 						KEY_RECEIVE+" INTEGER not null);");	
 				db.execSQL("CREATE TABLE if not exists "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" INTEGER not null);");
+				db.execSQL("CREATE TABLE if not exists "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+						KEY_SETTINGVALUE+" TEXT not null);");
 			}
 			catch (SQLException e){
+				Log.w("Database", "onOpen: " + e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -136,6 +145,44 @@ public class DBAdapter {
 	 * 
 	 * @return null SQLException has occured
 	 */
+	
+	public void setReceiveNumber(String receiveNumber) {
+		try {
+			db.execSQL("INSERT or REPLACE into "+application_table+" VALUES('"+KEY_RECEIVENUMBER+"', "+receiveNumber+");");
+		} catch (SQLException e) {
+			Log.w("Database", "setReceiveNumber: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public void setLastUser(String lastUser) {
+		try {
+			db.execSQL("INSERT or REPLACE into "+application_table+" VALUES('"+KEY_LASTUSER+"', "+lastUser+");");
+		} catch (SQLException e) {
+			Log.w("Database", "setLastUser: " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public Cursor getReceiveNumber() {
+		try {
+			return db.rawQuery("SELECT "+KEY_SETTINGVALUE+" FROM "+application_table+" WHERE "+KEY_SETTING+" = " +KEY_RECEIVENUMBER+";", null);
+		} catch (Exception e) {
+			Log.w("Database", "getReceiveNumber: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Cursor getLastUser() {
+		try {
+			return db.rawQuery("SELECT "+KEY_SETTINGVALUE+" FROM "+application_table+" WHERE "+KEY_SETTING+" = " +KEY_LASTUSER+";", null);
+		} catch (Exception e) {
+			Log.w("Database", "getLastUser: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	public Cursor getUserSettings() {
 		try{
@@ -176,18 +223,12 @@ public class DBAdapter {
 		}
 	}
 	
-	public Cursor readLocalFilter()
-	{
-		try{
-			Cursor cr = db.rawQuery("Select * from "+filter_table+" order by "+KEY_TEXT+" ASC", null);
-			return cr;
-		}
-		catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
-		return null;
+	public void deleteUser() {
+		db.delete(log_table, null, null);
+		db.delete(filter_table, null, null);
+		db.delete(user_table, null, null);
 	}
+	
 	
 	/**
 	 * The last return true happens only, if an sqlexception has occured.
@@ -215,6 +256,19 @@ public class DBAdapter {
 			e.printStackTrace();
 		}
 		return true;
+	}
+	
+	public Cursor readLocalFilter()
+	{
+		try{
+			Cursor cr = db.rawQuery("Select * from "+filter_table+" order by "+KEY_TEXT+" ASC", null);
+			return cr;
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
@@ -269,11 +323,6 @@ public class DBAdapter {
 		} 
 	}
 	
-	public boolean deleteSMS(String time)
-	{
-		return db.delete(log_table, KEY_TIME + "=" + time, null) > 0;
-	}
-	
 	/**
 	 * 
 	 * @return All sms given a user-login
@@ -316,6 +365,11 @@ public class DBAdapter {
 		}
 	}
 	
+	public boolean deleteSMS(String time)
+	{
+		return db.delete(log_table, KEY_TIME + "=" + time, null) > 0;
+	}
+	
 	public void removeOldSMS()
 	{
 		long rawTime = DBAdapter.getDateStamp();
@@ -323,13 +377,7 @@ public class DBAdapter {
 		String finalCroppedTime = croppedTime + "000000";
 		db.delete(log_table, KEY_TIME + " < " + finalCroppedTime, null);
 	}
-	
-	public void deleteUser() {
-		db.delete(log_table, null, null);
-		db.delete(filter_table, null, null);
-		db.delete(user_table, null, null);
-	}
-	
+
 	/**
 	 * Use this timeStamp-method to get BOTH date and currentTimeMillis
 	 * as a long (for storing sms)

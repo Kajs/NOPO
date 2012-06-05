@@ -81,9 +81,9 @@ public class MenuActivity extends Activity {
 				int newHigh = new Integer(highlightChooser.getSelectedItem().toString().substring(0, 1));
 				int newSMS = new Integer(numberIncChooser.getSelectedItem().toString().substring(0, 1));
 				SettingManager.updateUserSettings(context, newVib, newSou, newLig, newHigh, newSMS);
+				
 				String newNumber = receiveNumber.getText().toString();
-
-				SettingManager.receiveNumber = newNumber;
+				SettingManager.setReceiveNumber(context, newNumber);
 				Toast.makeText(getApplicationContext(), "Indstillinger gemt", Toast.LENGTH_SHORT).show();
 			}
 		});
