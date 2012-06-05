@@ -25,13 +25,13 @@
     </string-array>
     <string name="numberSMSText">Antal nye alarmer der skal vises på alarmsiden:</string>
     <string-array name="numberSMSNames">
-        <item>3 sms</item>
-        <item>4 sms</item>
-        <item>5 sms</item>
-        <item>6 sms</item>
-        <item>7 sms</item>
-        <item>8 sms</item>
-        <item>9 sms</item>
+        <item>3 alarmer</item>
+        <item>4 alarmer</item>
+        <item>5 alarmer</item>
+        <item>6 alarmer</item>
+        <item>7 alarmer</item>
+        <item>8 alarmer</item>
+        <item>9 alarmer</item>
     </string-array>
     <string name="receiveFrom">Modtag alarmer fra telefonnummer:</string>
     <string name="defaultNumber">44556677</string>

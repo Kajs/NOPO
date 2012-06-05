@@ -25,7 +25,7 @@ public class LogManager{
 	 * Reads all sms from database
 	 * @return A Cursor: c.moveToFirst(); c.moveToNext(); c.getString(0); c.getString(1);
 	 */
-	public Cursor readLogFile()
+	public Cursor getAllSMS()
 	{
 		
 		db.open();
@@ -33,18 +33,16 @@ public class LogManager{
 		return c;
 	}
 	
-	public Cursor readXLogFile(int x) 
+	public Cursor getXSMS(int x) 
 	{
 		db.open();
-		Cursor c = db.getXSMS(x);
-		return c;
+		return db.getXSMS(x);
 	}
 	
-	public Cursor readXUnblockedSMS(int x)
+	public Cursor getXUnblockedSMS(int x)
 	{
 		db.open();
-		Cursor c = db.getXUnblockedSMS(x);
-		return c;
+		return db.getXUnblockedSMS(x);
 	}
 	
 	public void writeLogFile(String sms)

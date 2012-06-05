@@ -10,7 +10,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 
 public class DBAdapter {
@@ -22,7 +21,9 @@ public class DBAdapter {
 	private static final String KEY_SOUND = "sound";
 	private static final String KEY_LIGHT = "light";
 	private static final String KEY_HIGHLIGHTTIME = "highligthTime";
-	private static final String KEY_SHOWNUMBERINCOMINGSMS = "showNumberIncomingSMS";
+	private static final String KEY_NUMBERALARMS = "numberAlarms";
+	private static final String KEY_SETTING = "setting";
+	private static final String KEY_SETTINGVALUE = "settingValue";
 	private static final String DATABASE_NAME = "NOPO";
 	private static final int DATABASE_VERSION = 1;
 	private static String log_table;
@@ -38,11 +39,10 @@ public class DBAdapter {
 	private DBAdapter(Context ctx)
 	{
 		DBAdapter.context = ctx;
-		log_table = LoginActivity.userName+"log";
-		filter_table =  LoginActivity.userName+"filter";
-		user_table = LoginActivity.userName+"settings";
+		log_table = SettingManager.userName+"log";
+		filter_table =  SettingManager.userName+"filter";
+		user_table = SettingManager.userName+"settings";
 		this.DBHelper = new DatabaseHelper(context);
-
 	}
 	
 	public static DBAdapter getInstance(Context context){
@@ -65,9 +65,9 @@ public class DBAdapter {
 		DatabaseHelper(Context context)
 		{
 			super(context, DBAdapter.DATABASE_NAME, null, DBAdapter.DATABASE_VERSION);
-			log_table = LoginActivity.userName+"log";
-			filter_table =  LoginActivity.userName+"filter";
-			user_table = LoginActivity.userName+"settings";
+			log_table = SettingManager.userName+"log";
+			filter_table =  SettingManager.userName+"filter";
+			user_table = SettingManager.userName+"settings";
 		}
 		
 		/**
@@ -83,8 +83,8 @@ public class DBAdapter {
 				db.execSQL(
 						"create table "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
 						KEY_RECEIVE+" INTEGER not null);");
-				db.execSQL("CREATE TABLE "+user_table+"(setting TEXT PRIMARY KEY," +
-						" settingvalue INTEGER not null);");
+				db.execSQL("CREATE TABLE "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+						KEY_SETTINGVALUE+" INTEGER not null);");
 				
 			}
 			catch (SQLException e) {
@@ -104,8 +104,8 @@ public class DBAdapter {
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL("create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
 						KEY_RECEIVE+" INTEGER not null);");	
-				db.execSQL("CREATE TABLE if not exists "+user_table+"(setting TEXT PRIMARY KEY," +
-						" settingvalue INTEGER not null);");
+				db.execSQL("CREATE TABLE if not exists "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+						KEY_SETTINGVALUE+" INTEGER not null);");
 			}
 			catch (SQLException e){
 				e.printStackTrace();
@@ -140,28 +140,38 @@ public class DBAdapter {
 	public Cursor getUserSettings() {
 		try{
 			Cursor cr = db.rawQuery("Select * from "+user_table+";", null);
-			Log.w("testingDatabase", "ran getUserSettings()");
+			Log.w("Database", "ran getUserSettings()");
 			return cr;
 		}
 		catch(SQLException e)
 		{
-			Log.w("testingDatabase", "getUserSettings: " + e.getMessage());
+			Log.w("Database", "getUserSettings: " + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
 	}
 	
-	public void updateUserSettings(int vibration, int sound, int light, int highlightTime, int showNumberIncomingSMS) {
+	public void updateUserSettings(int vibration, int sound, int light, int highlightTime, int numberAlarms) {
 		try{
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_VIBRATION+"', "+vibration+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_SOUND+"', "+sound+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_LIGHT+"', "+light+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_HIGHLIGHTTIME+"', "+highlightTime+");");
-			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_SHOWNUMBERINCOMINGSMS+"', "+showNumberIncomingSMS+");");
-			Log.w("testingDatabase", "ran updateUserSettings()");
+			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_NUMBERALARMS+"', "+numberAlarms+");");
+			Log.w("Database", "ran updateUserSettings()");
 		}
 		catch (SQLException e){
 			Log.w("testingDatabase", "updateUserSettings: " +e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	public void updateUserSetting(String setting, int value) {
+		try{
+			db.execSQL("UPDATE "+user_table+" SET settingValue = "+value+ "WHERE setting = " +setting+";");
+		}
+			catch (SQLException e){
+			Log.w("Database", "updateUserSetting: " +e.getMessage());
 			e.printStackTrace();
 		}
 	}
@@ -201,6 +211,7 @@ public class DBAdapter {
 		}
 		catch (SQLException e)
 		{
+			Log.w("Database", "isInLocalFilter: " +e.getMessage());
 			e.printStackTrace();
 		}
 		return true;
@@ -216,29 +227,46 @@ public class DBAdapter {
 		}
 		catch(SQLException e)
 		{
+			Log.w("Database", "writeLocalFilter: " +e.getMessage());
 			e.printStackTrace();
 		}
 	}
 	
 	public void updateLocalFilter(String sms, boolean receive) {
-		if(receive == true) {
-			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=1 WHERE " + KEY_TEXT +"='" + sms+"'");
-		}
-		else {
-			db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=0 WHERE " + KEY_TEXT +"='" + sms+"'");
+		try {
+			if(receive == true) {
+				db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=1 WHERE " + KEY_TEXT +"='" + sms+"'");
+			}
+			else {
+				db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=0 WHERE " + KEY_TEXT +"='" + sms+"'");
+			}
+		} catch (SQLException e) {
+			Log.w("Database", "updateLocalFilter: " +e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	
 	public Cursor getXFilter(String text) {
-		return db.rawQuery("SELECT * FROM " + filter_table + " WHERE " + KEY_TEXT + " LIKE '%" + text + "%'", null);
+		try {
+			return db.rawQuery("SELECT * FROM " + filter_table + " WHERE " + KEY_TEXT + " LIKE '%" + text + "%'", null);
+		} catch (Exception e) {
+			Log.w("Database", "getXFilter: " +e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void insertSMS(String text)
 	{
-		ContentValues initialValues = new ContentValues();
-		initialValues.put(KEY_TIME, DBAdapter.getDateStamp());
-		initialValues.put(KEY_TEXT, text);
-		db.execSQL("INSERT INTO "+log_table+" ("+KEY_TIME+", "+KEY_TEXT+") VALUES("+DBAdapter.getDateStamp()+", '"+text+"');"); 
+		try {
+			ContentValues initialValues = new ContentValues();
+			initialValues.put(KEY_TIME, DBAdapter.getDateStamp());
+			initialValues.put(KEY_TEXT, text);
+			db.execSQL("INSERT INTO "+log_table+" ("+KEY_TIME+", "+KEY_TEXT+") VALUES("+DBAdapter.getDateStamp()+", '"+text+"');");
+		} catch (SQLException e) {
+			Log.w("Database", "insertSMS: " +e.getMessage());
+			e.printStackTrace();
+		} 
 	}
 	
 	public boolean deleteSMS(String time)
@@ -253,21 +281,39 @@ public class DBAdapter {
 	
 	public Cursor getAllSMS()
 	{
-		return db.rawQuery("select * from "+log_table + " order by id desc", null);
+		try {
+			return db.rawQuery("select * from "+log_table + " order by id desc", null);
+		} catch (Exception e) {
+			Log.w("Database", "getAllSMS: " +e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	
 	}
 	
 	public Cursor getXSMS(int x) 
 	{
 		String query = "select * from " + log_table + " order by id desc limit " + x;
-		return db.rawQuery(query, null);
+		try {
+			return db.rawQuery(query, null);
+		} catch (Exception e) {
+			Log.w("Database", "getXSMS: " +e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public Cursor getXUnblockedSMS(int x)
 	{
 		String query = "select * from " + log_table + " where "+ KEY_TEXT + " in (select "+KEY_TEXT+
 				" from "+ filter_table + " where "+KEY_RECEIVE+"=1) order by id desc limit "+x;
-		return db.rawQuery(query, null);
+		try {
+			return db.rawQuery(query, null);
+		} catch (Exception e) {
+			Log.w("Database", "getXUnblockedSMS: " +e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void removeOldSMS()
@@ -281,6 +327,7 @@ public class DBAdapter {
 	public void deleteUser() {
 		db.delete(log_table, null, null);
 		db.delete(filter_table, null, null);
+		db.delete(user_table, null, null);
 	}
 	
 	/**

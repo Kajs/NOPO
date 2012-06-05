@@ -27,10 +27,11 @@ public class LogActivity extends Activity {
     
     public void getLog() {
     	LogManager logMan = LogManager.getInstance(this);
-        Cursor c = logMan.readLogFile();
+        Cursor c = logMan.getAllSMS();
         log = new ArrayList<String>();
         c.moveToFirst();
-        while(c.getPosition() < c.getCount()) {
+        int size = c.getCount();
+        while(c.getPosition() < size) {
         	String row = "" + c.getString(1).substring(8, 10) + ":" + 
         					  c.getString(1).substring(10, 12) + ":" + 
         					  c.getString(1).substring(12, 14) + "-" + 

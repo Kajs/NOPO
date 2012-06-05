@@ -44,10 +44,10 @@ public class NotificationManager {
 	}
 	
 	public void vibrate() {
-		if(LoginActivity.vibration > 0){
+		if(SettingManager.vibration > 0){
 			int index = -1;
 			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-			long[] pattern = vibrationPattern(0, 400, 100, LoginActivity.vibration);
+			long[] pattern = vibrationPattern(0, 400, 100, SettingManager.vibration);
 			try{
 				v.vibrate(pattern, index);
 			}
@@ -60,7 +60,7 @@ public class NotificationManager {
 	}
 	
 	public void playSound() {
-		int sound = LoginActivity.sound;
+		int sound = SettingManager.sound;
 		if(sound > 0) {
 			soundRepeats = sound - 1;
 			if(player == null) {
@@ -86,5 +86,9 @@ public class NotificationManager {
 			}
 			player.start();
 		}		
+	}
+	
+	static void readUserSettings() {
+		
 	}
 }
