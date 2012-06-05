@@ -10,6 +10,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class DBAdapter {
@@ -17,10 +18,16 @@ public class DBAdapter {
 	private static final String KEY_TIME = "time";
 	private static final String KEY_TEXT = "text";
 	private static final String KEY_RECEIVE = "receive";
+	private static final String KEY_VIBRATION = "vibration";
+	private static final String KEY_SOUND = "sound";
+	private static final String KEY_LIGHT = "light";
+	private static final String KEY_HIGHLIGHTTIME = "highligthTime";
+	private static final String KEY_SHOWNUMBERINCOMINGSMS = "showNumberIncomingSMS";
 	private static final String DATABASE_NAME = "NOPO";
 	private static final int DATABASE_VERSION = 1;
 	private static String log_table;
 	private static String filter_table;
+	private static String user_table;
 	
 	private SQLiteDatabase db;
 	private DatabaseHelper DBHelper;
@@ -33,6 +40,7 @@ public class DBAdapter {
 		DBAdapter.context = ctx;
 		log_table = LoginActivity.userName+"log";
 		filter_table =  LoginActivity.userName+"filter";
+		user_table = LoginActivity.userName+"settings";
 		this.DBHelper = new DatabaseHelper(context);
 
 	}
@@ -45,9 +53,10 @@ public class DBAdapter {
 		return DBAdapter.instance;
 	}
 	
-	public static void updateTableNames(String logTable, String filterTable) {
+	public static void updateTableNames(String logTable, String filterTable, String userTable) {
 		log_table = logTable;
-		filter_table = filterTable;		
+		filter_table = filterTable;	
+		user_table = userTable;
 	}
 	
 	
@@ -58,6 +67,7 @@ public class DBAdapter {
 			super(context, DBAdapter.DATABASE_NAME, null, DBAdapter.DATABASE_VERSION);
 			log_table = LoginActivity.userName+"log";
 			filter_table =  LoginActivity.userName+"filter";
+			user_table = LoginActivity.userName+"settings";
 		}
 		
 		/**
@@ -72,7 +82,10 @@ public class DBAdapter {
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL(
 						"create table "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
-						KEY_RECEIVE+" INTEGER not null);");	
+						KEY_RECEIVE+" INTEGER not null);");
+				db.execSQL("CREATE TABLE "+user_table+"(setting TEXT PRIMARY KEY," +
+						" settingvalue INTEGER not null);");
+				
 			}
 			catch (SQLException e) {
 				e.printStackTrace();
@@ -90,7 +103,9 @@ public class DBAdapter {
 				db.execSQL("create table if not exists "+log_table+ "(id INTEGER primary key, "+
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL("create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
-						KEY_RECEIVE+" INTEGER not null);");		
+						KEY_RECEIVE+" INTEGER not null);");	
+				db.execSQL("CREATE TABLE if not exists "+user_table+"(setting TEXT PRIMARY KEY," +
+						" settingvalue INTEGER not null);");
 			}
 			catch (SQLException e){
 				e.printStackTrace();
@@ -121,6 +136,35 @@ public class DBAdapter {
 	 * 
 	 * @return null SQLException has occured
 	 */
+	
+	public Cursor getUserSettings() {
+		try{
+			Cursor cr = db.rawQuery("Select * from "+user_table+";", null);
+			Log.w("testingDatabase", "ran getUserSettings()");
+			return cr;
+		}
+		catch(SQLException e)
+		{
+			Log.w("testingDatabase", "getUserSettings: " + e.getMessage());
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void updateUserSettings(int vibration, int sound, int light, int highlightTime, int showNumberIncomingSMS) {
+		try{
+			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_VIBRATION+"', "+vibration+");");
+			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_SOUND+"', "+sound+");");
+			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_LIGHT+"', "+light+");");
+			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_HIGHLIGHTTIME+"', "+highlightTime+");");
+			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_SHOWNUMBERINCOMINGSMS+"', "+showNumberIncomingSMS+");");
+			Log.w("testingDatabase", "ran updateUserSettings()");
+		}
+		catch (SQLException e){
+			Log.w("testingDatabase", "updateUserSettings: " +e.getMessage());
+			e.printStackTrace();
+		}
+	}
 	
 	public Cursor readLocalFilter()
 	{

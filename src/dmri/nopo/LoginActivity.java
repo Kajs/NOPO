@@ -9,7 +9,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -20,7 +22,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
     
 	private Button loginButton;
-	static boolean allowAutoLogin = true;
+	static boolean allowAutoLogin;
 	private EditText user;
 	static SharedPreferences appPref;
 	static SharedPreferences indivPref;
@@ -47,24 +49,24 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
         user = (EditText) findViewById(R.id.username);
         logo = (ImageView) findViewById(R.id.loginlogo);
-        appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
+        prepareAppPref();
         String lastUser = appPref.getString("user", "default");
         receiveNumber = appPref.getString("receiveNumber", "15555215556");
-        appEditor = appPref.edit();
-        appEditor.putString("user", userName);
-    	appEditor.commit();
-    	fileName = userName + "Notify";
-        indivPref = getSharedPreferences(fileName, Context.MODE_PRIVATE);
         if(lastUser != "default") {
+        	allowAutoLogin = false;
         	if(allowAutoLogin) {
         		userName = lastUser;
-            	DBAdapter.updateTableNames(userName+"log", userName+"filter");
+            	DBAdapter.updateTableNames(userName+"log", userName+"filter", userName+"settings");
+            	fileName = userName + "Notify";
+            	prepareIndivPref();
             	readUserFile();
-            	indivEditor = indivPref.edit();
+            	Log.w("testingDatabase", "Running getSettings()");
+            	getSettings();
+            	prepareAppEditor();
+            	prepareIndivEditor();
             	Intent intent = new Intent("android.intent.action.ALARM");
             	Toast.makeText(this, "Logger ind som sidste bruger: " + lastUser, Toast.LENGTH_LONG).show();
             	startActivity(intent);
-            	finish();
         	}     	
         }
         this.loginButton = (Button) this.findViewById(R.id.login);
@@ -72,19 +74,22 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
             	userName = user.getText().toString();
-            	DBAdapter.updateTableNames(userName+"log", userName+"filter");
+            	DBAdapter.updateTableNames(userName+"log", userName+"filter", userName+"settings");
+            	fileName = userName + "Notify";
+            	prepareIndivPref();
             	readUserFile();
-            	indivEditor = indivPref.edit();
+            	getSettings();
+            	prepareAppEditor();
+            	prepareIndivEditor();
             	Intent intent = new Intent("android.intent.action.ALARM");
             	startActivity(intent);
-            	finish();
             	}});         	
         }
     
     private void readUserFile() {
 		vibration = indivPref.getInt("vibrationValue", 5);
         sound = indivPref.getInt("soundValue", 5);
-        light = indivPref.getInt("lightValue", 50);
+        light = indivPref.getInt("lightValue", 5);
         highlightTime = indivPref.getInt("highlightValue", 5);
         showNumberIncomingSMS = indivPref.getInt("numberIncomingSMS", 6);
 	}
@@ -133,5 +138,46 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		else return false;
+	}
+	
+	private void prepareAppPref() {
+		if(appPref == null) {
+			appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
+		}
+	}
+	
+	private void prepareIndivPref() {
+		if(indivPref == null) {
+			indivPref = getSharedPreferences(fileName, Context.MODE_PRIVATE);
+		}
+	}
+	
+	private void prepareAppEditor() {
+		if(appEditor == null) {
+			appEditor = appPref.edit();
+		}
+	}
+	
+	private void prepareIndivEditor() {
+		if(indivEditor == null) {
+			indivEditor = indivPref.edit();
+		}
+	}
+	
+	private void getSettings() {
+		DBAdapter db = DBAdapter.getInstance(this);
+		db.open();
+		db.updateUserSettings(1, 2, 3, 4, 5);
+		Cursor settings = db.getUserSettings();
+		int size = settings.getCount();
+		int index = 0;
+		settings.moveToFirst();
+		while(index < size) {
+			String result = "";
+			result = result + settings.getString(0) + ": " + settings.getString(1);
+			Log.w("testingDatabase", "Run " + Integer.toString(index) + ": " + result);
+			settings.moveToNext();
+			index++;
+		}
 	}
 }
