@@ -5,7 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import dmri.nopo.R;
-import android.util.Log;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -21,8 +20,7 @@ import android.widget.Toast;
 public class LoginActivity extends Activity {
     
 	private Button loginButton;
-	static boolean tryAutoLogin = true;
-	//private EditText pass;
+	static boolean allowAutoLogin = true;
 	private EditText user;
 	static SharedPreferences appPref;
 	static SharedPreferences indivPref;
@@ -47,72 +45,41 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
-        //pass = (EditText) findViewById(R.id.password);
         user = (EditText) findViewById(R.id.username);
         logo = (ImageView) findViewById(R.id.loginlogo);
-        
-        if(tryAutoLogin) {
-        	tryAutoLogin();
+        appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
+        String lastUser = appPref.getString("user", "default");
+        receiveNumber = appPref.getString("receiveNumber", "15555215556");
+        appEditor = appPref.edit();
+        appEditor.putString("user", userName);
+    	appEditor.commit();
+    	fileName = userName + "Notify";
+        indivPref = getSharedPreferences(fileName, Context.MODE_PRIVATE);
+        if(lastUser != "default") {
+        	if(allowAutoLogin) {
+        		userName = lastUser;
+            	DBAdapter.updateTableNames(userName+"log", userName+"filter");
+            	readUserFile();
+            	indivEditor = indivPref.edit();
+            	Intent intent = new Intent("android.intent.action.ALARM");
+            	Toast.makeText(this, "Logger ind som sidste bruger: " + lastUser, Toast.LENGTH_LONG).show();
+            	startActivity(intent);
+            	finish();
+        	}     	
         }
-        
         this.loginButton = (Button) this.findViewById(R.id.login);
         this.loginButton.setOnClickListener(new View.OnClickListener() {
-        	@Override
-        	public void onClick(View v) {
-            	try {
-	        		Intent intent = new Intent("android.intent.action.ALARM");
-
-	        		userName = user.getText().toString();
-	        		DBAdapter.updateTableNames(userName+"log", userName+"filter");
-	        		
-	        		appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
-	        		receiveNumber = appPref.getString("receiveNumber", "15555215556");
-	                appEditor = appPref.edit();
-	                appEditor.putString("user", userName);
-	            	appEditor.commit();
-	            	
-	            	fileName = userName + "Notify";
-	                indivPref = getSharedPreferences(fileName, Context.MODE_PRIVATE);
-	                readUserFile();
-	                indivEditor = indivPref.edit();
-	            	
-	                startActivity(intent);
-	                finish();
-	            	}      	
-            	catch (Exception e) {
-            		String fail = e.getMessage();
-            		Log.e("Fejl ved login", fail);
-            	}
-            
-        	}});
-    }
-
-    public void tryAutoLogin() {
-    	appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
-    	String lastUser = appPref.getString("user", "default");
-    	
-    	if(lastUser != "default") {
-    		Toast.makeText(this, "Logger ind som sidste bruger: " + lastUser, Toast.LENGTH_LONG).show();
-    		Intent intent = new Intent("android.intent.action.ALARM");
-    			
-    		userName = lastUser;
-    		DBAdapter.updateTableNames(userName+"log", userName+"filter");
-    			
-    		appPref = getSharedPreferences("NOPOPref", Context.MODE_PRIVATE);
-        	receiveNumber = appPref.getString("receiveNumber", "15555215556");
-            appEditor = appPref.edit();
-            	
-            fileName = userName + "Notify";
-            indivPref = getSharedPreferences(fileName, Context.MODE_PRIVATE);
-            readUserFile();
-            indivEditor = indivPref.edit();
-            	
-            startActivity(intent);
-            finish();
-    		}
-    		else{    			
-    		}
-    	}
+            @Override
+            public void onClick(View v) {
+            	userName = user.getText().toString();
+            	DBAdapter.updateTableNames(userName+"log", userName+"filter");
+            	readUserFile();
+            	indivEditor = indivPref.edit();
+            	Intent intent = new Intent("android.intent.action.ALARM");
+            	startActivity(intent);
+            	finish();
+            	}});         	
+        }
     
     private void readUserFile() {
 		vibration = indivPref.getInt("vibrationValue", 5);
@@ -166,11 +133,5 @@ public class LoginActivity extends Activity {
 			return true;
 		}
 		else return false;
-	}
-	
-	@Override 
-	public void onDestroy() {
-		tryAutoLogin = true;
-		super.onDestroy();
 	}
 }

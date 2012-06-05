@@ -1,5 +1,7 @@
 package dmri.nopo;
 
+import java.io.IOException;
+
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
@@ -58,10 +60,19 @@ public class NotificationManager {
 	}
 	
 	public void playSound() {
-		if(LoginActivity.sound > 0) {
-			soundRepeats = LoginActivity.sound - 1;
+		int sound = LoginActivity.sound;
+		if(sound > 0) {
+			soundRepeats = sound - 1;
 			if(player == null) {
 				player = MediaPlayer.create(c, R.raw.beep);
+				try {
+					player.prepare();
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+			    }
+
 				MediaPlayer.OnCompletionListener listener = new MediaPlayer.OnCompletionListener() {
 					public void onCompletion(MediaPlayer mp) {
 						if(soundRepeats > 0) {
@@ -70,7 +81,7 @@ public class NotificationManager {
 						}
 					}
 				};
-				
+
 				player.setOnCompletionListener(listener);
 			}
 			player.start();

@@ -66,6 +66,28 @@ public class AlarmActivity extends ListActivity {
     intentFilter.addAction("SMS_RECEIVED_ACTION");
   }
   
+  @Override
+  public void onBackPressed() {
+	  AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+	  alertDialog.setTitle("Advarsel");
+	  alertDialog.setMessage("Hvis du vaelger luk, vil programmet ikke modtage alarmer");
+	  alertDialog.setButton(-1, "Luk", new DialogInterface.OnClickListener() {
+	     public void onClick(DialogInterface dialog, int which) {
+	    	 finish();
+	     }
+	  });
+	  alertDialog.setButton(-2, "Annuller", new DialogInterface.OnClickListener() {
+    	 public void onClick(DialogInterface dialog, int which) {
+    	 }
+	  });
+	  alertDialog.setButton(-3, "Minimer", new DialogInterface.OnClickListener() {
+	     public void onClick(DialogInterface dialog, int which) {
+	    	 moveTaskToBack(true);
+	     }
+	  });
+	  alertDialog.show();
+  }
+  
 
   @Override
   protected void onListItemClick(ListView l, View v, int position, long id) {

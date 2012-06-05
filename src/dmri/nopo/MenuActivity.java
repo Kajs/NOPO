@@ -109,7 +109,7 @@ public class MenuActivity extends Activity {
 	        	    	 db.deleteUser();
 	        	    	 db.close();
 	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
-	        	    	 LoginActivity.tryAutoLogin = false;
+	        	    	 LoginActivity.allowAutoLogin = false;
 	                     startActivity(loginpage);
 	                     finish();
 	        	     }
@@ -134,7 +134,7 @@ public class MenuActivity extends Activity {
 	        	     public void onClick(DialogInterface dialog, int which) {
 	        	    	 DBAdapter.getInstance(context).close();    
 	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
-	        	    	 LoginActivity.tryAutoLogin = false;
+	        	    	 LoginActivity.allowAutoLogin = false;
 	                     startActivity(loginpage);
 	                     finish();
 	        	     }
