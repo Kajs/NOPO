@@ -39,36 +39,20 @@ public class DBAdapter {
 	
 	private static DBAdapter instance;
 	
-	private DBAdapter(Context ctx, String userName)
+	private DBAdapter(Context ctx)
 	{
 		DBAdapter.context = ctx;
-		DBAdapter.log_table = userName + "log";
-		DBAdapter.filter_table = userName + "filter";
-		DBAdapter.user_table = userName + "settings";
+		prepareTableNames();
 		this.DBHelper = new DatabaseHelper(context);
 	}
 	
-	public static DBAdapter getInstance(Context context, String userName){
+	public static DBAdapter getInstance(Context context){
 		if (DBAdapter.instance == null)
 		{
-			instance = new DBAdapter(context, userName);
+			instance = new DBAdapter(context);
 		}
 		return instance;
-	}
-	/**
-	public static void updateTableNames(String logTable, String filterTable, String userTable) {
-		log_table = logTable;
-		filter_table = filterTable;	
-		user_table = userTable;
-		Log.w("Database", "updateTableNames: log_table = "+log_table);
-		Log.w("Database", "updateTableNames: filter_table = "+filter_table);
-		Log.w("Database", "updateTableNames: user_table = "+user_table);
-		Log.w("Database", "updateTableNames: logTable = "+logTable);
-		Log.w("Database", "updateTableNames: filterTable = "+filterTable);
-		Log.w("Database", "updateTableNames: userTable = "+userTable);
-	}
-	*/
-	
+	}	
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper
 	{
@@ -85,17 +69,15 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				Log.w("Database", "onCreate: log_table = "+log_table);
-				Log.w("Database", "onCreate: filter_table = "+filter_table);
-				Log.w("Database", "onCreate: user_table = "+user_table);
-				db.execSQL("create table "+log_table+ "("+KEY_ID+" INTEGER primary key autoincrement, "+
+				prepareTableNames();
+				db.execSQL("create table if not exists "+log_table+ "("+KEY_ID+" INTEGER primary key autoincrement, "+
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL(
-						"create table "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
+						"create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
 						KEY_RECEIVE+" INTEGER not null);");
-				db.execSQL("CREATE TABLE "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+				db.execSQL("CREATE TABLE if not exists "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" INTEGER not null);");
-				db.execSQL("CREATE TABLE "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+				db.execSQL("CREATE TABLE if not exists "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" TEXT not null);");
 				
 			}
@@ -113,9 +95,7 @@ public class DBAdapter {
 		public void onOpen(SQLiteDatabase db)
 		{
 			try{
-				Log.w("Database", "onOpen: log_table = "+log_table);
-				Log.w("Database", "onOpen: filter_table = "+filter_table);
-				Log.w("Database", "onOpen: user_table = "+user_table);
+				prepareTableNames();
 				db.execSQL("create table if not exists "+log_table+ "(id INTEGER primary key, "+
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL("create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
@@ -163,7 +143,7 @@ public class DBAdapter {
 	
 	public void setReceiveNumber(String receiveNumber) {
 		try {
-			db.execSQL("INSERT or REPLACE into "+application_table+" VALUES('"+KEY_RECEIVENUMBER+"', "+receiveNumber+");");
+			db.execSQL("INSERT or REPLACE into "+application_table+" VALUES('"+KEY_RECEIVENUMBER+"', '"+receiveNumber+"');");
 		} catch (SQLException e) {
 			Log.w("Database", "setReceiveNumber: " + e.getMessage());
 			e.printStackTrace();
@@ -172,7 +152,7 @@ public class DBAdapter {
 	
 	public void setLastUser(String lastUser) {
 		try {
-			db.execSQL("INSERT or REPLACE into "+application_table+" VALUES('"+KEY_LASTUSER+"', "+lastUser+");");
+			db.execSQL("INSERT or REPLACE into "+application_table+" VALUES('"+KEY_LASTUSER+"', '"+lastUser+"');");
 		} catch (SQLException e) {
 			Log.w("Database", "setLastUser: " + e.getMessage());
 			e.printStackTrace();
@@ -429,4 +409,11 @@ public class DBAdapter {
 	      long longvalue = new Long(time);
 	      return longvalue;
 	  }
+	
+	static void prepareTableNames() {
+		String userName = SettingsManager.userName;
+		log_table = userName + "log";
+		filter_table = userName + "filter";
+		user_table = userName + "settings";
+	}
 }

@@ -57,7 +57,7 @@ public class MenuActivity extends Activity {
         numberIncChooser.setSelection(smsPosition);
         
         username = (TextView) findViewById(R.id.userlogin);
-        username.setText(settingsManager.userName);
+        username.setText(SettingsManager.userName);
         
         vibroBar = (SeekBar) findViewById(R.id.vibrobar);
         vibroBar.setProgress(settingsManager.vibration);
@@ -98,10 +98,11 @@ public class MenuActivity extends Activity {
 			public void onClick(View v) {
 				AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 	        	  alertDialog.setTitle("Slet Bruger");
-	        	  alertDialog.setMessage("Advarsel! Dette vil slette brugeren " + settingsManager.userName + ", brugerens alarmfilter samt brugerens indstillinger fra systemet. Vil du fortsaette?");
+	        	  alertDialog.setMessage("Advarsel! Dette vil slette brugeren " + SettingsManager.userName + ", brugerens alarmfilter samt brugerens indstillinger fra systemet. Vil du fortsaette?");
 	        	  alertDialog.setButton(-1, "Godkend", new DialogInterface.OnClickListener() {
 	        	     public void onClick(DialogInterface dialog, int which) {
-	        	    	 DBAdapter db = DBAdapter.getInstance(context, settingsManager.userName);
+	        	    	 DBAdapter db = DBAdapter.getInstance(context);
+	        	    	 db.open();
 	        	    	 db.deleteUser();
 	        	    	 db.close();
 	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
@@ -127,7 +128,7 @@ public class MenuActivity extends Activity {
 	        	  alertDialog.setMessage("Skal der logges af systemet?");
 	        	  alertDialog.setButton(-1, "Ja", new DialogInterface.OnClickListener() {
 	        	     public void onClick(DialogInterface dialog, int which) {
-	        	    	 DBAdapter.getInstance(context, settingsManager.userName).close();    
+	        	    	 DBAdapter.getInstance(context).close();    
 	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
 	                     startActivity(loginpage);
 	                     finish();

@@ -4,7 +4,6 @@ import dmri.nopo.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,7 +34,8 @@ public class LoginActivity extends Activity {
             	String userName = user.getText().toString();
             	if(checkUserName(userName)) {
             		settingsManager = SettingsManager.getInstance(getApplicationContext());
-            		settingsManager.userName = userName;
+            		SettingsManager.userName = userName;
+            		settingsManager.setLastUser(userName);
                 	settingsManager.setupSettings();
                 	Intent intent = new Intent("android.intent.action.ALARM");
                 	startActivity(intent);
@@ -46,22 +46,19 @@ public class LoginActivity extends Activity {
             }
         });
         
-  //      tryAutoLogin();
+        tryAutoLogin();
     }
     
     public boolean checkUserName(String userName) {
-    	Log.w("Matches [a-zA-Z0-9][a-zA-Z0-9]*", Boolean.toString(userName.matches("[a-zA-Z0-9][a-zA-Z0-9]*")));
     	return userName.matches("[a-zA-Z0-9][a-zA-Z0-9]*");
     }
-/**    
+   
     public void tryAutoLogin() {
+    	settingsManager = SettingsManager.getInstance(getApplicationContext());
     	if(settingsManager.hasStoredUser()) {
-    		String userName = settingsManager.userName;
-    		DBAdapter.updateTableNames(userName+"log", userName+"filter", userName+"settings");
         	settingsManager.setupSettings();
         	Intent intent = new Intent("android.intent.action.ALARM");
         	startActivity(intent);
     	}
     }
-    */
 }

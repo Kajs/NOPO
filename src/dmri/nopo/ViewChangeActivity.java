@@ -14,7 +14,6 @@ public class ViewChangeActivity extends Fragment {
 	private Button filterButton;
 	private Button menuButton;
 	private Button alarmButton;
-	
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         	return inflater.inflate(R.layout.viewchange, container, false);

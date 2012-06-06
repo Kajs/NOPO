@@ -5,20 +5,19 @@ import android.database.Cursor;
 
 public class FilterManager {
 	
-	private DBAdapter db;
 	private static FilterManager instance;
+	private Context context;
 	
 	
-	private FilterManager(Context context){
-		db = DBAdapter.getInstance(context, SettingsManager.userName);
-		db.open();
+	private FilterManager(Context ctx){
+		context = ctx;		
 	}
 	
 	public static FilterManager getInstance(Context context)
 	{
-		if (FilterManager.instance == null)
+		if (instance == null)
 	    {
-			FilterManager.instance = new FilterManager(context);
+			instance = new FilterManager(context);
 	    }
 	    return FilterManager.instance;
 	}
@@ -26,19 +25,26 @@ public class FilterManager {
 	
 	public Cursor getLocalFilter()
 	{
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		return db.readLocalFilter();		
 	}
 	
 	public boolean isInLocalFilter(String sms)
 	{
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		return db.isInLocalFilter(sms);
 	}
 	
 	public void updateLocalFilter(String sms, Boolean bool) {
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		db.updateLocalFilter(sms, bool);
 	}
 	
 	public Cursor getXFilter(String text) {
+		DBAdapter db = DBAdapter.getInstance(context);
 		db.open();
 		return db.getXFilter(text);
 	}

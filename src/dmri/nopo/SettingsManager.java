@@ -13,21 +13,18 @@ public class SettingsManager {
 	public String receiveNumber;
 	//send number of emulator 5556
 	static final String defaultReceiveNumber = "15555215556";
-	private DBAdapter db;
 	private static SettingsManager instance;
+	private Context context;
 	
 	private SettingsManager(Context ctx)
 	{
-		db = DBAdapter.getInstance(ctx, userName);
-		db.open();
+		context = ctx;
 	}
 	
 	public static SettingsManager getInstance(Context context){
 		if (instance == null)
 		{
 			instance = new SettingsManager(context);
-			instance.db = DBAdapter.getInstance(context, userName);
-			instance.db.open();
 		}
 		return SettingsManager.instance;
 	}
@@ -46,7 +43,8 @@ public class SettingsManager {
 	
 	public void setupSettings() {
 		getReceiveNumber();
-		
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		Cursor userSettings = db.getUserSettings();
 		int size = userSettings.getCount();
 		if(size == 0) {
@@ -83,25 +81,35 @@ public class SettingsManager {
 		sound = newSound;
 		light = newLight;
 		highlightTime = newHighlightTime;
-		numberAlarms = newNumberAlarms;			
+		numberAlarms = newNumberAlarms;	
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		db.updateUserSettings(newVibration, newSound, newLight, newHighlightTime, newNumberAlarms);
 	}
 	
 	public void updateSetting(String setting, int value) {
-		parse(setting, value);	
+		parse(setting, value);
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		db.updateUserSetting(setting, value);
 	}
 	
 	public void setReceiveNumber(String newReceiveNumber) {
 		receiveNumber = newReceiveNumber;
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		db.setReceiveNumber(newReceiveNumber);
 	}
 	
-	public void setLastUser(String newLastUser) {	
-		db.setReceiveNumber(newLastUser);
+	public void setLastUser(String newLastUser) {
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
+		db.setLastUser(newLastUser);
 	}
 	
 	public void getReceiveNumber() {
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		Cursor storedNumber = db.getReceiveNumber();
 		if(storedNumber.getCount() == 0) {
 			receiveNumber = defaultReceiveNumber;
@@ -112,6 +120,8 @@ public class SettingsManager {
 	}
 	
 	public boolean hasStoredUser() {
+		DBAdapter db = DBAdapter.getInstance(context);
+		db.open();
 		Cursor storedUser = db.getLastUser();
 		if(storedUser.getCount() == 0) {
 			return false;

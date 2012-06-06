@@ -296,5 +296,4 @@ public class AlarmActivity extends ListActivity {
 	  Log.w("NOPO", "Blokeret sms modtaget");
   }
 
-
 }
