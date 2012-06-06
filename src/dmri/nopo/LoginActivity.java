@@ -82,5 +82,6 @@ public class LoginActivity extends Activity {
     		Intent intent = new Intent("android.intent.action.ALARM");
         	startActivity(intent);    		
     	}
+    	super.onResume();
     }
 }
