@@ -2,13 +2,16 @@ package dmri.nopo;
 
 import dmri.nopo.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class LoginActivity extends Activity {
     
@@ -23,7 +26,6 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.login);
         user = (EditText) findViewById(R.id.username);
         logo = (ImageView) findViewById(R.id.loginlogo);  	
@@ -32,29 +34,22 @@ public class LoginActivity extends Activity {
             @Override
             public void onClick(View v) {
             	String userName = user.getText().toString();
-            	SettingManager.userName = userName;
-            	DBAdapter.updateTableNames(userName+"log", userName+"filter", userName+"settings");
-            	SettingManager.isNewUser(getApplicationContext());
-            	Intent intent = new Intent("android.intent.action.ALARM");
-            	startActivity(intent);
-            	}});         	
-        }
-/**	
-	private void getSettings() {
-		DBAdapter db = DBAdapter.getInstance(this);
-		db.open();
-		db.updateUserSettings(1, 2, 3, 4, 5);
-		Cursor settings = db.getUserSettings();
-		int size = settings.getCount();
-		int index = 0;
-		settings.moveToFirst();
-		while(index < size) {
-			String result = "";
-			result = result + settings.getString(0) + ": " + settings.getString(1);
-			Log.w("testingDatabase", "Run " + Integer.toString(index) + ": " + result);
-			settings.moveToNext();
-			index++;
-		}
-	}
-	*/
+            	if(checkUserName(userName)) {
+            		SettingManager.userName = userName;
+                	DBAdapter.updateTableNames(userName+"log", userName+"filter", userName+"settings");
+                	SettingManager.setupSettings(getApplicationContext());
+                	Intent intent = new Intent("android.intent.action.ALARM");
+                	startActivity(intent);
+                	}
+            	else {
+            		Toast.makeText(getApplicationContext(), "Brug venligst tegn fra a-z, A-Z og/eller 0-9", Toast.LENGTH_LONG).show();
+            	}
+            }
+        });
+    }
+    
+    public boolean checkUserName(String userName) {
+    	Log.w("Matches [a-zA-Z0-9][a-zA-Z0-9]*", Boolean.toString(userName.matches("[a-zA-Z0-9][a-zA-Z0-9]*")));
+    	return userName.matches("[a-zA-Z0-9][a-zA-Z0-9]*");
+    }
 }

@@ -3,6 +3,7 @@ package dmri.nopo;
 import dmri.nopo.R;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
@@ -22,39 +23,41 @@ public class ViewChangeActivity extends Fragment {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState);
-	        this.alarmButton = (Button) getView().findViewById(R.id.alarm);
-	        this.alarmButton.setOnClickListener(new View.OnClickListener() {
-	        	@Override
-	        	public void onClick(View v) {
-	            	Intent intent = new Intent("android.intent.action.ALARM");
-	                startActivity(intent);
-	            }
-	        });
-	        
-	        this.logButton = (Button) getView().findViewById(R.id.log);
-	        this.logButton.setOnClickListener(new View.OnClickListener() {
-	        	@Override
-	        	public void onClick(View v) {
-	            	Intent intent = new Intent("android.intent.action.LOG");
-	                startActivity(intent);
-	            }
-	        });
-	        this.filterButton = (Button) getView().findViewById(R.id.filter);
-	        this.filterButton.setOnClickListener(new View.OnClickListener() {
-	        	@Override
-	        	public void onClick(View v) {
-	            	Intent intent = new Intent("android.intent.action.FILTER");
-	                startActivity(intent);
-	            }
-	        });
-	        this.menuButton = (Button) getView().findViewById(R.id.menu);
-	        this.menuButton.setOnClickListener(new View.OnClickListener() {
-	        	@Override
-	        	public void onClick(View v) {
-	            	Intent intent = new Intent("android.intent.action.MENU");
-	                startActivity(intent);
-	            }
-	        });      
+		super.onCreate(savedInstanceState);;
+		this.alarmButton = (Button) getView().findViewById(R.id.alarm);
+	    this.alarmButton.setOnClickListener(new View.OnClickListener() {
+	    	@Override
+	    	public void onClick(View v) {
+	    		Intent intent = new Intent("android.intent.action.ALARM");
+	    		startActivity(intent);
+	    	}
+	    });
+	    
+	    this.logButton = (Button) getView().findViewById(R.id.log);
+	    this.logButton.setOnClickListener(new View.OnClickListener() {
+	    	@Override
+	    	public void onClick(View v) {
+	    		Intent intent = new Intent("android.intent.action.LOG");
+	    		startActivity(intent);
+	    	}
+	    });
+	    
+	    this.filterButton = (Button) getView().findViewById(R.id.filter);
+	    this.filterButton.setOnClickListener(new View.OnClickListener() {
+	    	@Override
+	    	public void onClick(View v) {
+	    		Intent intent = new Intent("android.intent.action.FILTER");
+	    		startActivity(intent);
+	    	}
+	    });
+	    
+	    this.menuButton = (Button) getView().findViewById(R.id.menu);
+	    this.menuButton.setOnClickListener(new View.OnClickListener() {
+	    	@Override
+	    	public void onClick(View v) {
+	    		Intent intent = new Intent("android.intent.action.MENU");
+	    		startActivity(intent);
+	    	}
+	    });
 	}
 }

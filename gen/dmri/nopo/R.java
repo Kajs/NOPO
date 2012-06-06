@@ -24,7 +24,7 @@ public final class R {
     public static final class id {
         public static final int alarm=0x7f080020;
         public static final int buttonLine=0x7f080002;
-        public static final int deleteUserButton=0x7f08001e;
+        public static final int deleteUserButton=0x7f08001f;
         public static final int filter=0x7f080022;
         public static final int filterListView=0x7f080005;
         public static final int highlightSpinner=0x7f080018;
@@ -46,7 +46,7 @@ public final class R {
         public static final int numberSMSSpinner=0x7f08001a;
         public static final int passtext=0x7f08000d;
         public static final int receiveFrom=0x7f08001c;
-        public static final int saveButton=0x7f08001f;
+        public static final int saveButton=0x7f08001e;
         public static final int scroller=0x7f08000a;
         public static final int searchField=0x7f080004;
         public static final int showSMStext=0x7f080019;

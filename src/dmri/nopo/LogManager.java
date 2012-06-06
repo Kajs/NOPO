@@ -11,6 +11,7 @@ public class LogManager{
 	
 	private LogManager(Context context){
 		db = DBAdapter.getInstance(context);
+		db.open();
 	}
 	
 	public static LogManager getInstance(Context context)
@@ -27,33 +28,27 @@ public class LogManager{
 	 */
 	public Cursor getAllSMS()
 	{
-		
-		db.open();
 		Cursor c = db.getAllSMS();
 		return c;
 	}
 	
 	public Cursor getXSMS(int x) 
 	{
-		db.open();
 		return db.getXSMS(x);
 	}
 	
 	public Cursor getXUnblockedSMS(int x)
 	{
-		db.open();
 		return db.getXUnblockedSMS(x);
 	}
 	
 	public void writeLogFile(String sms)
 	{
-		db.open();
 		db.insertSMS(sms);
 	}
 	
 	public void removeOldSMS()
 	{
-		db.open();
 		db.removeOldSMS();
 	}
 

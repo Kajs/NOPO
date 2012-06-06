@@ -81,14 +81,14 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				db.execSQL("create table "+log_table+ "("+KEY_ID+" INTEGER primary key auto increment, "+
+				db.execSQL("create table if not exists "+log_table+ "("+KEY_ID+" INTEGER primary key autoincrement, "+
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL(
-						"create table "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
+						"create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
 						KEY_RECEIVE+" INTEGER not null);");
-				db.execSQL("CREATE TABLE "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+				db.execSQL("CREATE TABLE if not exists "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" INTEGER not null);");
-				db.execSQL("CREATE TABLE "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+				db.execSQL("CREATE TABLE if not exists "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" TEXT not null);");
 				
 			}
@@ -131,9 +131,14 @@ public class DBAdapter {
 	
 	public DBAdapter open() throws SQLException
 	{
-		this.db = DBHelper.getWritableDatabase();
-		
-		return this;
+		try {
+			this.db = DBHelper.getWritableDatabase();		
+			return this;
+		} catch (Exception e) {
+			Log.w("Database", "open: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void close()
@@ -166,7 +171,9 @@ public class DBAdapter {
 	
 	public Cursor getReceiveNumber() {
 		try {
-			return db.rawQuery("SELECT "+KEY_SETTINGVALUE+" FROM "+application_table+" WHERE "+KEY_SETTING+" = " +KEY_RECEIVENUMBER+";", null);
+			Cursor storedNumber = db.rawQuery("SELECT "+KEY_SETTINGVALUE+" FROM "+application_table+" WHERE "+KEY_SETTING+" = '"+KEY_RECEIVENUMBER+"';", null);
+			storedNumber.moveToFirst();
+			return storedNumber;
 		} catch (Exception e) {
 			Log.w("Database", "getReceiveNumber: " + e.getMessage());
 			e.printStackTrace();
@@ -176,7 +183,9 @@ public class DBAdapter {
 	
 	public Cursor getLastUser() {
 		try {
-			return db.rawQuery("SELECT "+KEY_SETTINGVALUE+" FROM "+application_table+" WHERE "+KEY_SETTING+" = " +KEY_LASTUSER+";", null);
+			Cursor storedUser = db.rawQuery("SELECT "+KEY_SETTINGVALUE+" FROM "+application_table+" WHERE "+KEY_SETTING+" = '"+KEY_LASTUSER+"';", null);
+			storedUser.moveToFirst();
+			return storedUser;
 		} catch (Exception e) {
 			Log.w("Database", "getLastUser: " + e.getMessage());
 			e.printStackTrace();
@@ -187,7 +196,7 @@ public class DBAdapter {
 	public Cursor getUserSettings() {
 		try{
 			Cursor cr = db.rawQuery("Select * from "+user_table+";", null);
-			Log.w("Database", "ran getUserSettings()");
+			cr.moveToFirst();
 			return cr;
 		}
 		catch(SQLException e)
@@ -205,7 +214,6 @@ public class DBAdapter {
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_LIGHT+"', "+light+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_HIGHLIGHTTIME+"', "+highlightTime+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_NUMBERALARMS+"', "+numberAlarms+");");
-			Log.w("Database", "ran updateUserSettings()");
 		}
 		catch (SQLException e){
 			Log.w("testingDatabase", "updateUserSettings: " +e.getMessage());
@@ -224,9 +232,14 @@ public class DBAdapter {
 	}
 	
 	public void deleteUser() {
-		db.delete(log_table, null, null);
-		db.delete(filter_table, null, null);
-		db.delete(user_table, null, null);
+		try {
+			db.delete(log_table, null, null);
+			db.delete(filter_table, null, null);
+			db.delete(user_table, null, null);
+		} catch (Exception e) {
+			Log.w("Database", "deleteUser: " +e.getMessage());
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -239,12 +252,12 @@ public class DBAdapter {
 	{
 		try {
 			Cursor cr = db.rawQuery("SELECT * FROM "+filter_table+" WHERE text = '"+text+"'", null);
+			cr.moveToFirst();
 			if (cr.getCount() == 0)
 			{
 				writeLocalFilter(text);
 				return true;
 			}
-			cr.moveToFirst();
 			if(cr.getInt(1) == 1) {
 				return true;
 			}
@@ -262,6 +275,7 @@ public class DBAdapter {
 	{
 		try{
 			Cursor cr = db.rawQuery("Select * from "+filter_table+" order by "+KEY_TEXT+" ASC", null);
+			cr.moveToFirst();
 			return cr;
 		}
 		catch(SQLException e)
@@ -302,7 +316,9 @@ public class DBAdapter {
 	
 	public Cursor getXFilter(String text) {
 		try {
-			return db.rawQuery("SELECT * FROM " + filter_table + " WHERE " + KEY_TEXT + " LIKE '%" + text + "%'", null);
+			Cursor cr = db.rawQuery("SELECT * FROM " + filter_table + " WHERE " + KEY_TEXT + " LIKE '%" + text + "%'", null);
+			cr.moveToFirst();
+			return cr;
 		} catch (Exception e) {
 			Log.w("Database", "getXFilter: " +e.getMessage());
 			e.printStackTrace();
@@ -331,7 +347,9 @@ public class DBAdapter {
 	public Cursor getAllSMS()
 	{
 		try {
-			return db.rawQuery("select * from "+log_table + " order by id desc", null);
+			Cursor cr = db.rawQuery("select * from "+log_table + " order by id desc", null);
+			cr.moveToFirst();
+			return cr;
 		} catch (Exception e) {
 			Log.w("Database", "getAllSMS: " +e.getMessage());
 			e.printStackTrace();
@@ -344,7 +362,9 @@ public class DBAdapter {
 	{
 		String query = "select * from " + log_table + " order by id desc limit " + x;
 		try {
-			return db.rawQuery(query, null);
+			Cursor cr = db.rawQuery(query, null);
+			cr.moveToFirst();
+			return cr;
 		} catch (Exception e) {
 			Log.w("Database", "getXSMS: " +e.getMessage());
 			e.printStackTrace();
@@ -357,7 +377,9 @@ public class DBAdapter {
 		String query = "select * from " + log_table + " where "+ KEY_TEXT + " in (select "+KEY_TEXT+
 				" from "+ filter_table + " where "+KEY_RECEIVE+"=1) order by id desc limit "+x;
 		try {
-			return db.rawQuery(query, null);
+			Cursor cr = db.rawQuery(query, null);
+			cr.moveToFirst();
+			return cr;
 		} catch (Exception e) {
 			Log.w("Database", "getXUnblockedSMS: " +e.getMessage());
 			e.printStackTrace();
@@ -372,10 +394,15 @@ public class DBAdapter {
 	
 	public void removeOldSMS()
 	{
-		long rawTime = DBAdapter.getDateStamp();
-		String croppedTime = Long.toString(rawTime).substring(0,8);
-		String finalCroppedTime = croppedTime + "000000";
-		db.delete(log_table, KEY_TIME + " < " + finalCroppedTime, null);
+		try {
+			long rawTime = DBAdapter.getDateStamp();
+			String croppedTime = Long.toString(rawTime).substring(0,8);
+			String finalCroppedTime = croppedTime + "000000";
+			db.delete(log_table, KEY_TIME + " < " + finalCroppedTime, null);
+		} catch (Exception e) {
+			Log.w("Database", "removeOldSMS: " +e.getMessage());
+			e.printStackTrace();
+		}
 	}
 
 	/**

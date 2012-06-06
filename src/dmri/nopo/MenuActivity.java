@@ -9,8 +9,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.widget.Button;
+import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.SeekBar;
@@ -37,7 +37,6 @@ public class MenuActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.menu);
         this.context = this;
         
@@ -78,8 +77,10 @@ public class MenuActivity extends Activity {
 				int newVib = vibroBar.getProgress();
 				int newSou = lydBar.getProgress();
 				int newLig = lysBar.getProgress();				
-				int newHigh = new Integer(highlightChooser.getSelectedItem().toString().substring(0, 1));
-				int newSMS = new Integer(numberIncChooser.getSelectedItem().toString().substring(0, 1));
+				int newHigh = new Integer(highlightChooser.getSelectedItem().toString().split(" ")[0]);
+				Log.w("testSettings", "Menu.newHigh: " + Integer.toString(newHigh));
+				int newSMS = new Integer(numberIncChooser.getSelectedItem().toString().split(" ")[0]);
+				Log.w("testHighLight", "Menu.newSMS: " + Integer.toString(newHigh));
 				SettingManager.updateUserSettings(context, newVib, newSou, newLig, newHigh, newSMS);
 				
 				String newNumber = receiveNumber.getText().toString();

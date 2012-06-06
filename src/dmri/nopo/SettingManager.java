@@ -10,7 +10,10 @@ public class SettingManager {
 	static int light;
 	static int highlightTime;
 	static int numberAlarms;
-	static String receiveNumber = "15555215556";
+	static String receiveNumber;
+	//send number of emulator 5556
+	static final String defaultReceiveNumber = "15555215556";
+	private static DBAdapter db = null;
 	
 	static boolean shouldReceive(String sender) {
 		if(receiveNumber.equals("")) {
@@ -24,18 +27,17 @@ public class SettingManager {
 		}
 	}
 	
-	static boolean isNewUser(Context context) {
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();
+	static void setupSettings(Context context) {
+		prepareDatabase(context);
+		getReceiveNumber(context);
+		
 		Cursor userSettings = db.getUserSettings();
 		int size = userSettings.getCount();
 		if(size == 0) {
 			updateUserSettings(context, 5, 5, 5, 5, 6);
-			return true;
 		}
 		else{
 			int index = 0;
-			userSettings.moveToFirst();
 			while(index < size) {
 				String setting = userSettings.getString(0);
 				int value = userSettings.getInt(1);
@@ -43,24 +45,7 @@ public class SettingManager {
 				userSettings.moveToNext();
 				index++;
 			}
-			return false;
 		}		
-	}
-	
-	static void readUserSettings(Context context) {
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();
-		Cursor userSettings = db.getUserSettings();
-		int size = userSettings.getCount();
-		int index = 0;
-		userSettings.moveToFirst();
-		while(index < size) {
-			String setting = userSettings.getString(0);
-			int value = userSettings.getInt(1);
-			parse(setting, value);
-			userSettings.moveToNext();
-			index++;
-		}				
 	}
 	
 	static void parse(String setting, int value) {
@@ -83,47 +68,54 @@ public class SettingManager {
 		light = newLight;
 		highlightTime = newHighlightTime;
 		numberAlarms = newNumberAlarms;	
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();		
+		prepareDatabase(context);		
 		db.updateUserSettings(newVibration, newSound, newLight, newHighlightTime, newNumberAlarms);
 	}
 	
 	static void updateSetting(Context context, String setting, int value) {
 		parse(setting, value);
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();		
+		prepareDatabase(context);		
 		db.updateUserSetting(setting, value);
 	}
 	
 	static void setReceiveNumber(Context context, String newReceiveNumber) {
 		receiveNumber = newReceiveNumber;
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();		
+		prepareDatabase(context);	
 		db.setReceiveNumber(newReceiveNumber);
 	}
 	
 	static void setLastUser(Context context, String newLastUser) {
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();		
+		prepareDatabase(context);		
 		db.setReceiveNumber(newLastUser);
 	}
 	
-	static String getReceiveNumber(Context context) {
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();
-		Cursor cursor = db.getReceiveNumber();
-		return cursor.getString(0);
-	}
-	
-	static String getLastUser(Context context) {
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();
-		Cursor cursor = db.getLastUser();
-		if(cursor.getCount() == 0){
-			return "default";
+	static void getReceiveNumber(Context context) {
+		prepareDatabase(context);
+		Cursor storedNumber = db.getReceiveNumber();
+		if(storedNumber.getCount() == 0) {
+			receiveNumber = defaultReceiveNumber;
 		}
 		else {
-			return cursor.getString(0);
+			receiveNumber = storedNumber.getString(0);
+		}		
+	}
+	
+	static boolean hasStoredUser(Context context) {
+		prepareDatabase(context);
+		Cursor storedUser = db.getLastUser();
+		if(storedUser.getCount() == 0) {
+			return false;
+		}
+		else {
+			userName = storedUser.getString(0);
+			return true;
+		}
+	}
+	
+	static void prepareDatabase(Context context) {
+		if(db == null){
+			db = DBAdapter.getInstance(context);
+			db.open();
 		}
 	}
 }

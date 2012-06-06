@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -54,7 +53,6 @@ public class AlarmActivity extends ListActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    requestWindowFeature(Window.FEATURE_NO_TITLE);
     setContentView(R.layout.alarm);
     EfficientAdapter newAdap = new EfficientAdapter(this);
     adap = newAdap;
@@ -113,7 +111,6 @@ public class AlarmActivity extends ListActivity {
   	  
     	LogManager log = LogManager.getInstance(context);
     	Cursor rows = log.getXUnblockedSMS(SettingManager.numberAlarms);
-    	rows.moveToFirst();
     	while(rows.getPosition() < rows.getCount()) {
     		String rawtime = rows.getString(1);
     		String time = rawtime.substring(8, 10) + ":" + rawtime.substring(10, 12) + ":" + rawtime.substring(12, 14);

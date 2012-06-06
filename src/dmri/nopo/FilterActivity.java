@@ -11,7 +11,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -30,7 +29,6 @@ public class FilterActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.filter);
 		context = this;
 		
@@ -72,8 +70,6 @@ public class FilterActivity extends Activity {
 	public void createAlarmList(Cursor c) {
 		ArrayList<String> smsColumn = new ArrayList<String>();
 		ArrayList<Boolean> blockedColumn = new ArrayList<Boolean>();
-		
-		c.moveToFirst();
 		
 		while(!c.isAfterLast()) {
 			smsColumn.add(c.getString(0));
@@ -118,7 +114,6 @@ public class FilterActivity extends Activity {
 	
 	public void testBlocking() {
 	  	Cursor rows = f.getLocalFilter();
-	  	rows.moveToFirst();
 	  	while(rows.getPosition() < rows.getCount()) {
 	  		String sms = rows.getString(0);
 	  		String isBlocked = rows.getString(1);

@@ -10,7 +10,8 @@ public class FilterManager {
 	
 	
 	private FilterManager(Context context){
-		db = DBAdapter.getInstance(context);	
+		db = DBAdapter.getInstance(context);
+		db.open();
 	}
 	
 	public static FilterManager getInstance(Context context)
@@ -25,18 +26,15 @@ public class FilterManager {
 	
 	public Cursor getLocalFilter()
 	{
-		db.open();
-		return db.readLocalFilter();
-		
+		return db.readLocalFilter();		
 	}
+	
 	public boolean isInLocalFilter(String sms)
 	{
-		db.open();
 		return db.isInLocalFilter(sms);
 	}
 	
 	public void updateLocalFilter(String sms, Boolean bool) {
-		db.open();
 		db.updateLocalFilter(sms, bool);
 	}
 	

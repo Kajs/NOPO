@@ -5,7 +5,6 @@ import dmri.nopo.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.database.Cursor;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -18,7 +17,6 @@ public class LogActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.log);
         
         getLog();
@@ -29,7 +27,6 @@ public class LogActivity extends Activity {
     	LogManager logMan = LogManager.getInstance(this);
         Cursor c = logMan.getAllSMS();
         log = new ArrayList<String>();
-        c.moveToFirst();
         int size = c.getCount();
         while(c.getPosition() < size) {
         	String row = "" + c.getString(1).substring(8, 10) + ":" + 

@@ -144,7 +144,8 @@
             android:id="@+id/textViewReceiveFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/receiveFrom" 			android:textStyle="bold"
+            android:text="@string/receiveFrom" 
+			android:textStyle="bold"
             android:gravity="center" />
 
         <EditText
@@ -156,20 +157,22 @@
             <requestFocus />
         </EditText>
 
-        <RelativeLayout>
-            
+        <RelativeLayout> 
             <Button
                 android:id="@+id/logoutButton"
-                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_toRightOf="@+id/saveButton"
                 android:text="@string/logoutButton" />
+
 
             <Button
                 android:id="@+id/deleteUserButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/saveButton"
                 android:text="@string/deleteUserButton" />
 
             <Button
@@ -179,7 +182,6 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:text="@string/saveButton" />
-
         </RelativeLayout>
 
     </TableLayout>
