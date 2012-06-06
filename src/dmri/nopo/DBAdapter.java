@@ -19,7 +19,6 @@ public class DBAdapter {
 	private static final String KEY_RECEIVE = "receive";
 	private static final String KEY_VIBRATION = "vibration";
 	private static final String KEY_SOUND = "sound";
-	private static final String KEY_LIGHT = "light";
 	private static final String KEY_HIGHLIGHTTIME = "highligthTime";
 	private static final String KEY_NUMBERALARMS = "numberAlarms";
 	private static final String KEY_SETTING = "setting";
@@ -197,11 +196,10 @@ public class DBAdapter {
 		return null;
 	}
 	
-	public void updateUserSettings(int vibration, int sound, int light, int highlightTime, int numberAlarms) {
+	public void updateUserSettings(int vibration, int sound, int highlightTime, int numberAlarms) {
 		try{
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_VIBRATION+"', "+vibration+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_SOUND+"', "+sound+");");
-			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_LIGHT+"', "+light+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_HIGHLIGHTTIME+"', "+highlightTime+");");
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_NUMBERALARMS+"', "+numberAlarms+");");
 		}

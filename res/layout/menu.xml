@@ -89,28 +89,6 @@
                 android:layout_height="wrap_content"
                 android:max="10" />
         </TableRow>
-
-        <TableRow
-            android:id="@+id/lysRow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <TextView
-                android:id="@+id/lystext"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lysText"
-                android:textStyle="bold" />
-
-            <SeekBar
-                android:id="@+id/lysbar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:max="10" />
-            
-        </TableRow>
-
-
         
         <TextView
             android:id="@+id/highlighttext"

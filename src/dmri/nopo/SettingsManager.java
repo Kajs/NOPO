@@ -8,7 +8,6 @@ public class SettingsManager {
 	static String userName;
 	public int vibration;
 	public int sound;
-	public int light;
 	public int highlightTime;
 	public int numberAlarms;
 	public String receiveNumber;
@@ -50,7 +49,7 @@ public class SettingsManager {
 		Cursor userSettings = db.getUserSettings();
 		int size = userSettings.getCount();
 		if(size == 0) {
-			updateUserSettings(5, 5, 5, 5, 6);
+			updateUserSettings(5, 5, 5, 6);
 		}
 		else{
 			int index = 0;
@@ -69,8 +68,6 @@ public class SettingsManager {
 		    vibration = value;
 		} else if (setting.equals("sound")) {
 			sound = value;
-		} else if (setting.equals("light")) {
-			light = value;
 		} else if (setting.equals("highlightTime")) {
 			highlightTime = value;
 		} else if (setting.equals("numberAlarms")) {
@@ -78,15 +75,14 @@ public class SettingsManager {
 		}
 	}
 	
-	public void updateUserSettings(int newVibration, int newSound, int newLight, int newHighlightTime, int newNumberAlarms) {
+	public void updateUserSettings(int newVibration, int newSound, int newHighlightTime, int newNumberAlarms) {
 		vibration = newVibration;
 		sound = newSound;
-		light = newLight;
 		highlightTime = newHighlightTime;
 		numberAlarms = newNumberAlarms;	
 		DBAdapter db = DBAdapter.getInstance(context);
 		db.open();
-		db.updateUserSettings(newVibration, newSound, newLight, newHighlightTime, newNumberAlarms);
+		db.updateUserSettings(newVibration, newSound, newHighlightTime, newNumberAlarms);
 	}
 
 	public void setReceiveNumber(String newReceiveNumber) {

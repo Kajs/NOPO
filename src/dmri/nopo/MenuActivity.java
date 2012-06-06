@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.widget.Button;
 import android.util.Log;
 import android.view.View;
@@ -27,7 +26,6 @@ public class MenuActivity extends Activity {
 	private TextView username;
 	private SeekBar vibroBar;
 	private SeekBar lydBar;
-	private SeekBar lysBar;
 	private Spinner highlightChooser;
 	private Spinner numberIncChooser;
 	private Context context;
@@ -46,13 +44,12 @@ public class MenuActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				int newVib = vibroBar.getProgress();
-				int newSou = lydBar.getProgress();
-				int newLig = lysBar.getProgress();				
+				int newSou = lydBar.getProgress();			
 				int newHigh = new Integer(highlightChooser.getSelectedItem().toString().split(" ")[0]);
 				Log.w("testSettings", "Menu.newHigh: " + Integer.toString(newHigh));
 				int newSMS = new Integer(numberIncChooser.getSelectedItem().toString().split(" ")[0]);
 				Log.w("testHighLight", "Menu.newSMS: " + Integer.toString(newHigh));
-				settingsManager.updateUserSettings(newVib, newSou, newLig, newHigh, newSMS);
+				settingsManager.updateUserSettings(newVib, newSou, newHigh, newSMS);
 				
 				String newNumber = receiveNumber.getText().toString();
 				settingsManager.setReceiveNumber(newNumber);
@@ -150,9 +147,6 @@ public class MenuActivity extends Activity {
             
             lydBar = (SeekBar) findViewById(R.id.lydbar);
             lydBar.setProgress(settingsManager.sound);
-            
-            lysBar = (SeekBar) findViewById(R.id.lysbar);
-            lysBar.setProgress(settingsManager.light);
             
             receiveNumber = (EditText) findViewById(R.id.receiveFrom);
             receiveNumber.setText(settingsManager.receiveNumber);
