@@ -39,28 +39,35 @@ public class DBAdapter {
 	
 	private static DBAdapter instance;
 	
-	private DBAdapter(Context ctx)
+	private DBAdapter(Context ctx, String userName)
 	{
 		DBAdapter.context = ctx;
-		log_table = SettingManager.userName+"log";
-		filter_table =  SettingManager.userName+"filter";
-		user_table = SettingManager.userName+"settings";
+		DBAdapter.log_table = userName + "log";
+		DBAdapter.filter_table = userName + "filter";
+		DBAdapter.user_table = userName + "settings";
 		this.DBHelper = new DatabaseHelper(context);
 	}
 	
-	public static DBAdapter getInstance(Context context){
+	public static DBAdapter getInstance(Context context, String userName){
 		if (DBAdapter.instance == null)
 		{
-			DBAdapter.instance = new DBAdapter(context);
+			instance = new DBAdapter(context, userName);
 		}
-		return DBAdapter.instance;
+		return instance;
 	}
-	
+	/**
 	public static void updateTableNames(String logTable, String filterTable, String userTable) {
 		log_table = logTable;
 		filter_table = filterTable;	
 		user_table = userTable;
+		Log.w("Database", "updateTableNames: log_table = "+log_table);
+		Log.w("Database", "updateTableNames: filter_table = "+filter_table);
+		Log.w("Database", "updateTableNames: user_table = "+user_table);
+		Log.w("Database", "updateTableNames: logTable = "+logTable);
+		Log.w("Database", "updateTableNames: filterTable = "+filterTable);
+		Log.w("Database", "updateTableNames: userTable = "+userTable);
 	}
+	*/
 	
 	
 	private static class DatabaseHelper extends SQLiteOpenHelper
@@ -68,9 +75,6 @@ public class DBAdapter {
 		DatabaseHelper(Context context)
 		{
 			super(context, DBAdapter.DATABASE_NAME, null, DBAdapter.DATABASE_VERSION);
-			log_table = SettingManager.userName+"log";
-			filter_table =  SettingManager.userName+"filter";
-			user_table = SettingManager.userName+"settings";
 		}
 		
 		/**
@@ -81,14 +85,17 @@ public class DBAdapter {
 		public void onCreate(SQLiteDatabase db)
 		{
 			try{
-				db.execSQL("create table if not exists "+log_table+ "("+KEY_ID+" INTEGER primary key autoincrement, "+
+				Log.w("Database", "onCreate: log_table = "+log_table);
+				Log.w("Database", "onCreate: filter_table = "+filter_table);
+				Log.w("Database", "onCreate: user_table = "+user_table);
+				db.execSQL("create table "+log_table+ "("+KEY_ID+" INTEGER primary key autoincrement, "+
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL(
-						"create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
+						"create table "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 
 						KEY_RECEIVE+" INTEGER not null);");
-				db.execSQL("CREATE TABLE if not exists "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+				db.execSQL("CREATE TABLE "+user_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" INTEGER not null);");
-				db.execSQL("CREATE TABLE if not exists "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
+				db.execSQL("CREATE TABLE "+application_table+"("+KEY_SETTING+" TEXT PRIMARY KEY, "+
 						KEY_SETTINGVALUE+" TEXT not null);");
 				
 			}
@@ -106,6 +113,9 @@ public class DBAdapter {
 		public void onOpen(SQLiteDatabase db)
 		{
 			try{
+				Log.w("Database", "onOpen: log_table = "+log_table);
+				Log.w("Database", "onOpen: filter_table = "+filter_table);
+				Log.w("Database", "onOpen: user_table = "+user_table);
 				db.execSQL("create table if not exists "+log_table+ "(id INTEGER primary key, "+
 						KEY_TIME +" INTEGER, "+ KEY_TEXT +" TEXT not null);");
 				db.execSQL("create table if not exists "+filter_table+"("+KEY_TEXT+" TEXT primary key, "+ 

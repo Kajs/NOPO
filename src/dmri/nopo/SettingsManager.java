@@ -2,21 +2,37 @@ package dmri.nopo;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
-public class SettingManager {
+public class SettingsManager {
 	static String userName;
-	static int vibration;
-	static int sound;
-	static int light;
-	static int highlightTime;
-	static int numberAlarms;
-	static String receiveNumber;
+	public int vibration;
+	public int sound;
+	public int light;
+	public int highlightTime;
+	public int numberAlarms;
+	public String receiveNumber;
 	//send number of emulator 5556
 	static final String defaultReceiveNumber = "15555215556";
-	private static DBAdapter db;
+	private DBAdapter db;
+	private static SettingsManager instance;
 	
-	static boolean shouldReceive(String sender) {
+	private SettingsManager(Context ctx)
+	{
+		db = DBAdapter.getInstance(ctx, userName);
+		db.open();
+	}
+	
+	public static SettingsManager getInstance(Context context){
+		if (instance == null)
+		{
+			instance = new SettingsManager(context);
+			instance.db = DBAdapter.getInstance(context, userName);
+			instance.db.open();
+		}
+		return SettingsManager.instance;
+	}
+	
+	public boolean shouldReceive(String sender) {
 		if(receiveNumber.equals("")) {
 			return true;
 		}
@@ -28,14 +44,13 @@ public class SettingManager {
 		}
 	}
 	
-	static void setupSettings(Context context) {
-		prepareDatabase(context);
-		getReceiveNumber(context);
+	public void setupSettings() {
+		getReceiveNumber();
 		
 		Cursor userSettings = db.getUserSettings();
 		int size = userSettings.getCount();
 		if(size == 0) {
-			updateUserSettings(context, 5, 5, 5, 5, 6);
+			updateUserSettings(5, 5, 5, 5, 6);
 		}
 		else{
 			int index = 0;
@@ -49,7 +64,7 @@ public class SettingManager {
 		}		
 	}
 	
-	static void parse(String setting, int value) {
+	private void parse(String setting, int value) {
 		if (setting.equals("vibration")) {
 		    vibration = value;
 		} else if (setting.equals("sound")) {
@@ -63,35 +78,30 @@ public class SettingManager {
 		}
 	}
 	
-	static void updateUserSettings(Context context, int newVibration, int newSound, int newLight, int newHighlightTime, int newNumberAlarms) {
+	public void updateUserSettings(int newVibration, int newSound, int newLight, int newHighlightTime, int newNumberAlarms) {
 		vibration = newVibration;
 		sound = newSound;
 		light = newLight;
 		highlightTime = newHighlightTime;
-		numberAlarms = newNumberAlarms;	
-		prepareDatabase(context);		
+		numberAlarms = newNumberAlarms;			
 		db.updateUserSettings(newVibration, newSound, newLight, newHighlightTime, newNumberAlarms);
 	}
 	
-	static void updateSetting(Context context, String setting, int value) {
-		parse(setting, value);
-		prepareDatabase(context);		
+	public void updateSetting(String setting, int value) {
+		parse(setting, value);	
 		db.updateUserSetting(setting, value);
 	}
 	
-	static void setReceiveNumber(Context context, String newReceiveNumber) {
+	public void setReceiveNumber(String newReceiveNumber) {
 		receiveNumber = newReceiveNumber;
-		prepareDatabase(context);	
 		db.setReceiveNumber(newReceiveNumber);
 	}
 	
-	static void setLastUser(Context context, String newLastUser) {
-		prepareDatabase(context);		
+	public void setLastUser(String newLastUser) {	
 		db.setReceiveNumber(newLastUser);
 	}
 	
-	static void getReceiveNumber(Context context) {
-		prepareDatabase(context);
+	public void getReceiveNumber() {
 		Cursor storedNumber = db.getReceiveNumber();
 		if(storedNumber.getCount() == 0) {
 			receiveNumber = defaultReceiveNumber;
@@ -101,8 +111,7 @@ public class SettingManager {
 		}		
 	}
 	
-	static boolean hasStoredUser(Context context) {
-		prepareDatabase(context);
+	public boolean hasStoredUser() {
 		Cursor storedUser = db.getLastUser();
 		if(storedUser.getCount() == 0) {
 			return false;
@@ -110,14 +119,6 @@ public class SettingManager {
 		else {
 			userName = storedUser.getString(0);
 			return true;
-		}
-	}
-	
-	static void prepareDatabase(Context context) {
-		if(db == null){
-			Log.w("Database", "prepareDatabase()");
-			db = DBAdapter.getInstance(context);
-			db.open();
 		}
 	}
 }

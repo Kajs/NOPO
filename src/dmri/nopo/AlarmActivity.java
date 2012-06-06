@@ -33,13 +33,14 @@ public class AlarmActivity extends ListActivity {
   private IntentFilter intentFilter;
   private LogManager log = LogManager.getInstance(this);
   private FilterManager filter = FilterManager.getInstance(this);
+  private SettingsManager settingsManager = SettingsManager.getInstance(this);
   
   private BroadcastReceiver intentReceiver = new BroadcastReceiver() {
 	  
 		@Override
 		public void onReceive(Context context, Intent intent) {
           String sms = intent.getExtras().getString("sms");
-          if (filter.isInLocalFilter(sms) && SettingManager.shouldReceive(intent.getExtras().getString("sender")))
+          if (filter.isInLocalFilter(sms) && settingsManager.shouldReceive(intent.getExtras().getString("sender")))
           {
         	  log.writeLogFile(sms);
         	  NotificationManager c = NotificationManager.getInstance(context);
@@ -98,6 +99,8 @@ public class AlarmActivity extends ListActivity {
     private LayoutInflater mInflater;
 //    private Bitmap mIcon1;
     private Context context;
+    private LogManager log = LogManager.getInstance(context);
+    private SettingsManager settingsManager = SettingsManager.getInstance(context);
 
     public EfficientAdapter(Context context) {
       // Cache the LayoutInflate to avoid asking for a new one each time.
@@ -109,8 +112,7 @@ public class AlarmActivity extends ListActivity {
   	  timeArray.clear();
   	  smsArray.clear();
   	  
-    	LogManager log = LogManager.getInstance(context);
-    	Cursor rows = log.getXUnblockedSMS(SettingManager.numberAlarms);
+    	Cursor rows = log.getXUnblockedSMS(settingsManager.numberAlarms);
     	while(rows.getPosition() < rows.getCount()) {
     		String rawtime = rows.getString(1);
     		String time = rawtime.substring(8, 10) + ":" + rawtime.substring(10, 12) + ":" + rawtime.substring(12, 14);
@@ -213,7 +215,7 @@ public class AlarmActivity extends ListActivity {
       int minuteDifference = new Integer(currentTime.substring(10, 12)) - new Integer(alarmTime.substring(3, 5));
       int secondDifference = new Integer(currentTime.substring(12, 14)) - new Integer(alarmTime.substring(6, 8));
       
-      if(hourDifference * 60 * 60 + minuteDifference * 60 + secondDifference > SettingManager.highlightTime * 60) {
+      if(hourDifference * 60 * 60 + minuteDifference * 60 + secondDifference > settingsManager.highlightTime * 60) {
     	  holder.textLine.setTextColor(-1);
       }
       else {

@@ -10,6 +10,7 @@ public class NotificationManager {
 	private static NotificationManager instance;
 	private MediaPlayer player;
 	private int soundRepeats;
+	private SettingsManager settingsManager;
 	
 	private NotificationManager(Context context) {
 		c = context;
@@ -18,6 +19,7 @@ public class NotificationManager {
 	public static NotificationManager getInstance(Context context){
 		if (NotificationManager.instance == null){
 			NotificationManager.instance = new NotificationManager(context);
+			instance.settingsManager = SettingsManager.getInstance(context);
 		}
 		return NotificationManager.instance;
 	}
@@ -42,10 +44,10 @@ public class NotificationManager {
 	}
 	
 	public void vibrate() {
-		if(SettingManager.vibration > 0){
+		if(settingsManager.vibration > 0){
 			int index = -1;
 			Vibrator v = (Vibrator) c.getSystemService(Context.VIBRATOR_SERVICE);
-			long[] pattern = vibrationPattern(0, 400, 100, SettingManager.vibration);
+			long[] pattern = vibrationPattern(0, 400, 100, settingsManager.vibration);
 			try{
 				v.vibrate(pattern, index);
 			}
@@ -58,7 +60,7 @@ public class NotificationManager {
 	}
 	
 	public void playSound() {
-		int sound = SettingManager.sound;
+		int sound = settingsManager.sound;
 		if(sound > 0) {
 			soundRepeats = sound - 1;
 			if(player == null) {

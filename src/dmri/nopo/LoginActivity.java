@@ -2,9 +2,6 @@ package dmri.nopo;
 
 import dmri.nopo.R;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +17,7 @@ public class LoginActivity extends Activity {
 	private EditText user;
 	@SuppressWarnings("unused")
 	private ImageView logo;
-	private Context context;
+	private SettingsManager settingsManager;
 	
 	
 	
@@ -28,7 +25,6 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         setContentView(R.layout.login);
         user = (EditText) findViewById(R.id.username);
         logo = (ImageView) findViewById(R.id.loginlogo);  	
@@ -38,9 +34,9 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
             	String userName = user.getText().toString();
             	if(checkUserName(userName)) {
-            		SettingManager.userName = userName;
-                	DBAdapter.updateTableNames(userName+"log", userName+"filter", userName+"settings");
-                	SettingManager.setupSettings(context);
+            		settingsManager = SettingsManager.getInstance(getApplicationContext());
+            		settingsManager.userName = userName;
+                	settingsManager.setupSettings();
                 	Intent intent = new Intent("android.intent.action.ALARM");
                 	startActivity(intent);
                 	}
@@ -50,21 +46,22 @@ public class LoginActivity extends Activity {
             }
         });
         
-        tryAutoLogin();
+  //      tryAutoLogin();
     }
     
     public boolean checkUserName(String userName) {
     	Log.w("Matches [a-zA-Z0-9][a-zA-Z0-9]*", Boolean.toString(userName.matches("[a-zA-Z0-9][a-zA-Z0-9]*")));
     	return userName.matches("[a-zA-Z0-9][a-zA-Z0-9]*");
     }
-    
+/**    
     public void tryAutoLogin() {
-    	if(SettingManager.hasStoredUser(context)) {
-    		String userName = SettingManager.userName;
+    	if(settingsManager.hasStoredUser()) {
+    		String userName = settingsManager.userName;
     		DBAdapter.updateTableNames(userName+"log", userName+"filter", userName+"settings");
-        	SettingManager.setupSettings(context);
+        	settingsManager.setupSettings();
         	Intent intent = new Intent("android.intent.action.ALARM");
         	startActivity(intent);
     	}
     }
+    */
 }

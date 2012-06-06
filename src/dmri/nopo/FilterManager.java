@@ -10,7 +10,7 @@ public class FilterManager {
 	
 	
 	private FilterManager(Context context){
-		db = DBAdapter.getInstance(context);
+		db = DBAdapter.getInstance(context, SettingsManager.userName);
 		db.open();
 	}
 	

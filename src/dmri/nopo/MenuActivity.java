@@ -32,6 +32,7 @@ public class MenuActivity extends Activity {
 	private Spinner numberIncChooser;
 	private Context context;
 	private EditText receiveNumber;
+	private SettingsManager settingsManager;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -40,34 +41,35 @@ public class MenuActivity extends Activity {
         setContentView(R.layout.menu);
         this.context = this;
         
+        settingsManager = SettingsManager.getInstance(context);
         ArrayAdapter<CharSequence> highlightAdapter = ArrayAdapter.createFromResource(this, R.array.highlightNames, 
         		android.R.layout.simple_spinner_item);
         highlightChooser = (Spinner) findViewById(R.id.highlightSpinner);
         highlightChooser.setAdapter(highlightAdapter);
-        int highlightPosition = highlightAdapter.getPosition(Integer.toString(SettingManager.highlightTime) + " min");
+        int highlightPosition = highlightAdapter.getPosition(Integer.toString(settingsManager.highlightTime) + " min");
         highlightChooser.setSelection(highlightPosition);
         
         ArrayAdapter<CharSequence> SMSAdapter = ArrayAdapter.createFromResource(this, R.array.numberSMSNames, 
         		android.R.layout.simple_spinner_item);
         numberIncChooser = (Spinner) findViewById(R.id.numberSMSSpinner);
         numberIncChooser.setAdapter(SMSAdapter);
-        int smsPosition = SMSAdapter.getPosition(Integer.toString(SettingManager.numberAlarms) + " alarmer");
+        int smsPosition = SMSAdapter.getPosition(Integer.toString(settingsManager.numberAlarms) + " alarmer");
         numberIncChooser.setSelection(smsPosition);
         
         username = (TextView) findViewById(R.id.userlogin);
-        username.setText(SettingManager.userName);
+        username.setText(settingsManager.userName);
         
         vibroBar = (SeekBar) findViewById(R.id.vibrobar);
-        vibroBar.setProgress(SettingManager.vibration);
+        vibroBar.setProgress(settingsManager.vibration);
         
         lydBar = (SeekBar) findViewById(R.id.lydbar);
-        lydBar.setProgress(SettingManager.sound);
+        lydBar.setProgress(settingsManager.sound);
         
         lysBar = (SeekBar) findViewById(R.id.lysbar);
-        lysBar.setProgress(SettingManager.light);
+        lysBar.setProgress(settingsManager.light);
         
         receiveNumber = (EditText) findViewById(R.id.receiveFrom);
-        receiveNumber.setText(SettingManager.receiveNumber);
+        receiveNumber.setText(settingsManager.receiveNumber);
         
         this.saveButton = (Button) findViewById(R.id.saveButton);
         this.saveButton.setOnClickListener(new View.OnClickListener() {
@@ -81,10 +83,10 @@ public class MenuActivity extends Activity {
 				Log.w("testSettings", "Menu.newHigh: " + Integer.toString(newHigh));
 				int newSMS = new Integer(numberIncChooser.getSelectedItem().toString().split(" ")[0]);
 				Log.w("testHighLight", "Menu.newSMS: " + Integer.toString(newHigh));
-				SettingManager.updateUserSettings(context, newVib, newSou, newLig, newHigh, newSMS);
+				settingsManager.updateUserSettings(newVib, newSou, newLig, newHigh, newSMS);
 				
 				String newNumber = receiveNumber.getText().toString();
-				SettingManager.setReceiveNumber(context, newNumber);
+				settingsManager.setReceiveNumber(newNumber);
 				Toast.makeText(getApplicationContext(), "Indstillinger gemt", Toast.LENGTH_SHORT).show();
 			}
 		});
@@ -96,10 +98,10 @@ public class MenuActivity extends Activity {
 			public void onClick(View v) {
 				AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 	        	  alertDialog.setTitle("Slet Bruger");
-	        	  alertDialog.setMessage("Advarsel! Dette vil slette brugeren " + SettingManager.userName + ", brugerens alarmfilter samt brugerens indstillinger fra systemet. Vil du fortsaette?");
+	        	  alertDialog.setMessage("Advarsel! Dette vil slette brugeren " + settingsManager.userName + ", brugerens alarmfilter samt brugerens indstillinger fra systemet. Vil du fortsaette?");
 	        	  alertDialog.setButton(-1, "Godkend", new DialogInterface.OnClickListener() {
 	        	     public void onClick(DialogInterface dialog, int which) {
-	        	    	 DBAdapter db = DBAdapter.getInstance(context);
+	        	    	 DBAdapter db = DBAdapter.getInstance(context, settingsManager.userName);
 	        	    	 db.deleteUser();
 	        	    	 db.close();
 	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
@@ -125,7 +127,7 @@ public class MenuActivity extends Activity {
 	        	  alertDialog.setMessage("Skal der logges af systemet?");
 	        	  alertDialog.setButton(-1, "Ja", new DialogInterface.OnClickListener() {
 	        	     public void onClick(DialogInterface dialog, int which) {
-	        	    	 DBAdapter.getInstance(context).close();    
+	        	    	 DBAdapter.getInstance(context, settingsManager.userName).close();    
 	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
 	                     startActivity(loginpage);
 	                     finish();
