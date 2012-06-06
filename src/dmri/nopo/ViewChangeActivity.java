@@ -12,10 +12,10 @@ import android.widget.Button;
 import android.app.Fragment;
 
 public class ViewChangeActivity extends Fragment {
-	private Button alarmButton;
-	private Button logButton;
-	private Button filterButton;
-	private Button menuButton;
+	static Button alarmButton;
+	static Button logButton;
+	static Button filterButton;
+	static Button menuButton;
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         	return inflater.inflate(R.layout.viewchange, container, false);
@@ -63,34 +63,10 @@ public class ViewChangeActivity extends Fragment {
 	    		startActivity(intent);
 	    	}
 	    });
-	    colorButtonsViaArray();
+	    //colorButtonsViaArray();
 	}
 	
-	private void colorButtons() {
-		if (SettingsManager.currentView == 0) {
-		    alarmButton.setTextColor(-16776961);
-		    logButton.setTextColor(-16777216);
-		    filterButton.setTextColor(-16777216);
-		    menuButton.setTextColor(-16777216);
-		} else if (SettingsManager.currentView == 1) {
-			alarmButton.setTextColor(-16777216);
-		    logButton.setTextColor(-16776961);
-		    filterButton.setTextColor(-16777216);
-		    menuButton.setTextColor(-16777216);
-		} else if (SettingsManager.currentView == 2) {
-			alarmButton.setTextColor(-16777216);
-		    logButton.setTextColor(-16777216);
-		    filterButton.setTextColor(-16776961);
-		    menuButton.setTextColor(-16777216);
-		} else if (SettingsManager.currentView == 3) {
-			alarmButton.setTextColor(-16777216);
-		    logButton.setTextColor(-16777216);
-		    filterButton.setTextColor(-16777216);
-		    menuButton.setTextColor(-16776961);
-		}
-	}
-	
-	private void colorButtonsViaArray() {
+	static void colorButtonsViaArray(int focusButton) {
 		ArrayList<Button> buttons = new ArrayList<Button>();
 		buttons.add(alarmButton);
 		buttons.add(logButton);
@@ -99,7 +75,7 @@ public class ViewChangeActivity extends Fragment {
 		int index = 0;
 		while(index < 4) {
 			Button currentButton = buttons.get(index);
-			if(index == SettingsManager.currentView) {
+			if(index == focusButton) {
 				currentButton.setTextColor(-16776961);
 			}
 			else {

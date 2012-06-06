@@ -114,6 +114,7 @@ public class MenuActivity extends Activity {
     
     @Override
     protected void onResume() {
+    	ViewChangeActivity.colorButtonsViaArray(3);
         context = this;
         
         settingsManager = SettingsManager.getInstance(context);

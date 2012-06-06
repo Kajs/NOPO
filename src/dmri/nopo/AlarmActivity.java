@@ -59,8 +59,6 @@ public class AlarmActivity extends ListActivity {
     adap = newAdap;
     adap.showSMS();
     setListAdapter(adap);
-    
-    Log.w("NOPOActivities", "Creating AlarmActivity");
 
     
     intentFilter = new IntentFilter();
@@ -266,6 +264,7 @@ public class AlarmActivity extends ListActivity {
   
   @Override
   protected void onResume() {
+	  ViewChangeActivity.colorButtonsViaArray(0);
       //---register the receiver---
 	  if(!isReceiving){
 		  registerReceiver(intentReceiver, intentFilter);

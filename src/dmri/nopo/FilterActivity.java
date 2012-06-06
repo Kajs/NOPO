@@ -34,7 +34,6 @@ public class FilterActivity extends Activity {
 		f = FilterManager.getInstance(context);
 		Cursor c = f.getLocalFilter();
 		createAlarmList(c);
-		Log.w("NOPOActivities", "Creating FilterActivity");
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -137,7 +136,7 @@ public class FilterActivity extends Activity {
 	
 	@Override	
 	protected void onResume() {
-		Log.w("NOPOActivities", "FilterActivity.onResume()");
+		ViewChangeActivity.colorButtonsViaArray(2);
 		f = FilterManager.getInstance(context);
 		Cursor c = f.getLocalFilter();
 		createAlarmList(c);
