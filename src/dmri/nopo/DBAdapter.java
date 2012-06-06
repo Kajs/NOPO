@@ -210,17 +210,7 @@ public class DBAdapter {
 			e.printStackTrace();
 		}
 	}
-	
-	public void updateUserSetting(String setting, int value) {
-		try{
-			db.execSQL("UPDATE "+user_table+" SET settingValue = "+value+ "WHERE setting = " +setting+";");
-		}
-			catch (SQLException e){
-			Log.w("Database", "updateUserSetting: " +e.getMessage());
-			e.printStackTrace();
-		}
-	}
-	
+
 	public void deleteUser() {
 		try {
 			db.delete(log_table, null, null);
@@ -293,10 +283,10 @@ public class DBAdapter {
 	public void updateLocalFilter(String sms, boolean receive) {
 		try {
 			if(receive == true) {
-				db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=1 WHERE " + KEY_TEXT +"='" + sms+"'");
+				db.execSQL("INSERT or REPLACE into "+filter_table+" VALUES('"+sms+"', '1');");
 			}
 			else {
-				db.execSQL("UPDATE " + filter_table + " SET " + KEY_RECEIVE + "=0 WHERE " + KEY_TEXT +"='" + sms+"'");
+				db.execSQL("INSERT or REPLACE into "+filter_table+" VALUES('"+sms+"', '0');");
 			}
 		} catch (SQLException e) {
 			Log.w("Database", "updateLocalFilter: " +e.getMessage());

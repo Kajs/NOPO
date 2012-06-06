@@ -5,6 +5,7 @@ import dmri.nopo.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.database.Cursor;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -19,8 +20,7 @@ public class LogActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.log);
         
-        getLog();
-        showLog();
+        Log.w("NOPOActivities", "Creating LogActivity");
     }
     
     public void getLog() {
@@ -44,6 +44,13 @@ public class LogActivity extends Activity {
     public void showLog() {
     	showLog = (ListView) findViewById(R.id.logListView);
     	showLog.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, log));    	
+    }
+    
+    @Override
+    protected void onResume() {
+    	getLog();
+        showLog();
+        super.onResume();
     }
     
 }

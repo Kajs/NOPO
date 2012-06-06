@@ -39,37 +39,6 @@ public class MenuActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.menu);
-        this.context = this;
-        
-        settingsManager = SettingsManager.getInstance(context);
-        ArrayAdapter<CharSequence> highlightAdapter = ArrayAdapter.createFromResource(this, R.array.highlightNames, 
-        		android.R.layout.simple_spinner_item);
-        highlightChooser = (Spinner) findViewById(R.id.highlightSpinner);
-        highlightChooser.setAdapter(highlightAdapter);
-        int highlightPosition = highlightAdapter.getPosition(Integer.toString(settingsManager.highlightTime) + " min");
-        highlightChooser.setSelection(highlightPosition);
-        
-        ArrayAdapter<CharSequence> SMSAdapter = ArrayAdapter.createFromResource(this, R.array.numberSMSNames, 
-        		android.R.layout.simple_spinner_item);
-        numberIncChooser = (Spinner) findViewById(R.id.numberSMSSpinner);
-        numberIncChooser.setAdapter(SMSAdapter);
-        int smsPosition = SMSAdapter.getPosition(Integer.toString(settingsManager.numberAlarms) + " alarmer");
-        numberIncChooser.setSelection(smsPosition);
-        
-        username = (TextView) findViewById(R.id.userlogin);
-        username.setText(SettingsManager.userName);
-        
-        vibroBar = (SeekBar) findViewById(R.id.vibrobar);
-        vibroBar.setProgress(settingsManager.vibration);
-        
-        lydBar = (SeekBar) findViewById(R.id.lydbar);
-        lydBar.setProgress(settingsManager.sound);
-        
-        lysBar = (SeekBar) findViewById(R.id.lysbar);
-        lysBar.setProgress(settingsManager.light);
-        
-        receiveNumber = (EditText) findViewById(R.id.receiveFrom);
-        receiveNumber.setText(settingsManager.receiveNumber);
         
         this.saveButton = (Button) findViewById(R.id.saveButton);
         this.saveButton.setOnClickListener(new View.OnClickListener() {
@@ -141,5 +110,42 @@ public class MenuActivity extends Activity {
 	        	  alertDialog.show();
 			}
 		});
+    }
+    
+    @Override
+    protected void onResume() {
+        context = this;
+        
+        settingsManager = SettingsManager.getInstance(context);
+        ArrayAdapter<CharSequence> highlightAdapter = ArrayAdapter.createFromResource(this, R.array.highlightNames, 
+        		android.R.layout.simple_spinner_item);
+        highlightChooser = (Spinner) findViewById(R.id.highlightSpinner);
+        highlightChooser.setAdapter(highlightAdapter);
+        int highlightPosition = highlightAdapter.getPosition(Integer.toString(settingsManager.highlightTime) + " min");
+        highlightChooser.setSelection(highlightPosition);
+        
+        ArrayAdapter<CharSequence> SMSAdapter = ArrayAdapter.createFromResource(this, R.array.numberSMSNames, 
+        		android.R.layout.simple_spinner_item);
+        numberIncChooser = (Spinner) findViewById(R.id.numberSMSSpinner);
+        numberIncChooser.setAdapter(SMSAdapter);
+        int smsPosition = SMSAdapter.getPosition(Integer.toString(settingsManager.numberAlarms) + " alarmer");
+        numberIncChooser.setSelection(smsPosition);
+        
+        username = (TextView) findViewById(R.id.userlogin);
+        username.setText(SettingsManager.userName);
+        
+        vibroBar = (SeekBar) findViewById(R.id.vibrobar);
+        vibroBar.setProgress(settingsManager.vibration);
+        
+        lydBar = (SeekBar) findViewById(R.id.lydbar);
+        lydBar.setProgress(settingsManager.sound);
+        
+        lysBar = (SeekBar) findViewById(R.id.lysbar);
+        lysBar.setProgress(settingsManager.light);
+        
+        receiveNumber = (EditText) findViewById(R.id.receiveFrom);
+        receiveNumber.setText(settingsManager.receiveNumber);
+        
+        super.onResume();
     }
 }

@@ -63,7 +63,7 @@ public class ViewChangeActivity extends Fragment {
 	    		startActivity(intent);
 	    	}
 	    });
-	    colorButtons();
+	    colorButtonsViaArray();
 	}
 	
 	private void colorButtons() {
@@ -87,6 +87,25 @@ public class ViewChangeActivity extends Fragment {
 		    logButton.setTextColor(-16777216);
 		    filterButton.setTextColor(-16777216);
 		    menuButton.setTextColor(-16776961);
+		}
+	}
+	
+	private void colorButtonsViaArray() {
+		ArrayList<Button> buttons = new ArrayList<Button>();
+		buttons.add(alarmButton);
+		buttons.add(logButton);
+		buttons.add(filterButton);
+		buttons.add(menuButton);
+		int index = 0;
+		while(index < 4) {
+			Button currentButton = buttons.get(index);
+			if(index == SettingsManager.currentView) {
+				currentButton.setTextColor(-16776961);
+			}
+			else {
+				currentButton.setTextColor(-16777216);
+			}
+			index++;
 		}
 	}
 }

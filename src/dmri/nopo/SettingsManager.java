@@ -87,14 +87,7 @@ public class SettingsManager {
 		db.open();
 		db.updateUserSettings(newVibration, newSound, newLight, newHighlightTime, newNumberAlarms);
 	}
-	
-	public void updateSetting(String setting, int value) {
-		parse(setting, value);
-		DBAdapter db = DBAdapter.getInstance(context);
-		db.open();
-		db.updateUserSetting(setting, value);
-	}
-	
+
 	public void setReceiveNumber(String newReceiveNumber) {
 		receiveNumber = newReceiveNumber;
 		DBAdapter db = DBAdapter.getInstance(context);

@@ -59,6 +59,8 @@ public class AlarmActivity extends ListActivity {
     adap = newAdap;
     adap.showSMS();
     setListAdapter(adap);
+    
+    Log.w("NOPOActivities", "Creating AlarmActivity");
 
     
     intentFilter = new IntentFilter();

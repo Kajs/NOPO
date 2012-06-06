@@ -30,11 +30,11 @@ public class FilterActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.filter);
-		context = this;
-		
+		context = getApplicationContext();
 		f = FilterManager.getInstance(context);
 		Cursor c = f.getLocalFilter();
 		createAlarmList(c);
+		Log.w("NOPOActivities", "Creating FilterActivity");
 		
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -53,7 +53,6 @@ public class FilterActivity extends Activity {
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 				Cursor c = f.getXFilter(arg0.toString());
 				createAlarmList(c);
-				testContent();
 			}
 
 			@Override
@@ -122,4 +121,26 @@ public class FilterActivity extends Activity {
 	  		rows.moveToNext();
 	  	}
 	  }
+	
+	public void testCursor(Cursor c) {
+		c.moveToFirst();
+		int size = c.getCount();
+		Log.w("NOPOActivities", "Initial size: " + Integer.toString(size));
+		while(c.getPosition() < size) {
+			String current = "";
+			Log.w("NOPOActivities", "Input size: " + Integer.toString(size));
+			current = current + c.getString(0) + ": " + Integer.toString(c.getInt(1));
+			Log.w("NOPOActivities", "Pos " + Integer.toString(c.getPosition()) + ": " + current);
+			c.moveToNext();
+		}
+	}
+	
+	@Override	
+	protected void onResume() {
+		Log.w("NOPOActivities", "FilterActivity.onResume()");
+		f = FilterManager.getInstance(context);
+		Cursor c = f.getLocalFilter();
+		createAlarmList(c);
+		super.onResume();
+	}
 }
