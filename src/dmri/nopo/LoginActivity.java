@@ -37,7 +37,7 @@ public class LoginActivity extends Activity {
             		SettingsManager.userName = userName;
             		settingsManager.setLastUser(userName);
                 	settingsManager.setupSettings();
-                	SettingsManager.currentView = 0;
+                	SettingsManager.pendingUnregister = false;
                 	Intent intent = new Intent("android.intent.action.ALARM");
                 	startActivity(intent);
                 	}
@@ -58,7 +58,7 @@ public class LoginActivity extends Activity {
     	settingsManager = SettingsManager.getInstance(getApplicationContext());
     	if(settingsManager.hasStoredUser()) {
         	settingsManager.setupSettings();
-        	SettingsManager.currentView = 0;
+        	SettingsManager.pendingUnregister = false;
         	Intent intent = new Intent("android.intent.action.ALARM");
         	startActivity(intent);
     	}

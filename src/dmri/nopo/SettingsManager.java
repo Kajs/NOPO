@@ -14,6 +14,7 @@ public class SettingsManager {
 	public String receiveNumber;
 	//send number of emulator 5556
 	static final String defaultReceiveNumber = "15555215556";
+	static boolean pendingUnregister;
 	private static SettingsManager instance;
 	private Context context;
 	

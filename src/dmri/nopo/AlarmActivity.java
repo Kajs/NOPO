@@ -39,15 +39,22 @@ public class AlarmActivity extends ListActivity {
 	  
 		@Override
 		public void onReceive(Context context, Intent intent) {
-          String sms = intent.getExtras().getString("sms");
-          if (filter.isInLocalFilter(sms) && settingsManager.shouldReceive(intent.getExtras().getString("sender")))
-          {
-        	  log.writeLogFile(sms);
-        	  NotificationManager c = NotificationManager.getInstance(context);
-        	  c.alarmNotify();
-        	  adap.showSMS();
-        	  adap.notifyDataSetChanged();
-          }
+			if(SettingsManager.pendingUnregister) {
+				unregisterReceiver(intentReceiver);
+				isReceiving = false;
+				finish();
+			}
+			else {
+				String sms = intent.getExtras().getString("sms");
+		          if (filter.isInLocalFilter(sms) && settingsManager.shouldReceive(intent.getExtras().getString("sender")))
+		          {
+		        	  log.writeLogFile(sms);
+		        	  NotificationManager c = NotificationManager.getInstance(context);
+		        	  c.alarmNotify();
+		        	  adap.showSMS();
+		        	  adap.notifyDataSetChanged();
+		          }				
+			}
       }
 	};
 
@@ -264,15 +271,24 @@ public class AlarmActivity extends ListActivity {
   
   @Override
   protected void onResume() {
-	  ViewChangeActivity.colorButtonsViaArray(0);
-      //---register the receiver---
-	  if(!isReceiving){
-		  registerReceiver(intentReceiver, intentFilter);
-		  isReceiving = true;
+	  if(SettingsManager.pendingUnregister) {
+		  if(isReceiving) {
+			  unregisterReceiver(intentReceiver);
+			  isReceiving = false;
+		  }
+		  finish();
 	  }
-	  log.removeOldSMS();
-	  adap.showSMS();
-	  adap.notifyDataSetChanged();
+	  else {
+		  ViewChangeActivity.colorButtonsViaArray(0);
+	      //---register the receiver---
+		  if(!isReceiving){
+			  registerReceiver(intentReceiver, intentFilter);
+			  isReceiving = true;
+		  }
+		  log.removeOldSMS();
+		  adap.showSMS();
+		  adap.notifyDataSetChanged();		  
+	  }
       super.onResume();
   }
   @Override
@@ -285,10 +301,11 @@ public class AlarmActivity extends ListActivity {
   @Override
   protected void onDestroy() {
       //---unregister the receiver---
-      unregisterReceiver(intentReceiver);
-      isReceiving = false;
+	  if(isReceiving) {
+		  unregisterReceiver(intentReceiver);
+		  isReceiving = false;
+	  }
       super.onDestroy();
-      finish();
   }
   
   //Test methods

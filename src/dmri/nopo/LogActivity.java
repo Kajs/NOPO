@@ -48,10 +48,15 @@ public class LogActivity extends Activity {
     
     @Override
     protected void onResume() {
-    	ViewChangeActivity.colorButtonsViaArray(1);
-    	getLog();
-        showLog();
-        super.onResume();
+    	if(SettingsManager.pendingUnregister) {
+    		finish();
+    	}
+    	else {
+    		ViewChangeActivity.colorButtonsViaArray(1);
+        	getLog();
+            showLog();
+    	}
+    	super.onResume();
     }
     
 }

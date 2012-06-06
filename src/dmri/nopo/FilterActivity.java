@@ -136,10 +136,16 @@ public class FilterActivity extends Activity {
 	
 	@Override	
 	protected void onResume() {
-		ViewChangeActivity.colorButtonsViaArray(2);
-		f = FilterManager.getInstance(context);
-		Cursor c = f.getLocalFilter();
-		createAlarmList(c);
+		if(SettingsManager.pendingUnregister){
+			finish();
+		}
+		else {
+			ViewChangeActivity.colorButtonsViaArray(2);
+			f = FilterManager.getInstance(context);
+			Cursor c = f.getLocalFilter();
+			createAlarmList(c);			
+		}
+		
 		super.onResume();
 	}
 }
