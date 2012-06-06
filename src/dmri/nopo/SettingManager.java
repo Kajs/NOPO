@@ -2,6 +2,7 @@ package dmri.nopo;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 public class SettingManager {
 	static String userName;
@@ -13,7 +14,7 @@ public class SettingManager {
 	static String receiveNumber;
 	//send number of emulator 5556
 	static final String defaultReceiveNumber = "15555215556";
-	private static DBAdapter db = null;
+	private static DBAdapter db;
 	
 	static boolean shouldReceive(String sender) {
 		if(receiveNumber.equals("")) {
@@ -114,6 +115,7 @@ public class SettingManager {
 	
 	static void prepareDatabase(Context context) {
 		if(db == null){
+			Log.w("Database", "prepareDatabase()");
 			db = DBAdapter.getInstance(context);
 			db.open();
 		}
