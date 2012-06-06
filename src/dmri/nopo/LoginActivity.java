@@ -30,7 +30,7 @@ public class LoginActivity extends Activity {
         setContentView(R.layout.login);
         user = (EditText) findViewById(R.id.username);
         logo = (ImageView) findViewById(R.id.loginlogo);
-        SettingsManager.isLoggedIn = false;
+        SettingsManager.keepLoggedIn = false;
         this.loginButton = (Button) this.findViewById(R.id.login);
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +41,10 @@ public class LoginActivity extends Activity {
             		SettingsManager.userName = userName;
             		settingsManager.setLastUser(userName);
                 	settingsManager.setupSettings();
-                	SettingsManager.pendingUnregister = false;
-                	SettingsManager.isLoggedIn = true;
+                	SettingsManager.pendingClose = false;
+                	SettingsManager.pendingMinimize = false;
+                	SettingsManager.keepLoggedIn = true;
+                	SettingsManager.haltAtLogin = false;
                 	Intent intent = new Intent("android.intent.action.ALARM");
                 	startActivity(intent);
                 	}
@@ -69,8 +71,10 @@ public class LoginActivity extends Activity {
     	settingsManager = SettingsManager.getInstance(getApplicationContext());
     	if(settingsManager.hasStoredUser()) {
         	settingsManager.setupSettings();
-        	SettingsManager.pendingUnregister = false;
-        	SettingsManager.isLoggedIn = true;
+        	SettingsManager.pendingClose = false;
+        	SettingsManager.pendingMinimize = false;
+        	SettingsManager.keepLoggedIn = true;
+        	SettingsManager.haltAtLogin = false;
         	Intent intent = new Intent("android.intent.action.ALARM");
         	startActivity(intent);
     	}
@@ -78,10 +82,23 @@ public class LoginActivity extends Activity {
     
     @Override 
     protected void onResume() {
-    	if(SettingsManager.isLoggedIn) {
-    		Intent intent = new Intent("android.intent.action.ALARM");
-        	startActivity(intent);    		
-    	}
+    	if(SettingsManager.haltAtLogin) {
+    		SettingsManager.pendingClose = false;
+    		SettingsManager.pendingMinimize = false;
+    		SettingsManager.keepLoggedIn = false;
+    		SettingsManager.haltAtLogin = false;
+    	
+    	} else if (SettingsManager.pendingClose) {
+    		SettingsManager.pendingClose = false;
+    		finish();
+		} else if (SettingsManager.pendingMinimize) {
+			SettingsManager.pendingMinimize = false;
+			moveTaskToBack(true);
+		} else if (SettingsManager.keepLoggedIn) {
+			Intent intent = new Intent("android.intent.action.ALARM");
+        	startActivity(intent);
+		} 
+    	
     	super.onResume();
     }
 }

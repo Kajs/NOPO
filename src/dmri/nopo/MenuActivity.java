@@ -68,8 +68,9 @@ public class MenuActivity extends Activity {
 	        	    	 db.open();
 	        	    	 db.deleteUser();
 	        	    	 db.close();
-	        	    	 SettingsManager.isLoggedIn = false;
-	        	    	 SettingsManager.pendingUnregister = true;
+	        	    	 SettingsManager.keepLoggedIn = false;
+	        	    	 SettingsManager.pendingClose = true;
+	        	    	 SettingsManager.haltAtLogin = true;
 	                     finish();
 	        	     }
 	        	  });
@@ -92,8 +93,9 @@ public class MenuActivity extends Activity {
 	        	  alertDialog.setButton(-1, "Ja", new DialogInterface.OnClickListener() {
 	        	     public void onClick(DialogInterface dialog, int which) {
 	        	    	 DBAdapter.getInstance(context).close();
-	        	    	 SettingsManager.isLoggedIn = false;
-	        	    	 SettingsManager.pendingUnregister = true;
+	        	    	 SettingsManager.keepLoggedIn = false;
+	        	    	 SettingsManager.pendingClose = true;
+	        	    	 SettingsManager.haltAtLogin = true;
 	                     finish();
 	        	     }
 	        	  });
@@ -108,11 +110,12 @@ public class MenuActivity extends Activity {
     
     @Override
     protected void onResume() {
-    	if(SettingsManager.pendingUnregister) {
-    		finish();
-    	}
-    	else {
-    		ViewChangeActivity.colorButtonsViaArray(3);
+    	ViewChangeActivity.colorButtonsViaArray(3);
+    	if (SettingsManager.pendingClose) {
+		    finish();
+		} else if (SettingsManager.pendingMinimize) {
+			moveTaskToBack(true);
+		} else {
             context = this;
             
             settingsManager = SettingsManager.getInstance(context);
@@ -140,9 +143,34 @@ public class MenuActivity extends Activity {
             lydBar.setProgress(settingsManager.sound);
             
             receiveNumber = (EditText) findViewById(R.id.receiveFrom);
-            receiveNumber.setText(settingsManager.receiveNumber);
-    	}
-        
+            receiveNumber.setText(settingsManager.receiveNumber);;
+		}
+    	
         super.onResume();
+    }
+    
+    @Override
+    public void onBackPressed() {
+  	  AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+  	  alertDialog.setTitle("Advarsel");
+  	  alertDialog.setMessage("Hvis du vaelger luk, vil programmet ikke modtage alarmer");
+  	  alertDialog.setButton(-1, "Luk", new DialogInterface.OnClickListener() {
+  	     public void onClick(DialogInterface dialog, int which) {
+  	    	 SettingsManager.keepLoggedIn = false;
+  	    	 SettingsManager.pendingClose = true;
+  	    	 finish();
+  	     }
+  	  });
+  	  alertDialog.setButton(-2, "Annuller", new DialogInterface.OnClickListener() {
+      	 public void onClick(DialogInterface dialog, int which) {
+      	 }
+  	  });
+  	  alertDialog.setButton(-3, "Minimer", new DialogInterface.OnClickListener() {
+  	     public void onClick(DialogInterface dialog, int which) {
+  	    	 SettingsManager.pendingMinimize = true;
+  	    	 moveTaskToBack(true);
+  	     }
+  	  });
+  	  alertDialog.show();
     }
 }

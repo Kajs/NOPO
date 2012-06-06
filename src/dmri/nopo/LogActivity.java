@@ -3,7 +3,9 @@ package dmri.nopo;
 import java.util.ArrayList;
 import dmri.nopo.R;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -45,15 +47,41 @@ public class LogActivity extends Activity {
     
     @Override
     protected void onResume() {
-    	if(SettingsManager.pendingUnregister) {
+    	ViewChangeActivity.colorButtonsViaArray(1);
+    	if (SettingsManager.pendingClose) {
     		finish();
-    	}
-    	else {
-    		ViewChangeActivity.colorButtonsViaArray(1);
+		} else if (SettingsManager.pendingMinimize) {
+			moveTaskToBack(true);
+		} else {
         	getLog();
             showLog();
-    	}
+		}
     	super.onResume();
+    }
+    
+    @Override
+    public void onBackPressed() {
+  	  AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+  	  alertDialog.setTitle("Advarsel");
+  	  alertDialog.setMessage("Hvis du vaelger luk, vil programmet ikke modtage alarmer");
+  	  alertDialog.setButton(-1, "Luk", new DialogInterface.OnClickListener() {
+  	     public void onClick(DialogInterface dialog, int which) {
+  	    	 SettingsManager.keepLoggedIn = false;
+  	    	 SettingsManager.pendingClose = true;
+  	    	 finish();
+  	     }
+  	  });
+  	  alertDialog.setButton(-2, "Annuller", new DialogInterface.OnClickListener() {
+      	 public void onClick(DialogInterface dialog, int which) {
+      	 }
+  	  });
+  	  alertDialog.setButton(-3, "Minimer", new DialogInterface.OnClickListener() {
+  	     public void onClick(DialogInterface dialog, int which) {
+  	    	 SettingsManager.pendingMinimize = true;
+  	    	 moveTaskToBack(true);
+  	     }
+  	  });
+  	  alertDialog.show();
     }
     
 }

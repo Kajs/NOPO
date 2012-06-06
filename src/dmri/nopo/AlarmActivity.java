@@ -39,7 +39,7 @@ public class AlarmActivity extends ListActivity {
 	  
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if(SettingsManager.pendingUnregister) {
+			if(SettingsManager.pendingClose) {
 				unregisterReceiver(intentReceiver);
 				isReceiving = false;
 				finish();
@@ -79,6 +79,8 @@ public class AlarmActivity extends ListActivity {
 	  alertDialog.setMessage("Hvis du vaelger luk, vil programmet ikke modtage alarmer");
 	  alertDialog.setButton(-1, "Luk", new DialogInterface.OnClickListener() {
 	     public void onClick(DialogInterface dialog, int which) {
+	    	 SettingsManager.keepLoggedIn = false;
+	    	 SettingsManager.pendingClose = true;
 	    	 finish();
 	     }
 	  });
@@ -88,6 +90,7 @@ public class AlarmActivity extends ListActivity {
 	  });
 	  alertDialog.setButton(-3, "Minimer", new DialogInterface.OnClickListener() {
 	     public void onClick(DialogInterface dialog, int which) {
+	    	 SettingsManager.pendingMinimize = true;
 	    	 moveTaskToBack(true);
 	     }
 	  });
@@ -260,25 +263,27 @@ public class AlarmActivity extends ListActivity {
   
   @Override
   protected void onResume() {
-	  if(SettingsManager.pendingUnregister) {
+	  ViewChangeActivity.colorButtonsViaArray(0);
+	  if (SettingsManager.pendingClose) {
 		  if(isReceiving) {
 			  unregisterReceiver(intentReceiver);
 			  isReceiving = false;
 		  }
 		  finish();
-	  }
-	  else {
-		  ViewChangeActivity.colorButtonsViaArray(0);
-	      //---register the receiver---
-		  if(!isReceiving){
-			  registerReceiver(intentReceiver, intentFilter);
-			  isReceiving = true;
-		  }
-		  log.removeOldSMS();
-		  adap.showSMS();
-		  adap.notifyDataSetChanged();		  
-	  }
-      super.onResume();
+		} else if (SettingsManager.pendingMinimize) {
+			moveTaskToBack(true);
+		} else if (!isReceiving) {
+			registerReceiver(intentReceiver, intentFilter);
+			isReceiving = true;
+			log.removeOldSMS();
+			adap.showSMS();
+			adap.notifyDataSetChanged();;
+		} else {
+			log.removeOldSMS();
+			adap.showSMS();
+			adap.notifyDataSetChanged();;
+		}
+	  super.onResume();
   }
   @Override
   protected void onPause() {

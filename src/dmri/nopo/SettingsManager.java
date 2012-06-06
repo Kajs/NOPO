@@ -13,8 +13,10 @@ public class SettingsManager {
 	public String receiveNumber;
 	//send number of emulator 5556
 	static final String defaultReceiveNumber = "15555215556";
-	static boolean pendingUnregister;
-	static boolean isLoggedIn;
+	static boolean pendingClose;
+	static boolean keepLoggedIn;
+	static boolean pendingMinimize;
+	static boolean haltAtLogin;
 	private static SettingsManager instance;
 	private Context context;
 	
