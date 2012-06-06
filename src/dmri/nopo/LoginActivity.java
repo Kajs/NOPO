@@ -29,7 +29,8 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         user = (EditText) findViewById(R.id.username);
-        logo = (ImageView) findViewById(R.id.loginlogo);  	
+        logo = (ImageView) findViewById(R.id.loginlogo);
+        SettingsManager.isLoggedIn = false;
         this.loginButton = (Button) this.findViewById(R.id.login);
         this.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +42,7 @@ public class LoginActivity extends Activity {
             		settingsManager.setLastUser(userName);
                 	settingsManager.setupSettings();
                 	SettingsManager.pendingUnregister = false;
+                	SettingsManager.isLoggedIn = true;
                 	Intent intent = new Intent("android.intent.action.ALARM");
                 	startActivity(intent);
                 	}
@@ -68,8 +70,17 @@ public class LoginActivity extends Activity {
     	if(settingsManager.hasStoredUser()) {
         	settingsManager.setupSettings();
         	SettingsManager.pendingUnregister = false;
+        	SettingsManager.isLoggedIn = true;
         	Intent intent = new Intent("android.intent.action.ALARM");
         	startActivity(intent);
+    	}
+    }
+    
+    @Override 
+    protected void onResume() {
+    	if(SettingsManager.isLoggedIn) {
+    		Intent intent = new Intent("android.intent.action.ALARM");
+        	startActivity(intent);    		
     	}
     }
 }

@@ -68,11 +68,8 @@ public class MenuActivity extends Activity {
 	        	    	 db.open();
 	        	    	 db.deleteUser();
 	        	    	 db.close();
+	        	    	 SettingsManager.isLoggedIn = false;
 	        	    	 SettingsManager.pendingUnregister = true;
-	        	    	 /**
-	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
-	                     startActivity(loginpage);
-	                     */
 	                     finish();
 	        	     }
 	        	  });
@@ -95,11 +92,8 @@ public class MenuActivity extends Activity {
 	        	  alertDialog.setButton(-1, "Ja", new DialogInterface.OnClickListener() {
 	        	     public void onClick(DialogInterface dialog, int which) {
 	        	    	 DBAdapter.getInstance(context).close();
+	        	    	 SettingsManager.isLoggedIn = false;
 	        	    	 SettingsManager.pendingUnregister = true;
-	        	    	 /**
-	        	    	 Intent loginpage = new Intent(MenuActivity.this, LoginActivity.class);
-	                     startActivity(loginpage);
-	                     */
 	                     finish();
 	        	     }
 	        	  });
