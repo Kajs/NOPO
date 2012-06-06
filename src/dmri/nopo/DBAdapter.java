@@ -204,7 +204,7 @@ public class DBAdapter {
 			db.execSQL("INSERT or REPLACE into "+user_table+" VALUES('"+KEY_NUMBERALARMS+"', "+numberAlarms+");");
 		}
 		catch (SQLException e){
-			Log.w("testingDatabase", "updateUserSettings: " +e.getMessage());
+			Log.w("Database", "updateUserSettings: " +e.getMessage());
 			e.printStackTrace();
 		}
 	}

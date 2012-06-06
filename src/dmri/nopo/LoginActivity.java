@@ -2,13 +2,15 @@ package dmri.nopo;
 
 import dmri.nopo.R;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class LoginActivity extends Activity {
     
@@ -17,6 +19,7 @@ public class LoginActivity extends Activity {
 	@SuppressWarnings("unused")
 	private ImageView logo;
 	private SettingsManager settingsManager;
+	private Context context = this;
 	
 	
 	
@@ -42,11 +45,17 @@ public class LoginActivity extends Activity {
                 	startActivity(intent);
                 	}
             	else {
-            		Toast.makeText(getApplicationContext(), "Brug venligst tegn fra a-z, A-Z og/eller 0-9", Toast.LENGTH_LONG).show();
+            		AlertDialog alertDialog = new AlertDialog.Builder(context).create();
+            		alertDialog.setTitle("Ugyldige tegn i brugernavn");
+            		alertDialog.setMessage("Brug venligst tegn fra a-z, A-Z og/eller 0-9");
+            		alertDialog.setButton(-1, "ok", new DialogInterface.OnClickListener() {
+            			public void onClick(DialogInterface dialog, int which) {}
+            			});
+            		alertDialog.show();
+            		}
             	}
-            }
-        });
-        
+            });
+                
         tryAutoLogin();
     }
     

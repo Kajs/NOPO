@@ -202,17 +202,6 @@ public class AlarmActivity extends ListActivity {
         holder = (ViewHolder) convertView.getTag();
       }
 
-      // Get flag name and id
-      /**
-      String filename = "flag_" + String.valueOf(position);
-      int id = context.getResources().getIdentifier(filename, "drawable", context.getString(R.string.package_str));
-
-      // Icons bound to the rows.
-      if (id != 0x0) {
-        //mIcon1 = BitmapFactory.decodeResource(context.getResources(), id);
-      }
-      */
-
       // Bind the data efficiently with the holder.
 //      holder.iconLine.setImageBitmap(mIcon1);
       String currentTime = Long.toString((DBAdapter.getDateStamp()));

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.Button;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -46,9 +45,7 @@ public class MenuActivity extends Activity {
 				int newVib = vibroBar.getProgress();
 				int newSou = lydBar.getProgress();			
 				int newHigh = new Integer(highlightChooser.getSelectedItem().toString().split(" ")[0]);
-				Log.w("testSettings", "Menu.newHigh: " + Integer.toString(newHigh));
 				int newSMS = new Integer(numberIncChooser.getSelectedItem().toString().split(" ")[0]);
-				Log.w("testHighLight", "Menu.newSMS: " + Integer.toString(newHigh));
 				settingsManager.updateUserSettings(newVib, newSou, newHigh, newSMS);
 				
 				String newNumber = receiveNumber.getText().toString();
