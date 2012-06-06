@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 public class SettingsManager {
+	static int currentView;
 	static String userName;
 	public int vibration;
 	public int sound;
