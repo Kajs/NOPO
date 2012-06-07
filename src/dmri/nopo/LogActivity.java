@@ -24,6 +24,7 @@ public class LogActivity extends Activity {
     
     public void getLog() {
     	LogManager logMan = LogManager.getInstance(this);
+    	logMan.removeOldSMS();
         Cursor c = logMan.getAllSMS();
         log = new ArrayList<String>();
         int size = c.getCount();

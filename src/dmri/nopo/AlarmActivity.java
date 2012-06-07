@@ -62,6 +62,7 @@ public class AlarmActivity extends ListActivity {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.alarm);
+    log.removeOldSMS();
     EfficientAdapter newAdap = new EfficientAdapter(this);
     adap = newAdap;
     adap.showSMS();
@@ -275,11 +276,9 @@ public class AlarmActivity extends ListActivity {
 		} else if (!isReceiving) {
 			registerReceiver(intentReceiver, intentFilter);
 			isReceiving = true;
-			log.removeOldSMS();
 			adap.showSMS();
 			adap.notifyDataSetChanged();;
 		} else {
-			log.removeOldSMS();
 			adap.showSMS();
 			adap.notifyDataSetChanged();;
 		}
