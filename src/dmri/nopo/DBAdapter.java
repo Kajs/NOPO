@@ -214,6 +214,7 @@ public class DBAdapter {
 			db.delete(log_table, null, null);
 			db.delete(filter_table, null, null);
 			db.delete(user_table, null, null);
+			db.execSQL("DELETE FROM "+application_table+" WHERE "+KEY_SETTING+"="+"'"+KEY_LASTUSER+"';");
 		} catch (Exception e) {
 			Log.w("Database", "deleteUser: " +e.getMessage());
 			e.printStackTrace();
