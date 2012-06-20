@@ -19,7 +19,7 @@ public class DBAdapter {
 	private static final String KEY_RECEIVE = "receive";
 	private static final String KEY_VIBRATION = "vibration";
 	private static final String KEY_SOUND = "sound";
-	private static final String KEY_HIGHLIGHTTIME = "highligthTime";
+	private static final String KEY_HIGHLIGHTTIME = "highlightTime";
 	private static final String KEY_NUMBERALARMS = "numberAlarms";
 	private static final String KEY_SETTING = "setting";
 	private static final String KEY_SETTINGVALUE = "settingValue";
