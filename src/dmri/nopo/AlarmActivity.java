@@ -46,7 +46,7 @@ public class AlarmActivity extends ListActivity {
 			}
 			else {
 				String sms = intent.getExtras().getString("sms");
-		          if (filter.isInLocalFilter(sms) && settingsManager.shouldReceive(intent.getExtras().getString("sender")))
+		          if (settingsManager.shouldReceive(intent.getExtras().getString("sender")) && filter.isInLocalFilter(sms))
 		          {
 		        	  log.writeLogFile(sms);
 		        	  NotificationManager c = NotificationManager.getInstance(context);
